@@ -18,16 +18,16 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "url": "mailto:founders@bitscale.ai"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Platform",
+    "url": "https://app.bitscale.com"
   },
   "tabs": [
     {
-      "name": "API Reference",
+      "name": "Feature Reference",
       "url": "api-reference"
     }
   ],
@@ -35,17 +35,17 @@
     {
       "name": "Documentation",
       "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
+      "url": "https://docs.bitscale.ai"
     },
     {
       "name": "Community",
       "icon": "slack",
-      "url": "https://mintlify.com/community"
+      "url": "https://join.slack.com/t/bitscale-ai/shared_invite/zt-2o9qo2k9x-4_k5QuB9382FMGbgbTN3eg"
     },
     {
       "name": "Blog",
       "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "url": "https://bitscale.ai/blogs"
     }
   ],
   "navigation": [
@@ -84,8 +84,8 @@
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "x": "https://x.com/bit_scale",
+    "linkedin": "https://www.linkedin.com/company/bit-scale",
+    "instagram": "https://www.instagram.com/bitscale.ai"
   }
 }
