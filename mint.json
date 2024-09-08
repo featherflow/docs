@@ -58,7 +58,7 @@
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Playbook",
       "pages": [
         "essentials/markdown",
         "essentials/code",
