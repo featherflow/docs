@@ -2,14 +2,12 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Bitscale",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "light": "/logo/light.svg",
+    "href": "https://bitscale.ai"
   },
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#272B30",
-    "light": "#272B30",
-    "dark": "#FFF",
     "anchors": {
       "from": "#0D9373",
       "to": "#FFF"
