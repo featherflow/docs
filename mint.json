@@ -60,8 +60,11 @@
     {
       "group": "Playbook",
         "pages": [
-            "playbook/playbook-1",
-            "playbook/playbook-2"
+            "playbook/enrich-hubspot",
+            "playbook/decision-maker",
+            "playbook/playbook-3",
+            "playbook/playbook-4",
+            "playbook/playbook-5"
         ]
     },
     {
