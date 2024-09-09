@@ -3,13 +3,16 @@
   "name": "Bitscale",
   "logo": {
     "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg",
     "href": "https://bitscale.ai"
   },
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#272B30",
+    "light": "#272B30",
+    "dark": "#FFF",
     "anchors": {
-      "from": "#0D9373",
+      "from": "#272B30",
       "to": "#FFF"
     }
   },
