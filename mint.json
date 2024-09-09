@@ -28,7 +28,7 @@
   "tabs": [
     {
       "name": "Feature Reference",
-      "url": "api-reference"
+      "url": "feature-reference"
     }
   ],
   "anchors": [
@@ -62,23 +62,30 @@
         "pages": [
             "playbook/enrich-hubspot",
             "playbook/decision-maker",
-            "playbook/playbook-3",
-            "playbook/playbook-4",
-            "playbook/playbook-5"
+            "playbook/enrich-contacts",
+            "playbook/research-blog"
         ]
     },
     {
-      "group": "API Documentation",
+      "group": "Feature Documentation",
       "pages": [
-        "api-reference/introduction"
+        "feature-reference/introduction",
+        "feature-reference/lead-generation",
+        "feature-reference/lead-enrichment",
+        "feature-reference/outbound",
+        "feature-reference/content-generation"
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Tools",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "feature-reference/tools/tool-a"
+      ]
+    },
+    {
+      "group": "Integrations",
+      "pages": [
+        "feature-reference/integrations/integration-a"
       ]
     }
   ],
