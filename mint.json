@@ -60,7 +60,7 @@
       ]
     },
     {
-      "group": "Playbook",
+      "group": "Recipes",
         "pages": [
             "playbook/enrich-hubspot",
             "playbook/decision-maker",
@@ -79,15 +79,15 @@
       ]
     },
     {
-      "group": "Tools",
+      "group": "playbook",
       "pages": [
-        "feature-reference/tools/tool-a"
+        "feature-reference/integrations/integration-a"
       ]
     },
     {
-      "group": "Integrations",
+      "group": "Tools",
       "pages": [
-        "feature-reference/integrations/integration-a"
+        "feature-reference/tools/tool-a"
       ]
     }
   ],
