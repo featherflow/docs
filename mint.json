@@ -61,10 +61,10 @@
     {
       "group": "Recipes",
         "pages": [
-            "playbook/enrich-hubspot",
-            "playbook/decision-maker",
-            "playbook/enrich-contacts",
-            "playbook/research-blog"
+            "recipes/enrich-hubspot",
+            "recipes/decision-maker",
+            "recipes/enrich-contacts",
+            "recipes/research-blog"
         ]
     },
     {
