@@ -78,9 +78,10 @@
       ]
     },
     {
-      "group": "playbook",
+      "group": "Playbook",
       "pages": [
-        "feature-reference/integrations/integration-a"
+        "playbook/enrich-hubspot.mdx",
+        "playbook/export-hubspot.mdx"
       ]
     },
     {
