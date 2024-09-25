@@ -9,10 +9,7 @@
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#272B30",
-    "anchors": {
-      "from": "#272B30",
-      "to": "#FFF"
-    }
+    "dark": "#272B30"
   },
   "modeToggle": {
     "default": "light",
