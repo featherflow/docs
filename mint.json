@@ -8,7 +8,11 @@
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#272B30"
+    "primary": "#272B30",
+    "anchors": {
+      "from": "#272B30",
+      "to": "#FFF"
+    }
   },
   "modeToggle": {
     "default": "light",
