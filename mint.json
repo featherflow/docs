@@ -16,6 +16,10 @@
       "to": "#FFF"
     }
   },
+  "modeToggle": {
+    "default": "light",
+    "isHidden": true
+  },
   "topbarLinks": [
     {
       "name": "Support",
