@@ -79,8 +79,8 @@
     {
       "group": "Playbook",
       "pages": [
-        "playbook/enrich-hubspot.mdx",
-        "playbook/export-hubspot.mdx"
+        "playbook/enrich-hubspot",
+        "playbook/export-hubspot"
       ]
     },
     {
