@@ -109,18 +109,7 @@ Here are some advanced that can help you take you grids to the next level
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen
   ></iframe>
-    The Run Conditions prompt box uses JavaScript to put rules on when to run certain columns, here are some run conditions:
-    Run this action column cell only when the Name column value is empty
-    
-    {{ @Name }} === “”
-    
-    Run the column only when the Email is from gmail domain
-
-    {{ @Email }}.includes(”gmail.com”)
-    
-    Run this column only when Name is Not empty and email is Not from gmail.com domain
-
-    {{ @Name }} !== “” &&  !{{ @Email }}.includes(”gmail.com”)
+    The Run Conditions prompt box uses JavaScript to put rules on when to run certain columns.
     
   </Accordion>
   <Accordion icon="wand-magic-sparkles" title="Setup Outreach using Instantly.ai Integration">
