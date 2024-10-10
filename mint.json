@@ -56,41 +56,21 @@
     {
       "group": "Get Started",
       "pages": [
-        "introduction",
-        "quickstart",
-        "development"
+        "quickstart"
       ]
     },
     {
       "group": "Recipes",
         "pages": [
-            "recipes/enrich-hubspot",
-            "recipes/decision-maker",
-            "recipes/enrich-contacts",
-            "recipes/research-blog"
+            "recipes/enrich-hubspot"
+
         ]
-    },
-    {
-      "group": "Feature Documentation",
-      "pages": [
-        "feature-reference/introduction",
-        "feature-reference/lead-generation",
-        "feature-reference/lead-enrichment",
-        "feature-reference/outbound",
-        "feature-reference/content-generation"
-      ]
     },
     {
       "group": "Playbook",
       "pages": [
         "playbook/enrich-hubspot",
         "playbook/export-hubspot"
-      ]
-    },
-    {
-      "group": "Tools",
-      "pages": [
-        "feature-reference/tools/tool-a"
       ]
     }
   ],
