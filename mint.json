@@ -62,7 +62,8 @@
     {
       "group": "Recipes",
         "pages": [
-            "recipes/enrich-hubspot"
+            "recipes/enrich-hubspot",
+            "recipes/instantly-magic"
 
         ]
     },
@@ -70,7 +71,10 @@
       "group": "Playbook",
       "pages": [
         "playbook/enrich-hubspot",
-        "playbook/export-hubspot"
+        "playbook/export-hubspot",
+        "playbook/find-people",
+        "playbook/instantly-integrate",
+        "playbook/instantly-export"
       ]
     }
   ],
