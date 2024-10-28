@@ -76,6 +76,8 @@
         "playbook/find-people",
         "playbook/instantly-integrate",
         "playbook/common-formulae",
+        "playbook/list-building-1",
+        "playbook/list-building-2",
         "playbook/instantly-export"
       ]
     }
