@@ -63,6 +63,7 @@
       "group": "Recipes",
         "pages": [
             "recipes/enrich-hubspot",
+            "recipes/list-building",
             "recipes/instantly-magic"
 
         ]
