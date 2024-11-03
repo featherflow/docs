@@ -78,6 +78,7 @@
         "playbook/common-formulae",
         "playbook/list-building-1",
         "playbook/list-building-2",
+        "playbook/prompts_101",
         "playbook/instantly-export"
       ]
     }
