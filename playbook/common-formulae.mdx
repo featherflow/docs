@@ -1,12 +1,14 @@
 ---
-title: 'Common Formula'
-description: 'Note: str2 can be replaced by any column by putting {{ @column_name }} in place of it'
+title: "Using the Formula Column at Bitscale"
+description: "The formula column allows users to perform basic transformations column wise, enabling them to make the best out of their present data without spending unnecessary credits."
 ---
 
+# Common use cases
 
-_The formulae mentioned are simply js inline scripts. To generate any other formulae one can just ask chatgpt to generate the same._
+*The formulae mentioned are simply js inline scripts. To generate any other formulae one can just ask chatgpt to generate the same.*
 
-_You can use the below prompt for this:_
+*You can use the below prompt for this:*
+
 ```
 Give me the inline JavaScript code for the use case mentioned below, 
 
@@ -18,7 +20,8 @@ use case: mention what you want to do here
 ```
 
 ## String Concatenation
-    Concatenate multiple strings into one.
+
+Concatenate multiple strings into one.
 
 ```js
       {{ @col1 }} + " " + str2
@@ -26,71 +29,108 @@ use case: mention what you want to do here
 ```
 
 ## String Splitting
-    Split a string into an array using a separator.
+
+Split a string into an array using a separator.
+
 ```js
       {{ @col1 }}.split(",") // Split by comma
       {{ @col1 }}.split(",")[n] // nth split starting from 0 
 ```
+
 ## String Trimming
-    Trim whitespace from the start and end of a string.
-```js    
+
+Trim whitespace from the start and end of a string.
+
+```js
       {{ @col1 }}.trim() // Trim spaces from start and end
 ```
+
 ## String Length
-    Get the length of a string.
+
+Get the length of a string.
+
 ```js
       {{ @col1 }}.length
 ```
+
 ## Convert to Uppercase/Lowercase
-    Convert a string to uppercase or lowercase.
+
+Convert a string to uppercase or lowercase.
+
 ```js
       {{ @col1 }}.toUpperCase()
       {{ @col1 }}.toLowerCase()
 ```
+
 ## Replace Substring
-    Replace part of a string with another string.
+
+Replace part of a string with another string.
+
 ```js
       {{ @col1 }}.replace("oldSubstring", "newSubstring")
 ```
+
 ## Extract Substring
-    Extract a substring from a string using start and end indices.
+
+Extract a substring from a string using start and end indices.
+
 ```js
       {{ @col1 }}.substring(5, 10) // Extract characters from index 5 to 10
 ```
 
 ## Repeat a String
-    Repeat a string multiple times.
+
+Repeat a string multiple times.
+
 ```js
       {{ @col1 }}.repeat(3) // Repeat {{ @col1 }} three times
 ```
+
 ## Reverse a String
-    Reverse a string by splitting it into an array, reversing it, and then joining it back together.
+
+Reverse a string by splitting it into an array, reversing it, and then joining it back together.
+
 ```js
       {{ @col1 }}.split("").reverse().join("")
 ```
+
 ## Extract Character at Specific Index
-    Get a character at a specific index of a string.
+
+Get a character at a specific index of a string.
+
 ```js
       {{ @col1 }}.charAt(3) // Get character at index 3
 ```
+
 ## Find Index of Substring
-    Find the index of a specific substring.
+
+Find the index of a specific substring.
+
 ```js
       {{ @col1 }}.indexOf("substring")
 ```
+
 ## Pad Start/End
-    Add padding to the start or end of a string to reach a specified length.
+
+Add padding to the start or end of a string to reach a specified length.
+
 ```js
       {{ @col1 }}.padStart(10, "0") // Pads with zeros at the start
       {{ @col1 }}.padEnd(10, ".")     // Pads with periods at the end
 ```
+
 ## Convert String to Array of Characters
-    Convert a string into an array of characters.
+
+Convert a string into an array of characters.
+
 ```js
       Array.from({{ @col1 }})
 ```
+
 ## Check if String is Empty
-    Check if a string is empty (or just contains whitespace).
+
+Check if a string is empty (or just contains whitespace).
+
 ```js
       {{ @col1 }}.trim() === ""
 ```
