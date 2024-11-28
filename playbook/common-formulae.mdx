@@ -1,9 +1,64 @@
 ---
 title: "Using the Formula Column at Bitscale"
-description: "The formula column allows users to perform basic transformations column wise, enabling them to make the best out of their present data without spending unnecessary credits."
+description: "The formula column allows users to perform basic transformations column wise, enabling them to make the best out of their present data without spending unnecessary credits. The users can easily tag columns using the format : {{ @column }}
+"
 ---
 
 # Common use cases
+## 1. Split Full Name into First & Last Name
+
+Sometimes you may come across a scenario where your prospect list only has the full name available as a data point, but while sending an outreach addressing the person as their full name might not sit right with you. In that case a simple formula can be employed to split the full name into separate first name and last name data points.
+
+getting first name:
+
+```js
+      {{ @Full Name }}.split(" ")[0]
+```
+
+getting last name:
+
+```js
+      {{ @Full Name }}.split(" ")[0]
+```
+
+
+## 2. Create Templatized Emails 
+
+Our formula columns also allows our user to create static mail templates, with an option to embed different aspects of the mail. Such as, icebreakers, salutations, signoffs etc.
+
+check out the below example:
+
+```js
+      Hi @FirstName,
+
+      @Icebreaker
+
+      We are making strides in the outreach space, feel like getting on board?
+
+      Best,
+      Team Bitscale
+```
+
+### 3. Find a specific technology from BuildWith Tech Stack
+
+Our Tech Stack action tools provides a comprehensive list of technologies being employed by a company via buildwith but sometimes it may become tedious to find whether a specific technology is being used or not.
+
+For this a simple formula can help you out(am checking is shopify is there or not):
+
+```js
+      {{ @Tech Stack }}.technologies.toLowerCase().includes("shopify") ? "yes" : "no"
+```
+
+### 4. Find the current experience from the Linkedin Enrichment
+
+While users can use the add column button available next to all enrichments in any sales action tool. They can also write this from scratch.
+
+Here's an example:
+```js
+      {{ @Linkedin Enrichment }}?.experiences[0].title + ' at ' + {{ @Linkedin Enrichment }}?.experiences[0].subtitle
+```
+
+## Here are some further crude formulae that you can utilise
 
 *The formulae mentioned are simply js inline scripts. To generate any other formulae one can just ask chatgpt to generate the same.*
 
