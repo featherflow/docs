@@ -69,7 +69,6 @@
       "pages": [
         "playbook/enrich-hubspot",
         "playbook/export-hubspot",
-        "playbook/find-people",
         "playbook/instantly-integrate",
         "playbook/instantly-export",
         "playbook/common-formulae",
@@ -77,6 +76,7 @@
         "playbook/tools-waterfall-email",
         "playbook/tools-waterfall-phone",
         "playbook/tools-link-scrape",
+        "playbook/find-people",
         "playbook/list-building-1",
         "playbook/list-building-2"
       ]
