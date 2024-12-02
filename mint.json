@@ -75,6 +75,9 @@
         "playbook/list-building-1",
         "playbook/list-building-2",
         "playbook/prompts_101",
+        "playbook/tools-waterfall-email",
+        "playbook/tools-waterfall-phone",
+        "playbook/tools-link-scrape",
         "playbook/instantly-export"
       ]
     }
