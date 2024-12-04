@@ -17,6 +17,11 @@
   },
   "topbarLinks": [
     {
+      "name": "Community",
+      "icon": "slack",
+      "url": "https://join.slack.com/t/bitscale-ai/shared_invite/zt-2o9qo2k9x-4_k5QuB9382FMGbgbTN3eg"
+    },
+    {
       "name": "Support",
       "url": "mailto:founders@bitscale.ai"
     }
@@ -29,23 +34,6 @@
     {
       "name": "Feature Reference",
       "url": "feature-reference"
-    }
-  ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://docs.bitscale.ai"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://join.slack.com/t/bitscale-ai/shared_invite/zt-2o9qo2k9x-4_k5QuB9382FMGbgbTN3eg"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://bitscale.ai/blogs"
     }
   ],
   "navigation": [
