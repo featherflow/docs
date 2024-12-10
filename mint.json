@@ -21,7 +21,6 @@
 "mode": {
 "type": "string",
 "enum": [
-"auto",
 "light"
 ]
 }
