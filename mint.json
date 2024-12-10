@@ -24,7 +24,9 @@
 "auto",
 "dark"
 ],
-"background": "light"
+"background":{
+    "light": "#272B30"
+}
 }
 },
 "additionalProperties": false
