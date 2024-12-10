@@ -4,7 +4,7 @@ description: "The formula column allows users to perform basic transformations c
 "
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ZtC1e1WLKS8?si=1G1j91TvzlPL0eeL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZtC1e1WLKS8?si=1G1j91TvzlPL0eeL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 *The formulae mentioned are simply javascript inline scripts. To generate any other formulae one can just ask chatgpt to generate the same.*
 
@@ -40,6 +40,9 @@ getting last name:
       {{ @Full Name }}.split(" ")[1]
 ```
 
+<img height="100" src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1733817225/Screenshot_2024-12-09_at_8.05.10_PM_ejfi9j.png" />
+
+
 ### 2. Find a specific technology from BuildWith Tech Stack
 
 Our Tech Stack action tools provides a comprehensive list of technologies being employed by a company via buildwith but sometimes it may become tedious to find whether a specific technology is being used or not.
@@ -49,6 +52,8 @@ For this a simple formula can help you out(am checking is shopify is there or no
 ```js
       {{ @Tech Stack }}.technologies.toLowerCase().includes("shopify") ? "yes" : "no"
 ```
+
+<img height="100" src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1733817239/Screenshot_2024-12-10_at_1.22.56_PM_z5xhw2.png" />
 
 ### 3. Find the current experience from the Linkedin Enrichment
 
@@ -79,6 +84,8 @@ check out the below example:
       Best,
       Team Bitscale
 ```
+
+<img height="100" src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1733817239/Screenshot_2024-12-09_at_8.50.29_PM_xxm95k.png" />
 
 ### 2. Appending two columns
 
