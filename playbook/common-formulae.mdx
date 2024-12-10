@@ -1,12 +1,26 @@
 ---
 title: "Formula Column"
-description: "The formula column allows users to perform basic transformations column wise, enabling them to make the best out of their present data without spending unnecessary credits. The users can easily tag columns using the format : {{ @column }}
+description: "The formula column allows users to perform basic transformations column wise, enabling them to make the best out of their present data without spending unnecessary credits. The users can easily tag columns using the format : {{ @column }} when performing transformations or operations or using the format : @column when creating a placeholder for static content.
 "
 ---
 
-# Common use cases
+*The formulae mentioned are simply js inline scripts. To generate any other formulae one can just ask chatgpt to generate the same.*
 
-## 1. Split Full Name into First & Last Name
+*You can use the below prompt for this:*
+
+```
+Give me the inline JavaScript code for the use case mentioned below, 
+
+context: @column_name is the variable holding the string. 
+
+return format: I want the result in this format: {{ @column_name }}.operation based on use case. example format: {{ @column_name }}.split(",")[0]
+
+use case: mention what you want to do here
+```
+
+# Operations based use cases
+
+### 1. Split Full Name into First & Last Name
 
 Sometimes you may come across a scenario where your prospect list only has the full name available as a data point, but while sending an outreach addressing the person as their full name might not sit right with you. In that case a simple formula can be employed to split the full name into separate first name and last name data points.
 
@@ -24,7 +38,30 @@ getting last name:
       {{ @Full Name }}.split(" ")[1]
 ```
 
-## 2. Create Templatized Emails
+### 2. Find a specific technology from BuildWith Tech Stack
+
+Our Tech Stack action tools provides a comprehensive list of technologies being employed by a company via buildwith but sometimes it may become tedious to find whether a specific technology is being used or not.
+
+For this a simple formula can help you out(am checking is shopify is there or not):
+
+```js
+      {{ @Tech Stack }}.technologies.toLowerCase().includes("shopify") ? "yes" : "no"
+```
+
+### 3. Find the current experience from the Linkedin Enrichment
+
+While users can use the add column button available next to all enrichments in any sales action tool. They can also write this from scratch.
+
+Here's an example:
+
+```js
+      {{ @Linkedin Enrichment }}?.experiences[0].title + ' at ' + {{ @Linkedin Enrichment }}?.experiences[0].subtitle
+      
+```
+
+# Content based use cases
+
+### 1. Create Templatized Emails
 
 Our formula columns also allows our user to create static mail templates, with an option to embed different aspects of the mail. Such as, icebreakers, salutations, signoffs etc.
 
@@ -41,43 +78,20 @@ check out the below example:
       Team Bitscale
 ```
 
-## 3. Find a specific technology from BuildWith Tech Stack
+### 2. Appending two columns
 
-Our Tech Stack action tools provides a comprehensive list of technologies being employed by a company via buildwith but sometimes it may become tedious to find whether a specific technology is being used or not.
+Maybe you already have the first name and last name of 1000s of prospect available in your grid but your use case requires your to have their full name as well. While using a gpt mini across all these use cases may seem like an easy way out, for large grids that might not be the best scenario. So why not employ the trusty formula column for this?
 
-For this a simple formula can help you out(am checking is shopify is there or not):
-
-```js
-      {{ @Tech Stack }}.technologies.toLowerCase().includes("shopify") ? "yes" : "no"
-```
-
-## 4. Find the current experience from the Linkedin Enrichment
-
-While users can use the add column button available next to all enrichments in any sales action tool. They can also write this from scratch.
-
-Here's an example:
+you can easily append 2 or more columns using the formula below:
 
 ```js
-      {{ @Linkedin Enrichment }}?.experiences[0].title + ' at ' + {{ @Linkedin Enrichment }}?.experiences[0].subtitle
+    @FirstName + " " + @LastName
 ```
 
 # Here are some further crude formulae that you can utilise
 
-*The formulae mentioned are simply js inline scripts. To generate any other formulae one can just ask chatgpt to generate the same.*
-
-*You can use the below prompt for this:*
-
-```
-Give me the inline JavaScript code for the use case mentioned below, 
-
-context: @column_name is the variable holding the string. 
-
-return format: I want the result in this format: {{ @column_name }}.operation based on use case. example format: {{ @column_name }}.split(",")[0]
-
-use case: mention what you want to do here
-```
-
-## String Concatenation
+<AccordionGroup>
+  <Accordion icon="" title="String Concatenation">
 
 Concatenate multiple strings into one.
 
@@ -85,6 +99,7 @@ Concatenate multiple strings into one.
       {{ @col1 }} + " " + str2
       {{ @col1 }}.concat(" ", str2)
 ```
+</Accordion>
 
 ## String Splitting
 
