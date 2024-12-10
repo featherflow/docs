@@ -111,53 +111,80 @@ Split a string into an array using a separator.
 ```js
 {{ @col1 }}.trim() // Trim spaces from start and end
 ```
-</Accordion> <Accordion icon="" title="String Length"> Get the length of a string.
+</Accordion> 
+<Accordion icon="" title="String Length"> Get the length of a string.
 
 ```js
 {{ @col1 }}.length
 ```
-</Accordion> <Accordion icon="" title="Convert to Uppercase/Lowercase"> Convert a string to uppercase or lowercase.
+</Accordion> 
+<Accordion icon="" title="Convert to Uppercase/Lowercase"> 
+  Convert a string to uppercase or lowercase.
+  
 ```js
 {{ @col1 }}.toUpperCase()
 {{ @col1 }}.toLowerCase()
 ```
-</Accordion> <Accordion icon="" title="Replace Substring"> Replace part of a string with another string.
+</Accordion> 
+<Accordion icon="" title="Replace Substring"> 
+  Replace part of a string with another string.
+  
 ```js
 {{ @col1 }}.replace("oldSubstring", "newSubstring")
 ```
-</Accordion> <Accordion icon="" title="Extract Substring"> Extract a substring from a string using start and end indices.
+</Accordion> 
+<Accordion icon="" title="Extract Substring"> 
+  Extract a substring from a string using start and end indices.
+  
 ```js
 {{ @col1 }}.substring(5, 10) // Extract characters from index 5 to 10
 ```
-</Accordion> <Accordion icon="" title="Repeat a String"> Repeat a string multiple times.
+</Accordion> 
+<Accordion icon="" title="Repeat a String"> 
+  Repeat a string multiple times.
+  
 ```js
 {{ @col1 }}.repeat(3) // Repeat {{ @col1 }} three times
 ```
-</Accordion> <Accordion icon="" title="Reverse a String"> Reverse a string by splitting it into an array, reversing it, and then joining it back together.
+</Accordion> 
+<Accordion icon="" title="Reverse a String"> 
+  Reverse a string by splitting it into an array, reversing it, and then joining it back together.
+  
 ```js
 {{ @col1 }}.split("").reverse().join("")
 ```
-</Accordion> <Accordion icon="" title="Extract Character at Specific Index"> Get a character at a specific index of a string.
+</Accordion> 
+<Accordion icon="" title="Extract Character at Specific Index"> 
+  Get a character at a specific index of a string.
+  
 ```js
 {{ @col1 }}.charAt(3) // Get character at index 3
 ```
-</Accordion> <Accordion icon="" title="Find Index of Substring"> Find the index of a specific substring.
+</Accordion> <Accordion icon="" title="Find Index of Substring"> 
+Find the index of a specific substring.
+
 ```js
 {{ @col1 }}.indexOf("substring")
 ```
 </Accordion> 
-<Accordion icon="" title="Pad Start/End"> Add padding to the start or end of a string to reach a specified length.
+<Accordion icon="" title="Pad Start/End"> 
+  Add padding to the start or end of a string to reach a specified length.
+  
 ```js
 {{ @col1 }}.padStart(10, "0") // Pads with zeros at the start
 {{ @col1 }}.padEnd(10, ".") // Pads with periods at the end
 ```
 </Accordion> 
-<Accordion icon="" title="Convert String to Array of Characters"> Convert a string into an array of characters.
+<Accordion icon="" title="Convert String to Array of Characters"> 
+  Convert a string into an array of characters.
+  
 ```js
 Array.from({{ @col1 }})
 ```
 </Accordion> 
-<Accordion icon="" title="Check if String is Empty"> Check if a string is empty (or just contains whitespace).
+<Accordion icon="" title="Check if String is Empty"> 
+  Check if a string is empty (or just contains whitespace).
+  
 ```js
 {{ @col1 }}.trim() === ""
 ```
