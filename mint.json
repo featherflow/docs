@@ -21,8 +21,10 @@
 "mode": {
 "type": "string",
 "enum": [
-"primary"
-]
+"auto",
+"dark"
+],
+"background": "light"
 }
 },
 "additionalProperties": false
