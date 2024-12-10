@@ -15,24 +15,6 @@
     "default": "light",
     "isHidden": true
   },
-  "codeBlock": {
-"type": "object",
-"properties": {
-"mode": {
-"type": "string",
-"enum": [
-"auto",
-"dark"
-],
-"colors":{
-    "background":{
-    "light": "#272B30"
-    }
-}
-}
-},
-"additionalProperties": false
-},
   "topbarLinks": [
     {
       "name": "Community",
