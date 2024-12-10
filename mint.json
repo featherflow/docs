@@ -24,7 +24,8 @@
 "auto",
 "dark"
 ],
-"background":{
+"colors":{
+    "primary": "#272B30",
     "light": "#272B30"
 }
 }
