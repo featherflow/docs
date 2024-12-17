@@ -68,6 +68,7 @@
         "playbook/tools-waterfall-email",
         "playbook/tools-waterfall-phone",
         "playbook/tools-link-scrape",
+        "playbook/tools-buildwith",
         "playbook/find-people",
         "playbook/list-building-1",
         "playbook/list-building-2"
