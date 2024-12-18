@@ -1,0 +1,101 @@
+---
+title: 'Run Conditions'
+description: 'Description of your new file.'
+---
+
+<iframe width="728" height="410" src="https://www.youtube-nocookie.com/embed/KsN4GC_LVQI?si=A944jsvHQkX07vhe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
+## **What Are Run Conditions and Why Use Them?**
+
+Run conditions are a powerful feature in Bitscale that allows you to control which rows in your grid are processed on what condition. Instead of running an action across the entire grid, you can target a specific subset of rows based on defined criteria.
+
+This helps you:
+
+* **Reduce Redundancy:** Avoid unnecessary runs on rows that don’t meet the desired conditions.
+
+* **Save Time and Credits:** Focus only on relevant data and optimize your workflows.
+
+* **Improve Efficiency:** Ensure actions are applied only where needed, reducing clutter in your results.
+
+***
+
+## **Example Use Case: Filtering for Technology Stack**
+
+In this video, we demonstrate how to use run conditions to perform email waterfall actions only for companies that meet a specific condition:
+
+* **Premise:** We’ve retrieved a list of companies, identified their technology stacks, and created a column to check if they use a specific technology. The column returns **“Yes”** or **“No.”**
+
+* **Objective:** Set up a run condition to execute the email waterfall only if the company uses the specified technology (i.e., the column returns **“Yes”**).
+
+***
+
+## **How to Set Up Run Conditions**
+
+### **1. Access the Settings**
+
+Navigate to the action you want to apply a run condition to (e.g., email waterfall). Open the **Settings** tab for the action.
+
+**Note:** While most actions have a straightforward settings tab, some, like email waterfall, may be more detailed. However, the **Run Condition** field is always located at the bottom of the settings tab.
+
+***
+
+### **2. Write the Run Condition**
+
+In the **Run Condition** text box, define the condition that determines whether the action should execute. Run conditions follow a simple **JavaScript inline syntax**, similar to what is used in formula columns.
+
+**Example:**
+
+* Reference the column that checks for the specific technology.
+
+* Write a condition like:
+
+  `{{ @column_name }} === "Yes"`
+
+  This ensures the action runs only for rows where the column value is **“Yes.”**
+
+***
+
+### **3. Save and Execute**
+
+Once the run condition is set:
+
+1. Save the action.
+
+2. Execute it for your grid.
+
+***
+
+## **Results and Observations**
+
+After running the email waterfall action with the defined run condition:
+
+* Rows that don’t meet the condition (e.g., where the value is “No”) are skipped.
+
+* The action is executed only for rows where the condition is satisfied.
+
+* Results are displayed in the output column, showing only the relevant emails retrieved.
+
+**Example Outcome:**
+
+* Rows with **“Yes”** in the specified column returned email addresses.
+
+* Rows with **“No”** were skipped, saving time and resources.
+
+***
+
+## **Key Benefits of Run Conditions**
+
+* **Precision:** Apply actions only to relevant rows, ensuring targeted processing.
+
+* **Cost-Efficiency:** Reduce unnecessary runs, saving credits and time.
+
+* **Customizability:** Write flexible, logic-based conditions tailored to your workflow.
+
+***
+
+## **Get Started**
+
+Try setting up run conditions in your workflows today:
+👉 **\[Grid Link]** for step-by-step guidance and templates.
+
+**Pro Tip:** Use run conditions for actions like lead enrichment, email waterfalls, or custom workflows to optimize performance and minimize redundant tasks.

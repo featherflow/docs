@@ -47,7 +47,8 @@
       "group": "Tutorials",
         "pages": [
         "playbook/common-formulae",
-        "playbook/prompts_101"
+        "playbook/prompts_101",
+        "playbook/run_conditions"
         ]
     },
     {
@@ -73,8 +74,7 @@
         "playbook/tools-googleweb",
         "playbook/tools-linkscrape",        
         "playbook/find-people",
-        "playbook/list-building-1",
-        "playbook/list-building-2"
+        "playbook/list-building-1"
       ]
     }
   ],
