@@ -65,6 +65,7 @@
         "playbook/export-hubspot",
         "playbook/instantly-integrate",
         "playbook/instantly-export",
+        "playbook/integrations-customAPI",
         "playbook/tools-waterfall-email",
         "playbook/tools-waterfall-phone",
         "playbook/tools-linkscrape",
