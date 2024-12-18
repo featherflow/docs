@@ -67,7 +67,7 @@
         "playbook/instantly-export",
         "playbook/tools-waterfall-email",
         "playbook/tools-waterfall-phone",
-        "playbook/tools-link-scrape",
+        "playbook/tools-linkscrape",
         "playbook/tools-buildwith",
         "playbook/tools-textmodels",
         "playbook/tools-googleweb",
