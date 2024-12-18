@@ -69,7 +69,8 @@
         "playbook/tools-waterfall-phone",
         "playbook/tools-link-scrape",
         "playbook/tools-buildwith",
-        "playbook/tool-textmodels",
+        "playbook/tools-textmodels",
+        "playbook/tools-googleweb",
         "playbook/find-people",
         "playbook/list-building-1",
         "playbook/list-building-2"
