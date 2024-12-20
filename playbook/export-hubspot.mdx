@@ -1,28 +1,67 @@
----
-title: "Integrations - Hubspot - Export"
-description: "Got your data all spruced up? Now it’s time to get it back into HubSpot and make sure everything’s in tip-top shape. This playbook is your guide to importing your enhanced data and checking it out in your CRM."
----
+***
 
-#### Why read when you can watch? Buckle up for the highlights—no books required, just your attention span!
+### **1. Setting Up the Export to HubSpot**
 
-\< insert video here >
+To export data, you need to configure an **Export to HubSpot** action column in your grid.
 
-## Usecase:
+#### **Steps to Add and Configure the Action Column**
 
-This playbook helps you take all that refreshed company data and import it back into HubSpot, making sure your CRM is as accurate and up-to-date as it can be.
+1. Open the grid containing the enriched data.
 
-## Tools Used:
+2. Add an **Action Column** and select **Export to HubSpot**.
 
-**HubSpot** (Where the magic happens)
+3. Configure the following settings:
 
-## Flow of Data:
+   * **Account**: Choose the connected HubSpot account.
 
-***Data Processing*** (Get the data ready, Hopefully on one of our highly capable grids) → ***HubSpot*** (Export the new and improved data)
+   * **Record Type**: Specify whether you’re updating **Companies** or **Contacts**.
 
-## Next Steps:
+   * **Mapping**: Use HubSpot’s unique identifier (e.g., HubSpot ID) to map records between Bitscale and HubSpot.
 
-New playbook or revert back to playbook 1 for now
+4. Save the configuration.
 
-## Link to Grid Implementing This:
+> **Tip**: Ensure the field mappings match exactly to prevent errors during the export process.
 
-Try the Grid Here - See the process in action!
+***
+
+### **2. Running the Export Action Column**
+
+Once the export column is set up:
+
+1. Run the column to export the enriched data.
+
+2. Wait a few seconds for the export to complete.
+
+3. Verify the results in Bitscale, which will display timestamps for the updated records.
+
+***
+
+### **3. Verifying Updates in HubSpot**
+
+After the export is successful:
+
+* Go to your HubSpot account and refresh the relevant records.
+
+* Check that the enriched fields have been updated correctly.
+
+> **Example**: In our walkthrough, the "About Us" field for four dummy companies was successfully enriched and updated in HubSpot with concise descriptions fetched via Bitscale.
+
+***
+
+### **Why Export with Bitscale?**
+
+* **Streamlined Process**: Export enriched data to HubSpot in just a few clicks.
+
+* **Accurate Mapping**: HubSpot IDs ensure data is updated correctly without duplication.
+
+* **Real-Time Results**: Changes are reflected in HubSpot within seconds, along with timestamps for validation.
+
+***
+
+### **Get Started Today**
+
+With the HubSpot integration on Bitscale, you can create enriched, actionable lead profiles and seamlessly update your HubSpot records. Whether you’re importing or exporting, Bitscale simplifies every step of the process.
+
+For additional support, reach out via our community channel.
+
+Happy Enriching!

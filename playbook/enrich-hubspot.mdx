@@ -1,30 +1,57 @@
----
-title: "Integrations - Hubspot - Import"
-description: "This playbook shows you how to pull data from HubSpot, snag extra details from company websites, and merge everything into one awesome, enriched dataset."
----
+***
 
-#### Want to skip the reading and dive right into the fun? Grab your popcorn, hit play, and let’s turn that brain of yours to ‘entertain mode’!:
+### **1. Setting Up the HubSpot Integration**
 
-\< insert video here >
+Before importing leads or contacts, you need to connect your HubSpot account to Bitscale. The process is quick and straightforward:
 
-## Usecase:
+* Go to the **HubSpot Integration Page** in Bitscale.
 
-This guide helps you grab your company data from HubSpot, pull in juicy details from their websites, and combine it all to make your CRM profiles shine.
+* Click on **Add Integration**.
 
-## Tools Used:
+* Sign in to your HubSpot account via the same browser.
 
-**HubSpot** (Where we start)
+> **Tip**: Ensure you’re logged into the correct HubSpot account to avoid linking the wrong data.
 
-**Link Scraping Action Tool** (Your digital detective—like BeautifulSoup, Scrapy, or Octoparse)
+Once the integration is complete, you’re ready to start importing data.
 
-## Flow of Data:
+***
 
-***HubSpot*** (Import the basics) → ***Web Scraping Tool*** (Dig up more info) → ***HubSpot*** (Export the awesomeness)
+### **2. Importing Data into Bitscale**
 
-## Next Step:
+After connecting HubSpot, you can filter and import leads or contacts directly into Bitscale grids.
 
-*Playbook 2: Exporting Data Back to HubSpot - Wrap it all up!*
+#### **Steps to Import Data**
 
-## Link to Grid Implementing This:
+1. Navigate to the **Create Grid** section in Bitscale.
 
-Try the Grid Here - See it in action!
+2. Choose the type of data to import:
+
+   * **Companies**: For organization-specific details.
+
+   * **Contacts**: For individual lead information.
+
+3. Apply specific filters to refine your imports. For example:
+
+   * **Filter**: Companies where the "About Us" field is empty.
+
+4. Preview the results to verify the filter settings.
+
+5. Import the filtered data into a **New Grid** or an **Existing Grid**.
+
+> **Example**: For this walkthrough, four dummy companies with empty "About Us" fields were filtered and imported into a grid for further enrichment.
+
+***
+
+### **Why Import with Bitscale?**
+
+* **Targeted Imports**: Apply detailed filters to pull in only the data you need.
+
+* **Flexible Options**: Import into new or existing grids to match your workflow.
+
+* **Seamless Integration**: HubSpot IDs are automatically mapped for easy enrichment and export later.
+
+***
+
+### **Next Steps**
+
+Now that your leads and contacts are in Bitscale, you can move to the enrichment phase, where powerful tools like Link Scraper can enhance your data. For detailed guidance on enriching and exporting this data back to HubSpot, refer to Part 2.
