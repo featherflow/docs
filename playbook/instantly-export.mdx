@@ -1,25 +1,97 @@
 ---
 title: "Integrations - Instantly - Export"
-description: "You’ve done the hard work—sourcing the leads and setting up the integration—now it’s time to send those leads to Instantly. Let’s export this data and get it ready for action!"
+description: "Once your Instantly integration is live, exporting enriched data from Bitscale becomes effortless. This guide provides a step-by-step walkthrough of how to configure the export process and optimize your workflows."
 ---
+***
 
-## Usecase
+#### **What You’ll Learn**
 
-Here’s where it all comes together. You’ve got a list of leads and your account is connected to Instantly. Now, it’s just a matter of exporting the data over to Instantly so you can start your email campaigns or whatever else you’ve got lined up. This playbook will walk you through how to do it step by step, and before you know it, you’ll be ready to go.
+1. How to configure an **Export to Instantly** action column.
 
-## Tools used:
+2. Best practices for mapping fields between Bitscale and Instantly.
 
-Your Grid: Where the data lives.
-Instantly: Our final destination for the data.
-API Key: Already set up and working like a charm from our previous playbook!
-Flow of Data: Lead data (from your system) → Instantly (via the API Key integration) → Leads appear in Instantly campaigns, ready to be used.
+3. Tips for verifying exported data to ensure accuracy.
 
-The data moves across effortlessly. It’s like sending a digital package from your system directly into Instantly’s hands, with all the details neatly packaged and ready for use.
+***
 
-## Next steps
+#### **1. Preparing Your Data for Export**
 
-You’re all set! There’s no next step for now—this is the final part of the workflow. You can now start using the leads inside Instantly however you see fit, like sending email sequences or organizing campaigns.
+Before exporting, make sure your data is complete and ready for outreach:
 
-Link to a grid implementing this: \[Grid link]
+* **Complete Enrichment**: Fields like “Name,” “Email,” and “Company Description” should be filled with accurate data.
 
-*Pro tip: Double-check that all your lead data is correct before exporting. You wouldn’t want any typos or incorrect details making it into your campaigns!*
+* **Run Quality Checks**: Use Bitscale’s preview feature to validate the dataset before exporting.
+
+***
+
+#### **2. Configuring the Export to Instantly**
+
+##### **Step 1: Open Your Grid**
+
+Navigate to the grid containing the enriched leads or contacts you want to export.
+
+##### **Step 2: Add the Export Action Column**
+
+* Click **Add Action Column** and select **Export to Instantly** from the list of available actions.
+
+##### **Step 3: Configure the Column**
+
+Set up the following details:
+
+* **Account**: Select your connected Instantly account.
+
+* **Record Type**: Choose whether to export **Leads** or **Contacts**.
+
+* **Field Mapping**: Map Bitscale fields to Instantly fields, such as:
+
+  * **Name** → **First Name**
+
+  * **Email** → **Email Address**
+
+  * **Description** → **Company Details**
+
+* **Unique Identifier**: Use the Instantly-specific identifier to ensure no duplicates.
+
+##### **Step 4: Save and Run**
+
+* Save the configuration.
+
+* Run the column to initiate the export process.
+
+***
+
+#### **3. Verifying Exported Data in Instantly**
+
+Once the export is complete:
+
+* Go to your Instantly account.
+
+* Check the imported records under the appropriate section (e.g., Leads or Contacts).
+
+* Verify that all fields have been populated correctly.
+
+> **Example**: Enriched leads with updated descriptions and emails should now appear in Instantly, ready for outreach campaigns.
+
+***
+
+#### **4. Optimizing the Export Process**
+
+* **Test the Setup**: Start with a small batch of leads to ensure field mappings and configurations are correct.
+
+* **Monitor Export Status**: Bitscale provides real-time updates for each row, allowing you to identify and fix any issues quickly.
+
+* **Regular Updates**: Periodically re-export updated records to keep your outreach campaigns fresh.
+
+***
+
+#### **5. Pro Tips for Exporting Data**
+
+* **Use Enriched Fields**: Leverage fields like company descriptions, recent activity, and more to personalize your outreach.
+
+* **Maintain Data Hygiene**: Regularly clean up your Bitscale and Instantly databases to avoid duplicates and outdated records.
+
+* **Leverage Tags**: Use tags or categories in Instantly to segment leads and optimize your campaigns.
+
+***
+
+Start exporting today and unlock the full potential of your Bitscale and Instantly integration. Need help? Reach out to our support team or community channel for guidance. Happy exporting!
