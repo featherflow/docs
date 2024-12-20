@@ -11,9 +11,11 @@ description: "A good prompt isn’t about asking questions—it’s about asking
 
 **Prompt**:
 
-Write an email introducing an AI-powered project management tool, 'TaskFlow,' to small business owners. Highlight its unique features: automated task prioritization, deadline reminders, and integration with Google Workspace and Slack.
+```js
 
-**Structure**:
+Write a 100 word email introducing an AI-powered project management tool, 'TaskFlow,' to small business owners. Highlight its unique features: automated task prioritization, deadline reminders, and integration with Google Workspace and Slack.
+
+Structure:
 
 1. Strong opening tailored to small business needs.
 
@@ -23,15 +25,11 @@ Write an email introducing an AI-powered project management tool, 'TaskFlow,' to
 
 4. Closing with a call-to-action for a free trial.
 
-**Output Format**:
+Output Format:
 
-* **Subject Line**: \[Engaging subject line tailored to small businesses]
+Just Return the mail body with no accompanying texts, salutations, signatures etc.
 
-* **Greeting**: \[Warm and professional opening]
-
-* **Body**: \[Three concise paragraphs covering the key features and benefits]
-
-* **Call-to-Action**: \[Link or instructions to book a demo or start a free trial]
+```
 
 **Why This Works**:
 
@@ -45,9 +43,10 @@ Write an email introducing an AI-powered project management tool, 'TaskFlow,' to
 
 **Prompt**:
 
-Compose a LinkedIn message for marketing managers in mid-sized tech companies, introducing a content strategy service focused on SEO and lead generation.
+```js
+Compose a 30 word LinkedIn message for marketing managers in mid-sized tech companies, introducing a content strategy service focused on SEO and lead generation.
 
-**Structure**:
+Structure:
 
 1. Personalized opening acknowledging their role.
 
@@ -55,13 +54,10 @@ Compose a LinkedIn message for marketing managers in mid-sized tech companies, i
 
 3. Closing with an invitation to connect or schedule a 15-minute chat.
 
-**Output Format**:
+Output Format:
 
-* **Opening**: \[Personalized acknowledgment of the recipient’s role or expertise]
-
-* **Body**: \[Brief explanation of the service benefits and relevance]
-
-* **Closing**: \[Polite call-to-action suggesting a meeting or connection]
+Just Return the message body with no accompanying texts, salutations, signatures etc.
+```
 
 **Why This Works**:
 
@@ -73,11 +69,12 @@ Compose a LinkedIn message for marketing managers in mid-sized tech companies, i
 
 #### Example 3: Follow-Up After No Response
 
-**Prompt**:
+Prompt:
 
+```js
 Write a friendly follow-up email for a PPC advertising company reaching out to B2B SaaS companies.
 
-**Structure**:
+Structure:
 
 1. Polite reminder referencing the initial email.
 
@@ -85,15 +82,10 @@ Write a friendly follow-up email for a PPC advertising company reaching out to B
 
 3. Call-to-action suggesting a brief call with flexible scheduling.
 
-**Output Format**:
+Output Format:
 
-* **Subject Line**: \[Friendly and non-intrusive follow-up subject line]
-
-* **Greeting**: \[Warm and polite]
-
-* **Body**: \[Reminder of initial outreach, benefits summary, and value proposition]
-
-* **Call-to-Action**: \[Link or suggestion to schedule a call]
+Just Return the mail body with no accompanying texts, salutations, signatures etc.
+```
 
 **Why This Works**:
 
@@ -107,61 +99,31 @@ Write a friendly follow-up email for a PPC advertising company reaching out to B
 
 **Prompt**:
 
-Write a LinkedIn message aimed at inviting a marketing director to attend an industry event hosted by our company, a leader in digital marketing analytics. The event is focused on the theme of ‘Data-Driven Marketing Trends in 2024’ and will feature talks from industry experts.
+Write a LinkedIn message aimed at inviting a marketing director to attend an industry event hosted by our company, a leader in digital marketing analytics. Information of the Event is available in Event\_Info
 
-**Structure**:
+Structure:
 
+```js
 1. Personalized opening that references their interest in digital marketing or data analytics.
 
 2. Brief overview of the event’s key focus and benefits of attending.
 
 3. Friendly closing statement inviting them to RSVP, with a contact link for any questions.
 
-**Output Format**:
+Output Format:
 
-* **Opening**: \[Personalized greeting mentioning their expertise or interest]
+Just Return the message body with no accompanying texts, salutations, signatures etc.
 
-* **Body**: \[Two brief paragraphs about the event’s key benefits and highlights]
+Event_Info = @event
+```
 
-* **Closing**: \[RSVP instructions or contact details for further queries]
+> the @ in the above prompt is how we create column instances on Bitscale
 
 **Why This Works**:
 
 * Highlights specific value relevant to the recipient’s professional interests.
 
 * Builds excitement around the event.
-
-***
-
-#### Example 5: Reconnecting with a Previous Client
-
-**Prompt**:
-
-Write a personalized outreach email to re-engage a former client who previously used our HR software but has not been active for six months. Introduce a new feature that offers enhanced employee engagement tracking and predictive analytics for retention rates.
-
-**Structure**:
-
-1. Friendly opening referencing their past engagement with the software.
-
-2. Brief explanation of the new feature and why it’s a game-changer.
-
-3. Simple question inviting them to schedule a short call to discuss this update, with an optional free trial.
-
-**Output Format**:
-
-* **Subject Line**: \[Re-engagement subject line referencing their previous use of the product]
-
-* **Greeting**: \[Warm and familiar opening]
-
-* **Body**: \[Highlight new features and their specific value]
-
-* **Call-to-Action**: \[Encouragement to schedule a call or start a free trial]
-
-**Why This Works**:
-
-* Rekindles the relationship with a friendly, familiar tone.
-
-* Clearly communicates the value of re-engagement.
 
 ***
 
@@ -295,9 +257,4 @@ Set real-world boundaries:
 
 Keep practicing, experimenting, and refining to master the art of prompting—soon, you’ll guide AI to produce exactly what you need, every time. Happy prompting!
 
----
-title: 'Prompts 101'
-description: 'A good prompt isn’t just about asking questions—it’s about asking the right questions in the right way. This playbook will guide you through the nuances of prompt writing, from structure to clarity to creativity. Let’s unlock the secrets to generating accurate, useful, and engaging outputs.'
----
-
-##
+***
