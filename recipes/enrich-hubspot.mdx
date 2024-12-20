@@ -1,7 +1,6 @@
 ---
-title: 'Hubspot Leads Enrichment'
-description: 'You can enrich your Company and People info on hubspot using our native Hubspot integration.
-You can export data, perform enrichments and import it back to Hubspot. Just with a click.'
+title: "Hubspot Leads Enrichment"
+description: "Bitscale's HubSpot integration makes it seamless to import, enrich, and export leads and contacts. With just a few steps, you can bring your data into Bitscale, enrich it using powerful tools, and update your HubSpot records with enriched details. Here’s a walkthrough to get you started."
 ---
 
 ## Grid walkthrough
@@ -10,30 +9,128 @@ You can export data, perform enrichments and import it back to Hubspot. Just wit
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/pDqH_YMyJEY?si=csE1JF7JrBGX5OYh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-## Use Cases:
+***
 
-1. Upgrade your CRM company (or people) profiles with latest enrichments (revenue, funding, product reviews)
+### **What This Guide Covers**
 
-2. Get up-to-date info directly crawling their company websites
+1. **Setting Up the HubSpot Integration**: A step-by-step process for connecting HubSpot to Bitscale.
 
-3. Boost your marketing and sales with richer, more detailed prospecting info
+2. **Importing Leads and Contacts**: Filtering and importing data from HubSpot into Bitscale.
 
-## Components of this Recipe:
+3. **Enriching Leads**: Adding enriched information to your HubSpot data using Bitscale tools.
 
-### 1. Import, Scrape, and Enrich Data
+4. **Exporting Enriched Data Back to HubSpot**: Updating HubSpot records with enriched details.
 
-1. Start Fresh: Pull your company data out of HubSpot.
+***
 
-2. Scrape & Scoop: Use a web scraping tool to grab extra details from company websites.
+### **1. Adding the HubSpot Integration**
 
-3. Mix It Up: Combine your HubSpot data with the new info and create or update company descriptions.
+Connecting your HubSpot account to Bitscale is simple:
 
-[Get the full scoop in the Playbook](bitscale.ai)
+* Navigate to the **HubSpot Integration Page** in Bitscale.
 
-### 2. Exporting Data Back to HubSpot
+* Click **Add Integration** and sign in to HubSpot via the same browser.
 
-1. Get it Back: Import your enriched data into HubSpot.
+* Your HubSpot account will be automatically integrated into Bitscale.
 
-2. Check & Confirm: Make sure everything looks good and accurate.
+> **Tip**: Ensure you’re signed into the correct HubSpot account before proceeding to avoid configuration issues.
+
+***
+
+### **2. Importing Leads and Contacts**
+
+Once the integration is set up, you can filter and import leads or contacts into Bitscale:
+
+#### **Steps to Import Data**
+
+1. Go to the **Create Grid** section in Bitscale.
+
+2. Choose between:
+
+   * **Import Companies**
+
+   * **Import Contacts**
+
+3. Apply specific filters to target the data you need. For example:
+
+   * Filter companies where the "About Us" field is empty.
+
+4. Preview the results to confirm the filter works as expected.
+
+> **Example**: For this walkthrough, we imported four dummy companies with empty "About Us" fields. After previewing, these companies were imported into a new grid in Bitscale.
+
+***
+
+### **3. Enriching Your Data**
+
+Bitscale’s tools allow you to enhance your HubSpot records by enriching them with additional information.
+
+#### **Steps to Enrich Leads**
+
+1. Add enrichment tools to your grid as **Action Columns**. For example:
+
+   * **Link Scraper Tool**: Fetches a short company description from their website (under 100 words).
+
+2. Run the enrichment action column to populate the additional fields.
+
+> **Example**: The Link Scraper tool provided concise company descriptions for all imported companies. For instance:
+
+* **HubSpot**: A CRM platform that connects businesses with customers efficiently.
+
+***
+
+### **4. Exporting Enriched Data Back to HubSpot**
+
+Once your leads are enriched, you can export them back to HubSpot to update your records.
+
+#### **Steps to Export Data**
+
+1. Add an **Export to HubSpot** action column to your grid.
+
+2. Configure the following settings:
+
+   * **Account**: Select your connected HubSpot account.
+
+   * **Record Type**: Specify whether you’re updating **Companies** or **Contacts**.
+
+   * **Mapping**: Use the unique HubSpot identifier (e.g., HubSpot ID) to ensure accurate mapping between Bitscale and HubSpot.
+
+3. Save the configuration and run the action column.
+
+> **Result**: The enriched data, such as updated "About Us" fields, will sync to your HubSpot account within seconds.
+
+***
+
+### **Real-Time Results**
+
+Once the export is complete:
+
+* Check your HubSpot account to verify updates.
+
+* Refresh the page to see enriched fields populated with the new data.
+
+For example:
+
+* **Before**: "About Us" fields were empty.
+
+* **After**: Updated fields with descriptions pulled directly via Bitscale.
+
+***
+
+### **Why Use Bitscale’s HubSpot Integration?**
+
+1. **Seamless Workflow**: Move data between Bitscale and HubSpot effortlessly.
+
+2. **Advanced Enrichment**: Add meaningful, real-time insights to your leads.
+
+3. **Customizable Filters**: Target and enrich specific segments of your data.
+
+4. **Time-Saving Automation**: Automate updates to HubSpot without manual intervention.
+
+***
+
+### **Get Started Today**
+
+The HubSpot integration on Bitscale empowers you to create enriched, actionable lead profiles with minimal effort. Try it out and let us know your feedback via our community channel.
 
 [Find out how in the Playbook](bitscale.ai)
