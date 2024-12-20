@@ -72,6 +72,7 @@
         "playbook/tools-buildwith",
         "playbook/tools-textmodels",
         "playbook/tools-googleweb",
+        "playbook/tools-perplexity",
         "playbook/tools-linkscrape",        
         "playbook/find-people",
         "playbook/list-building-1"
