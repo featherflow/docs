@@ -62,20 +62,20 @@
     {
       "group": "Ingredients",
       "pages": [
-        "playbook/enrich-hubspot",
-        "playbook/export-hubspot",
-        "playbook/instantly-integrate",
-        "playbook/instantly-export",
-        "playbook/integrations-customAPI",
-        "playbook/tools-waterfall-email",
-        "playbook/tools-waterfall-phone",
-        "playbook/tools-buildwith",
-        "playbook/tools-textmodels",
-        "playbook/tools-googleweb",
-        "playbook/tools-perplexity",
-        "playbook/tools-linkscrape",        
-        "playbook/find-people",
-        "playbook/list-building-1"
+        "ingredients/enrich-hubspot",
+        "ingredients/export-hubspot",
+        "ingredients/instantly-integrate",
+        "ingredients/instantly-export",
+        "ingredients/integrations-customAPI",
+        "ingredients/tools-waterfall-email",
+        "ingredients/tools-waterfall-phone",
+        "ingredients/tools-buildwith",
+        "ingredients/tools-textmodels",
+        "ingredients/tools-googleweb",
+        "ingredients/tools-perplexity",
+        "ingredients/tools-linkscrape",        
+        "ingredients/find-people",
+        "ingredients/list-building-1"
       ]
     }
   ],
