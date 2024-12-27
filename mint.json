@@ -54,9 +54,9 @@
     {
       "group": "Playbook",
         "pages": [
-            "recipes/list-building",
-            "recipes/instantly-magic",
-            "recipes/enrich-hubspot"
+            "playbook/list-building",
+            "playbook/instantly-magic",
+            "playbook/enrich-hubspot"
         ]
     },
     {
