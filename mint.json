@@ -67,6 +67,7 @@
         "ingredients/instantly-integrate",
         "ingredients/instantly-export",
         "ingredients/integrations-customAPI",
+        "ingredients/integrations-webhook-export",
         "ingredients/tools-waterfall-email",
         "ingredients/tools-waterfall-phone",
         "ingredients/tools-buildwith",
