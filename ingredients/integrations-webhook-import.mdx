@@ -1,0 +1,118 @@
+---
+title: "Integrations - Webhook - Import"
+description: "Webhook-based data import is one of Bitscale’s newest capabilities, allowing you to pull data from any external source directly into your grids. Whether you want to receive alerts, transfer data, or set up custom workflows, webhooks offer a powerful, real-time solution. This guide walks you through setting up a webhook-based grid and testing the integration using tools like Postman."
+---
+
+### **What This Guide Covers**
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/oJ5DjQmiw-M?si=hLbmpR0lIGEJEgCj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
+1. **Setting Up a Webhook-Based Grid**: How to create a grid and configure the webhook.
+
+2. **Testing the Webhook**: Using Postman and an external service (Factors) to verify the integration.
+
+3. **Potential Use Cases**: Examples of how you can use webhooks for alerts, data collection, and inter-grid communication.
+
+***
+
+### **1. Setting Up a Webhook-Based Grid**
+
+Webhook grids enable you to receive data from external sources in real time. Here’s how to create one:
+
+#### **Steps to Configure a Webhook Grid**
+
+1. **Create a New Grid**:
+
+   * Go to **New Grid** and select **Import Data from Webhook**.
+
+2. **Copy the Webhook URL**:
+
+<img height="100" src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1736254582/Screenshot_2025-01-07_at_6.24.53_PM_ohu7lx.png" />
+
+   * Once the grid is created, Bitscale provides a unique webhook URL and a cURL command.
+
+   * These are used to send data into the grid.
+
+3. **Save the Configuration**:
+
+   * The grid is now ready to receive data from any external source that supports webhooks.
+
+***
+
+### **2. Testing the Webhook**
+
+To ensure the webhook is working correctly, you can test it using Postman or any similar tool.
+
+#### **Example 1: Using Postman**
+
+1. **Copy the cURL Command**:
+
+   * From the webhook setup screen, copy the cURL command provided by Bitscale.
+
+2. **Set Up Postman**:
+
+   * Create a new request or import the cURL command into Postman.
+
+   * In the **Body** section, send a test payload (e.g., your email address).
+
+3. **Send the Request**:
+
+   * Execute the request and check the response.
+
+   * If successful, you should see a status indicating the data was received.
+
+4. **Verify in Bitscale**:
+
+   * Go back to your grid and reload it. You should see the test data reflected in the grid.
+
+> **Pro Tip**: If you encounter issues, double-check the webhook URL and ensure the payload format matches what Bitscale expects.
+
+***
+
+#### **Example 2: Using an External Service (Factors)**
+
+Let’s walk through another example using **Factors**, an external service that supports webhooks.
+
+1. **Copy the Webhook URL**:
+
+   * From the Bitscale grid, copy the webhook URL.
+
+2. **Set Up Factors**:
+
+   * Go to your Factors account and paste the webhook URL in the relevant configuration field.
+
+3. **Send a Test Message**:
+
+   * Send a test message from Factors.
+
+4. **Verify in Bitscale**:
+
+<img height="100" src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1736254582/Screenshot_2025-01-07_at_6.25.12_PM_gibwze.png" />
+
+   * Reload your grid, and you should see the alert or data from Factors.
+
+***
+
+### **3. Potential Use Cases**
+
+Webhook grids are highly versatile and can be used in various scenarios:
+
+1. **Receiving Alerts**: Set up alerts from external platforms or services and collect them in a Bitscale grid.
+
+2. **Data Collection**: Pull in real-time data from APIs, third-party services, or custom apps.
+
+3. **Inter-Grid Communication**: Use webhooks to transfer data between different grids in Bitscale for advanced workflows.
+
+4. **Custom Notifications**: Trigger notifications based on specific events or conditions from external sources.
+
+***
+
+### **4. Next Steps**
+
+Now that you’ve set up and tested your webhook grid, it’s time to explore more complex use cases. Try out different data sources, experiment with payload formats, and see how webhook integrations can enhance your workflows.
+
+> **Need Help?** Reach out to us on our community channel if you have any questions or need guidance while setting up your webhook integrations.
+
+***
+
+Start building your webhook-based workflows today, and unlock new possibilities for automation and real-time data handling.
