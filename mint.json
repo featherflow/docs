@@ -70,6 +70,7 @@
         "ingredients/integrations-webhook-export",
         "ingredients/integrations-webhook-import",
         "ingredients/tools-waterfall-email",
+        "ingredients/tools-waterfall-email-personal",
         "ingredients/tools-waterfall-phone",
         "ingredients/tools-buildwith",
         "ingredients/tools-textmodels",
