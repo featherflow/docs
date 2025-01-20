@@ -56,7 +56,8 @@
         "pages": [
             "playbook/list-building",
             "playbook/instantly-magic",
-            "playbook/enrich-hubspot"
+            "playbook/enrich-hubspot",
+            "playbook/apify-find-jobs"
         ]
     },
     {
