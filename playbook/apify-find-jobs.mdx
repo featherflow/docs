@@ -1,0 +1,152 @@
+---
+title: 'Find Linkedin Jobs Using Apify'
+description: 'With the Apify Integration on Bitscale, you can automate the process of retrieving job listings from LinkedIn based on specific roles, locations, and other parameters. This guide walks you through setting up the integration, running the LinkedIn Job Scraper actor, and structuring the imported data for actionable insights.'
+---
+
+### **Use Case: Finding Companies Hiring for Specific Roles**
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/3nGUaRpavGk?si=hlYBfiCeoyBrZjN8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+The LinkedIn Job Scraper allows you to:
+
+* Identify companies actively hiring for roles like Business Development Representative (BDR).
+
+* Retrieve details such as job descriptions, application counts, company URLs, and more.
+
+* Build a structured database for targeted outreach or market analysis.
+
+***
+
+### **1. Setting Up the Apify Integration**
+
+Before starting, connect Bitscale to your Apify account:
+
+1. **Add Apify Integration in Bitscale**:
+
+   * Navigate to the **Integrations** tab in Bitscale.
+
+   * Select **Add Integration** and choose **Apify**.
+
+2. **Generate Your API Key**:
+
+   * Log into your Apify account.
+
+   * Go to **API** > **Manage Tokens** and copy your API key.
+
+3. **Save the Integration**:
+
+   * Paste the API key into Bitscale and save the connection.
+
+***
+
+### **2. Creating and Configuring the LinkedIn Job Scraper Task**
+
+To customize the scraper for your specific needs:
+
+1. **Select the LinkedIn Job Scraper**:
+
+   * Go to your **Actors** in Apify and choose the LinkedIn Job Scraper.
+
+2. **Set Task Parameters**:
+
+   * Create a new task and configure it with the following parameters:
+
+     * **Job Title**: Specify the role (e.g., "BDR").
+
+     * **Location**: Define the target geography (e.g., "India").
+
+     * **Company Name**: (Optional) Filter results by specific companies.
+
+3. **Save and Test**:
+
+   * Save the task to reuse it within Bitscale.
+
+   * Test the task on Apify to ensure it works as expected.
+
+> **Tip**: Once the task is saved, you can modify its parameters directly in Bitscale, eliminating the need to return to Apify.
+
+***
+
+### **3. Importing Job Listings into Bitscale**
+
+With your task configured, you can now import data into Bitscale:
+
+1. **Create a New Grid**:
+
+   * Go to **Grids** in Bitscale and click **New Grid**.
+
+   * Select **Import Data from Apify** as the source.
+
+2. **Choose the Actor and Task**:
+
+   * Select the Apify account, the LinkedIn Job Scraper actor, and the configured task (e.g., "BDR India").
+
+3. **Run the Import**:
+
+   * Bitscale will execute the task, retrieve the job listings, and populate the grid.
+
+***
+
+### **4. Structuring and Using the Imported Data**
+
+After importing the data, you can structure it for better usability:
+
+1. **Review the JSON Layout**:
+
+   * Examine the imported data to identify relevant fields like:
+
+     * **Job Title**
+
+     * **Company Name**
+
+     * **Company URL**
+
+     * **Job Description**
+
+     * **Location**
+
+     * **Application Count**
+
+2. **Add Columns**:
+
+   * Select the fields you need and add them as columns in your grid.
+
+3. **Analyze and Filter**:
+
+   * Use Bitscale’s grid functionalities to filter roles, sort by application count, or segment by location.
+
+4. **Build a Database**:
+
+   * Create a complete database of companies hiring for the specified role, along with job details and application insights.
+
+***
+
+### **Example Outcome**
+
+By following these steps, you’ll have a structured grid that provides insights like:
+
+* Companies hiring for BDR roles in India.
+
+* Job descriptions and required qualifications.
+
+* Application counts and contract types (e.g., full-time, part-time).
+
+* Company URLs for direct follow-up or outreach.
+
+***
+
+### **Why Use Bitscale for LinkedIn Job Data?**
+
+* **Automated Data Retrieval**: Save time by pulling job listings directly into Bitscale.
+
+* **Customizable Parameters**: Tailor the task to specific roles, locations, or industries.
+
+* **Actionable Insights**: Turn raw data into structured grids for analysis and outreach.
+
+***
+
+### **Next Steps**
+
+Set up your LinkedIn Job Scraper task today and let Bitscale handle the heavy lifting. Build your hiring insights database, and use it for targeted outreach or market research.
+
+Need help? Reach out to our community or support team. Happy prospecting! 🚀
