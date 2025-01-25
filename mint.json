@@ -59,10 +59,6 @@
     {
       "group": "Ingredients",
       "pages": [
-        "ingredients/enrich-hubspot",
-        "ingredients/export-hubspot",
-        "ingredients/instantly-integrate",
-        "ingredients/instantly-export",
         "ingredients/integrations-customAPI",
         "ingredients/integrations-webhook-export",
         "ingredients/integrations-webhook-import",
