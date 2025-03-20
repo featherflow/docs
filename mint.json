@@ -54,6 +54,7 @@
             "playbook/company-firmography",
             "playbook/instantly-magic",
             "playbook/enrich-hubspot",
+            "playbook/inbound-outbound",
             "playbook/apify-find-jobs"
         ]
     },
