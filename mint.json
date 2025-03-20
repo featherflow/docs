@@ -51,6 +51,7 @@
       "group": "Playbook",
         "pages": [
             "playbook/list-building",
+            "playbook/company-firmography",
             "playbook/instantly-magic",
             "playbook/enrich-hubspot",
             "playbook/apify-find-jobs"
