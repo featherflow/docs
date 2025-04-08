@@ -44,7 +44,8 @@
         "pages": [
         "ingredients/common-formulae",
         "ingredients/prompts_101",
-        "ingredients/run_conditions"
+        "ingredients/run_conditions",
+        "ingredients/rate_limits"
         ]
     },
     {
