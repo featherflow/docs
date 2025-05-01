@@ -77,7 +77,7 @@
         "ingredients/tools-textmodels",
         "ingredients/tools-googleweb",
         "ingredients/tools-perplexity",
-        "ingredients/tools-linkscrape",
+        "ingredients/tools-bitagent",
         "ingredients/tools-vlookup",
         "ingredients/find-people",
         "ingredients/list-building-1",
