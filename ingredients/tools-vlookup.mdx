@@ -1,0 +1,37 @@
+---
+title: "Vlookup on Bitscale"
+description: "In this walkthrough, we explored how to match data across two different grids, such as importing a list of leads and matching it with an internal employee directory to fetch enriched information like titles, company URLs, and LinkedIn profiles."
+---
+
+### **How It Works:**
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/Wo62UMxflDM?si=Uq3IqzG3iQUk7ULP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Bitscale’s VLOOKUP is available in the **Data Toolkit** section under **Enrichments**. Here's what you can do with it:
+
+1. **Select Your Matching Column**\
+   Start with the source column in your current grid (e.g., `LinkedIn URL`).
+2. **Choose the Target Grid**\
+   This could be another imported CSV, an internal grid, or any dataset already present in your workbook.
+3. **Define Match Logic**\
+   Choose between:
+   - **Exact**: Case-sensitive, character-by-character match.
+   - **Contains**: More flexible; works even if there are extra characters or case differences.
+4. **Pick Fields to Fetch**\
+   Once the match is successful, choose what values to pull from the target grid—e.g., name, title, company URL, LinkedIn profile.
+5. **Run for Selected Rows**\
+   Test it on a few rows first (e.g., top 10) to validate the matches. You’ll see the matched results in JSON view, showing only the selected fields.
+
+---
+
+### **Why It’s Powerful**
+
+- No need to manually align or clean up sheets—lookup operations run inside Bitscale with your live data.
+- Perfect for combining lead lists with enriched firmographic or contact data.
+- Works seamlessly across large grids and can be reused as a template for similar operations.
+
+---
+
+If you're managing lists from multiple sources, Bitscale’s VLOOKUP lets you unify them in seconds—without writing a single line of code.
+
+Try it out, and reach out to our community if you get stuck\!

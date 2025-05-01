@@ -1,0 +1,69 @@
+---
+title: "Validation Inside Waterfalls"
+description: "Bitscale's contact enrichment waterfalls—whether for email or phone—are designed to give you broad coverage using multiple providers. However, a key feature that can significantly impact both data quality and credit usage is validation inside the waterfall. This guide explains how that works, and when you should or shouldn't enable it."
+---
+
+### How the Waterfall Logic Works:
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/1ExF-HmttXA?si=Z-NLqCuBl0pTjEGf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Each waterfall is a ranked list of enrichment providers. When run, the process works as follows:
+
+1. Bitscale queries the first provider in the list.
+2. If that provider returns a contact (email or phone number), the result is returned and you're charged for that provider.
+3. If the provider does not return a result, the waterfall moves to the next one in the sequence.
+4. The process continues until a valid contact is found—or the waterfall ends.
+
+This approach ensures you only pay for the provider that successfully returns usable contact information.
+
+---
+
+### What Changes When You Enable "Only Mark Safe to Send Emails as Valid"
+
+When this setting is enabled inside the waterfall:
+
+- Any email returned by a provider is first validated using a third-party service.
+- This validation checks for deliverability indicators like validity, catch-all domains, disposable emails, and other quality markers.
+- If the result is invalid or low-quality, that contact is **rejected**, and the waterfall continues to the next provider.
+- You are only charged for results that pass validation and are considered safe to use.
+
+This ensures your outbound efforts rely on high-quality, deliverable contacts—at the expense of potentially more API calls and credits.
+
+---
+
+### Choosing Where to Place Validation: Inside vs Outside the Waterfall
+
+How and where you apply validation depends on your workflow and intent.
+
+#### When to Keep Validation Outside the Waterfall
+
+If you are in the early stages of list building—perhaps testing segments, exploring new ICPs, or using large lead pools—it is more efficient to:
+
+- First collect all available emails (even unvalidated),
+- Then run a bulk validation pass outside the waterfall,
+- And only act on the subset of valid emails.
+
+This approach is cost-efficient and gives you greater control over how credits are used.
+
+#### When to Enable Validation Inside the Waterfall
+
+If you are working with **highly targeted lists**, where every lead is valuable (e.g., from an ABM campaign, warm inbound submissions, or intent-based lists), you want maximum precision. In these cases, it is better to:
+
+- Validate each result as it is returned from a provider,
+- Move to the next provider only if validation fails,
+- Ensure that you only get high-quality, ready-to-reach data.
+
+This workflow reduces the chance of bad emails making it into your CRM or outreach tool, even if it uses more credits per record.
+
+---
+
+### Final Recommendations
+
+1. **Know your use case.** If you’re casting a wide net, validate later. If you’re sending high-stakes campaigns to decision-makers, validate upfront.
+2. **Shorten your waterfall** when validation is enabled inside. This avoids looping through multiple outdated databases and burning unnecessary credits.
+3. **Talk to us.** If you’re unsure which providers are best for your niche or use case, we can recommend a configuration based on performance data.
+4. **Understand where your credits are going.** When validation is enabled inside the waterfall, you may be charged by multiple providers if each returns invalid results, which are then rejected.
+
+---
+
+Bitscale’s enrichment stack gives you flexibility to match your outreach strategy, but getting the most out of it depends on smart configuration. Use validation settings intentionally, and don’t hesitate to reach out if you need help setting up the right waterfall for your workflow.

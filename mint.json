@@ -49,6 +49,7 @@
         "ingredients/common-formulae",
         "ingredients/prompts_101",
         "ingredients/run_conditions",
+        "ingredients/tutorial-contact-validation",
         "ingredients/rate_limits"
         ]
     },
@@ -76,7 +77,8 @@
         "ingredients/tools-textmodels",
         "ingredients/tools-googleweb",
         "ingredients/tools-perplexity",
-        "ingredients/tools-linkscrape",        
+        "ingredients/tools-linkscrape",
+        "ingredients/tools-vlookup",
         "ingredients/find-people",
         "ingredients/list-building-1",
         "ingredients/account-profiling-with-just-name"
