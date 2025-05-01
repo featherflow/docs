@@ -1,91 +1,61 @@
 ---
-title: "Research - Link Scraper"
-description: "Discover how Bitscale’s Link Scraper tool extracts relevant data from websites, analyzes metadata, and powers intelligent lead qualification workflows."
+title: "Research - BitAgent"
+description: "Bit Agent lets you scan company websites intelligently using just a natural language prompt. Whether you're trying to understand a company's product, find industry details, or uncover technical integrations, Bit Agent automates the process—no custom code, no manual research."
 ---
 
-<iframe width="728" height="410" src="https://www.youtube-nocookie.com/embed/a0NIo6m6QB8?si=EZXL8Rb5xsbtaT3H" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+<iframe width="728" height="410" src="https://www.youtube.com/embed/7hpZJFdaAXg?si=Ps8qAtYnzEnVAgYV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## **Overview**
+---
 
-Bitscale’s **Link Scraper** is a powerful tool that enables you to extract targeted information from websites and analyze metadata for deeper insights. This video showcases two key capabilities:
+## What You Can Do with Bit Agent
 
-1. Scraping and analyzing **website text** to identify relevant details.
+**1. Ask Any Question, Get Structured Output**\
+Bit Agent navigates a company’s website—including multiple internal pages—and extracts answers based on your prompt. For example, you can ask:
 
-2. Accessing and interpreting **website metadata** to extract additional insights, such as third-party tools or chatbot services being used.
+- “What industry is this company in?”
+- “Describe its core product in one sentence.”
+- “What pricing plans are listed?”
+- “Is there any mention of SOC2 or GDPR compliance?”
 
-<img height="100" src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1735312533/Screenshot_2024-12-27_at_8.39.33_PM_rd9ct0.png" />
+Just map the input column (typically the website), define the prompt, and specify the output format—Bit Agent will return a clean JSON with your answers.
 
-***
+<img
+  height="100"
+  src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1735312533/Screenshot_2024-12-27_at_8.39.33_PM_rd9ct0.png"
+/>
 
-## **Demonstration Use Case**
+**2. Control What You Fetch**\
+From the tweak section, you can:
 
-To illustrate the tool’s functionality, we set up a workflow for a **B2B support chatbot company** focused on two goals:
+- Choose the LLM (GPT-4.1, Claude, or Bitscale Mini for faster runs).
+- Select specific fields like `industry`, `description`, `product_features`, etc.
+- Set up a reusable action by saving it as a template.
 
-1. **Classify prospects** as B2B or B2C companies.
+**3. Scrape Metadata for Tech Stack or Embeds**\
+Need to know what chatbot, analytics tool, or payment processor a site is using? Bit Agent supports `metadata=true` in your prompt to fetch insights from the raw HTML and page metadata.
 
-2. Identify whether a prospect has a **chatbot on their website** and, if so, extract the name of the chatbot service.
+**4. Works at Any Scale**\
+Whether you're researching 2 companies or 2,000, Bit Agent runs reliably across your entire grid. Set your prompt once and run it across rows, with results appended as new columns for easier filtering and follow-ups.
 
-***
+---
 
-## **Step-by-Step Breakdown**
+### Example Use Case in Action
 
-### **1. Scraping Website Text for Classification**
+Let’s say you want to learn what a company does and the industry it operates in:
 
-Using Link Scraper, we:
+1. Add a new Bit Agent column to your grid.
+2. Use a prompt like:\
+   `"Visit the landing page. Determine the company’s product and industry. Output industry and description as text."`
+3. Choose your preferred model.
+4. Run across rows.
+5. Map the returned values into new columns like `industry` and `description`.
 
-* Provided the **URL column** for a list of five prospects.
+You’ll now have structured company-level insights you can use for segmentation, prospecting, or analysis.
 
-* Wrote a prompt to classify each prospect into one of four categories based on their website content (e.g., B2B or B2C).
+---
 
-**Result:** The first column returned the classification for each prospect (e.g., “B2C” for one and “B2B” for others).
+### Why Bit Agent Matters
 
-***
+This isn’t just a scraper—it’s an AI-powered researcher embedded into your grid. With Bit Agent, you’re not just pulling raw data—you’re generating structured insights with every row. It's flexible, accurate, and ready to plug into any outreach or enrichment flow.
 
-### **2. Analyzing Metadata for Chatbot Identification**
-
-Next, we leveraged Link Scraper’s ability to parse website metadata to:
-
-* Check if a chatbot service is present.
-
-* Extract the name of the chatbot service (if available).
-
-We achieved this by:
-
-* Adding a specific instruction in the prompt to analyze metadata for chatbot-related information.
-
-* Setting a **fallback value** to handle cases where no chatbot data was found (e.g., displaying “None” for such rows).
-
-**Result:** The second column returned the chatbot name for applicable prospects (e.g., “Lime Chat”) or “None” where no chatbot was detected.
-
-***
-
-## **Running the Workflow**
-
-After setting up the prompts, we ran the tool across all rows simultaneously. The results:
-
-* Prospects classified as B2B or B2C in the first column.
-
-* Chatbot details extracted in the second column, or “None” where no chatbot was detected.
-
-For this use case, good leads for selling a B2B support chatbot were those prospects classified as **B2B** with no existing chatbot or where we could offer a better solution than their current provider.
-
-***
-
-## **Key Features Demonstrated**
-
-1. **Text-Based Scraping:** Extract relevant content directly from website text to classify prospects or gather other insights.
-
-2. **Metadata Analysis:** Analyze website metadata to identify third-party services, such as chatbot providers or trackers.
-
-3. **Customizable Prompts:** Use tailored prompts to direct Link Scraper’s focus for specific data needs.
-
-4. **Efficient Workflow:** Process multiple rows simultaneously, saving time and effort.
-
-***
-
-## **Try It Out**
-
-Start enhancing your lead qualification with Link Scraper today:
-👉 [Grid Link](https://app.bitscale.ai/grids/share?id=d1647be7-e96f-4552-9047-0f1c01a27dc9&rowId=0) to explore templates and workflows.
-
-**Pro Tip:** Use fallback values in your prompts to ensure clean and complete data output, even when specific information is missing.
+If you're unsure how to write your prompt or choose the right model, just reach out to our team on the Bitscale community—we’ll help you get started fast.
