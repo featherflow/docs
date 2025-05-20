@@ -70,6 +70,7 @@
         "ingredients/integrations-customAPI",
         "ingredients/integrations-webhook-export",
         "ingredients/integrations-webhook-import",
+        "ingredients/integrations-outplay",
         "ingredients/tools-waterfall-email",
         "ingredients/tools-waterfall-email-personal",
         "ingredients/tools-waterfall-phone",
