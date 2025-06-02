@@ -50,6 +50,7 @@
         "ingredients/prompts_101",
         "ingredients/run_conditions",
         "ingredients/tutorial-contact-validation",
+        "ingredients/tools-vlookup",
         "ingredients/rate_limits"
         ]
     },
@@ -71,6 +72,7 @@
         "ingredients/integrations-webhook-export",
         "ingredients/integrations-webhook-import",
         "ingredients/integrations-outplay",
+        "ingredients/integrations-heyreach",
         "ingredients/tools-waterfall-email",
         "ingredients/tools-waterfall-email-personal",
         "ingredients/tools-waterfall-phone",
@@ -79,7 +81,6 @@
         "ingredients/tools-googleweb",
         "ingredients/tools-perplexity",
         "ingredients/tools-bitagent",
-        "ingredients/tools-vlookup",
         "ingredients/find-people",
         "ingredients/list-building-1",
         "ingredients/account-profiling-with-just-name"
