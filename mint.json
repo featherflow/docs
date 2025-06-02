@@ -52,6 +52,7 @@
         "ingredients/tutorial-contact-validation",
         "ingredients/tools-vlookup",
         "ingredients/workbooks",
+        "ingredient/source-scheduling",
         "ingredients/rate_limits"
         ]
     },
