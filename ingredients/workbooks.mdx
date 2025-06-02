@@ -1,0 +1,47 @@
+---
+title: "Workbooks on Bitscale"
+description: "A workbook in Bitscale is a collection of two or more interconnected grids—just like how you manage multiple tabs (sheets) in Google Sheets. It's designed to help you manage linked datasets in a more organized and modular fashion."
+---
+<iframe width="728" height="430" src="https://www.youtube.com/embed/SwWuH8FL_ik?si=vq95IKRzIyQLIWtR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+---
+
+### 📘 When Are Workbooks Created?
+
+Workbooks are automatically created when you use tools like **“Write to Grid”**, which push data from one grid to another. Instead of having disconnected grids floating separately, Bitscale groups them under one workbook to give you a unified view of related data.
+
+---
+
+### 🔄 Use Case: Writing Contact Arrays to a New Grid
+
+Let’s say you’ve enriched a list of companies to find executive profiles using “Find Contacts from Company.” The result for each row is an array of multiple profiles.
+
+Rather than trying to manage those arrays in a single cell, you can:
+
+1. Use the **Write to Grid** tool.
+2. Choose to create a **new grid**.
+3. Select the relevant columns (e.g., name, role, company).
+4. Run the action — Bitscale will write each contact as a **separate row** in the new grid.
+
+This makes it much easier to run individual enrichments (like email, phone, LinkedIn, etc.) on each profile.
+
+---
+
+### 🔗 What Happens Behind the Scenes?
+
+- When you create a new grid via **Write to Grid**, Bitscale automatically links the two grids.
+- These linked grids now live inside a **single workbook**.
+- Any time you open either grid, you’ll see the other, and you can easily navigate between them.
+
+This improves data traceability and reduces clutter—especially when you're working across multiple enrichment stages.
+
+---
+
+### Why Use Workbooks?
+
+- Keep **related datasets together** (e.g., companies and their contacts).
+- Simplify large-scale enrichment workflows.
+- Improve **visibility and manageability** when chaining multiple tools together.
+
+---
+
+Need help setting up your workflow? Ping us anytime on the Bitscale Slack community—we’re always happy to help.
