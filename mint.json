@@ -53,6 +53,7 @@
         "ingredients/tools-vlookup",
         "ingredients/workbooks",
         "ingredients/source-scheduling",
+        "ingredients/tutorial-grid-nav",
         "ingredients/rate_limits"
         ]
     },
