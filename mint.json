@@ -65,6 +65,7 @@
             "playbook/instantly-magic",
             "playbook/enrich-hubspot",
             "playbook/inbound-outbound",
+            "playbook/salesforce-2-way",
             "playbook/apify-find-jobs"
         ]
     },
