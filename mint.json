@@ -87,6 +87,7 @@
         "ingredients/tools-bitagent",
         "ingredients/source-google-search",
         "ingredients/find-people",
+        "ingredients/find-people-from-company",
         "ingredients/list-building-1",
         "ingredients/account-profiling-with-just-name"
       ]
