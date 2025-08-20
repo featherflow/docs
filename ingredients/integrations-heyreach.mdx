@@ -1,47 +1,101 @@
 ---
 title: "Integrations - HeyReach"
-description: "With our native integration, Bitscale now seamlessly connects with HeyReach, enabling you to enrich, personalize, and push leads into LinkedIn campaigns—all in one automated workflow."
+description: "With our native integration, Bitscale now seamlessly connects with HeyReach, enabling you to enrich, personalize, and push leads into LinkedIn campaigns, all in one automated workflow. This documentation would help you set that up end to end."
 ---
 
-<iframe width="728" height="430" src="https://www.youtube.com/embed/DdJfSpKMjzQ?si=nl7xGfu8CijDFind" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="728" height="430" src="https://www.youtube.com/embed/0BpssUOiVnE?si=qTadD1OidJWiLcUH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-🔧 Setting Up the HeyReach Integration
+### Overview
 
-To get started:
+LinkedIn remains one of the highest-performing outbound channels, but it is also one of the hardest to scale due to strict platform limits and account crackdowns. Bitscale integrates seamlessly with **Heyreach**, enabling you to set up personalized, structured LinkedIn outreach campaigns while keeping scale and safety in mind.
 
-1. Head to **Integrations** on Bitscale.
-2. Click **Add Integration → HeyReach**.
-3. Copy your **API Key** from your HeyReach account and paste it into Bitscale.
-4. (Optional) Set your preferred rate limits for HeyReach’s API usage.
-
-Once connected, the integration will appear in your list and is ready to use in any grid.
+This guide walks you through setting up the Bitscale, Heyreach integration, preparing your campaigns, and mapping personalization variables from your Bitscale grid into Heyreach.
 
 ---
 
-### 📥 Enrich, Personalize, and Export to HeyReach
+### **Preparing Your Grid in Bitscale**
 
-In your grid:
+A typical outbound grid includes:
 
-- Add the required columns: `First Name`, `Last Name`, and `LinkedIn URL`.
-- Use Bitscale’s **Recent LinkedIn Posts** enrichment to fetch the latest content the lead has shared.
-- Apply **AI personalization** to craft an `Icebreaker` based on those posts. You can configure it to return structured output—like a `Topic` and an `Icebreaker` message.
+- **Company blur** (account-level context)
+- **Person details** (name, LinkedIn, role)
+- **LinkedIn profile scrape** (via BitAgent)
+- **Generated value proposition** (personalized insight for outreach)
 
-Once enriched:
-
-- Use the **HeyReach action** in Bitscale to map these fields.
-- Select a completed (not draft) campaign from your HeyReach account.
-- Map standard fields and pass the `Icebreaker` as a custom variable.
-
-Whether you’re adding new leads or updating existing ones, the integration intelligently syncs them into your HeyReach campaign.
+The **value proposition** column is especially useful for injecting personalization into your Heyreach messages.
 
 ---
 
-### 💡 Why It Matters
+### **Setting Up the Heyreach Integration**
 
-- **No CSV juggling** — Enrich and push leads to HeyReach directly from the grid.
-- **Hyper-personalized outreach** — Use real-time LinkedIn activity to craft tailored messages.
-- **Scales with your workflow** — Run it across one row or thousands at once.
+1. Go to **Integrations** in Bitscale.
+2. Click **Add Integration** → Select **Heyreach**.
+3. Enter your **API Key** (found in Heyreach under _Settings → Integrations → API_).
+4. Save the integration.
 
-Perfect for outbound teams running LinkedIn-first campaigns that require intelligent personalization at scale.
+Once connected, you can push enriched leads directly from Bitscale into Heyreach campaigns.
 
-Need help setting it up? Reach out to us—we’re always happy to assist.
+---
+
+### **Creating a Campaign in Heyreach**
+
+1. In Heyreach, go to **Campaigns → Start New Campaign**.
+2. Name your campaign (e.g., _Demo_).
+3. Select a lead list:
+   - Create an **empty list** if you plan to push leads dynamically from Bitscale.
+   - Optionally add **exclude lists** to prevent outreach to leads you have already engaged with.
+4. Select **senders** (your LinkedIn profiles). Heyreach support can help configure these if needed.
+5. Choose a **campaign template** (e.g., _Value First Outreach_).
+
+Campaigns typically follow a simple sequence:
+
+- Send connection request → View profile → Send message → Stop if reply is received.
+
+---
+
+### **Personalization in Heyreach**
+
+Heyreach uses **variables** to personalize messages.
+
+- Add variables like `{first_name}` or `{personalization}` inside your message template.
+- Always set up a **fallback message**. If a variable is missing or errored, Heyreach will use the fallback automatically to avoid campaign disruption.
+
+---
+
+### **Pushing Leads from Bitscale to Heyreach**
+
+1. In your Bitscale grid, select **Push to Heyreach**.
+2. Choose your campaign (e.g., _Demo_).
+3. Map required fields:
+   - First Name
+   - Last Name
+   - Personal LinkedIn URL
+4. Create a **custom field** called `personalization`.
+5. Map your **Value Proposition** column to this field.
+
+Heyreach will auto-map this personalization variable into the campaign messages you set earlier.
+
+---
+
+### **Running the Campaign**
+
+- Once leads are pushed, they will flow into Heyreach with mapped variables.
+- Switch on your campaign and outreach will begin automatically.
+- Campaign performance can be monitored inside Heyreach.
+
+---
+
+### **Best Practices**
+
+- Keep outreach messages short and interpersonal, not overly automated.
+- Use personalization fields (e.g., value prop from BitAgent) to boost replies.
+- Leverage Heyreach’s fallback feature to prevent failed sends.
+- Use **exclude lists** to avoid over-engaging the same accounts.
+
+---
+
+### **Next Steps**
+
+This workflow covers the **architectural setup** of Bitscale, Heyreach campaigns. For messaging strategies, cadences, and proven outreach templates, refer to the Bitscale **Outbound Playbook**.
+
+> 💡 Reach out via the Bitscale support channel if you have questions, we would be happy to help optimize your LinkedIn outbound workflows.
