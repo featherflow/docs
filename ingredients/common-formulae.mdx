@@ -1,213 +1,83 @@
 ---
 title: "Formula Column"
-description: "The formula column allows users to perform basic transformations column wise, enabling them to make the best out of their present data without spending unnecessary credits. The users can easily tag columns using the format : {{ @column }} when performing transformations or operations or using the format : @column when creating a placeholder for static content."
+description: "Use Formula Columns in Bitscale to transform existing data or maintain static values across your grids. Apply custom logic, clean and extract fields, or leverage AI-powered formula generation for complex workflows with minimal setup."
 ---
 
-<iframe width="728" height="410" src="https://www.youtube-nocookie.com/embed/ZtC1e1WLKS8?si=Cd-NdP33aSYIrguc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+<iframe width="728" height="410" src="https://www.youtube.com/embed/It2xBWEgOaI?si=Y26uNfqLw07iB7jh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-*The formulae mentioned are simply javascript inline scripts. To generate any other formulae one can just ask chatgpt to generate the same.*
+### Overview
 
-> ***<u>Pro tip</u>** : You can use the below prompt for this:*
->
->```js
-> Give me the inline JavaScript code for the use case mentioned below, 
-> context: @column_name is the variable holding the string. 
-> return format: I want the result in this format: {{ @column_name }}.operation based  on use case. example format: {{ @column_name }}.split(",")[0]
-> use case: mention what you want to do here
-> ```
+Formula columns in Bitscale are a powerful feature for **transforming data** and **maintaining static text** across your grids. They allow you to:
 
-# Operations based use cases
+- Apply transformation logic to existing data points
+- Initialize static values for use across workflows
+- Automatically generate complex formulas with AI for advanced use cases
 
-### 1. Split Full Name into First & Last Name
+Formula columns are fully customizable and integrate seamlessly with enrichments, making them one of the most versatile tools available on the platform.
 
-Sometimes you may come across a scenario where your prospect list only has the full name available as a data point, but while sending an outreach addressing the person as their full name might not sit right with you. In that case a simple formula can be employed to split the full name into separate first name and last name data points.
+---
 
-getting first name:
+### **Use Case 1: Static Text Columns**
 
-```js
-      {{ @Full Name }}.split(" ")[0]
-```
+Use a **static text formula** when you want to maintain a single value across every row in a grid.
 
-<img height="100" src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1733753357/Screenshot_2024-12-09_at_6.13.43_PM_hmlxp9.png" />
+- Example: Store a _Company Blur_ or a context string to be referenced later by AI enrichments like BitAgent.
 
-getting last name:
+**Steps:**
 
-```js
-      {{ @Full Name }}.split(" ")[1]
-```
+1. Create a **Formula Column** → Select _Static Text_.
+2. Enter the desired text.
+3. Run the formula.
+4. The same value will now be replicated across all rows.
 
-<img height="100" src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1733817225/Screenshot_2024-12-09_at_8.05.10_PM_ejfi9j.png" />
+---
 
-### 2. Find a specific technology from BuildWith Tech Stack
+### **Use Case 2: Transformative Actions**
 
-Our Tech Stack action tools provides a comprehensive list of technologies being employed by a company via buildwith but sometimes it may become tedious to find whether a specific technology is being used or not.
+Formula columns also support transformation logic to manipulate or extract values.
 
-For this a simple formula can help you out(am checking if shopify is there or not):
+**Example:** Extract the domain from a company URL without the `http://` or `https://` prefix.
 
-```js
-      {{ @Tech Stack }}.technologies.toLowerCase().includes("shopify") ? "yes" : "no"
-```
+- Formula: `column_name.split("//")[1]`
+- This splits the string at `//` and returns the second element (index `1`).
 
-<img height="100" src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1733817239/Screenshot_2024-12-10_at_1.22.56_PM_z5xhw2.png" />
+**Steps:**
 
-### 3. Find the current experience from the Linkedin Enrichment
+1. Create a **Formula Column**.
+2. Select the column to operate on (e.g., Company URL).
+3. Apply the formula logic (using standard operators and functions).
+4. Save and run to generate the transformed values.
 
-While users can use the add column button available next to all enrichments in any sales action tool. They can also write this from scratch.
+---
 
-Here's an example:
+### **AI Formula Generation**
 
-```js
-      {{ @Linkedin Enrichment }}?.experiences[0].title + ' at ' + {{ @Linkedin Enrichment }}?.experiences[0].subtitle
-      
-```
+Bitscale includes **AI-powered formula generation**, making it simple to build even complex formulas without prior syntax knowledge.
 
-# Content based use cases
+**How it works:**
 
-### 1. Create Templatized Emails
+1. Go to **Generate Formula with AI**.
+2. Describe the logic in natural language.
+   - Example: _“Check if employee count is more than 100,000”_
+3. Provide the expected output for the first row (e.g., “Yes”).
+4. AI will generate the correct formula automatically.
+5. Preview results on the first 5 rows before confirming.
 
-Our formula columns also allows our user to create static mail templates, with an option to embed different aspects of the mail. Such as, icebreakers, salutations, signoffs etc.
+If results are not as expected, you can refine the output by rephrasing or repeating expected results for more accuracy.
 
-check out the below example:
+---
 
-```js
-      Hi @FirstName,
+### **Best Practices**
 
-      @Icebreaker
+- **Static Text**: Use for context maintenance across workflows.
+- **Transformations**: Ideal for cleaning, extracting, or classifying raw data.
+- **AI Generation**: Recommended for complex formulas or when unsure of exact syntax.
+- **Indexing Reminder**: Formula indexing starts at `0` (0 = first element, 1 = second, etc.), consistent with most programming languages.
 
-      We are making strides in the outreach space, feel like getting on board?
+---
 
-      Best,
-      Team Bitscale
-```
+### **Summary**
 
-<img height="100" src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1733817239/Screenshot_2024-12-09_at_8.50.29_PM_xxm95k.png" />
+Formula columns enable both **simple transformations** and **advanced formula generation with AI**. Whether you’re cleaning URLs, classifying employee counts, or maintaining static context across grids, this feature is designed to be modular, flexible, and highly adaptable for your workflows.
 
-### 2. Appending two columns
-
-Maybe you already have the first name and last name of 1000s of prospect available in your grid but your use case requires your to have their full name as well. While using a gpt mini across all these use cases may seem like an easy way out, for large grids that might not be the best scenario. So why not employ the trusty formula column for this?
-
-you can easily append 2 or more columns using the formula below:
-
-```js
-    @FirstName + " " + @LastName
-```
-
-# Further crude formulae
-
-<AccordionGroup>
-  <Accordion icon="" title="String Concatenation">
-    Concatenate multiple strings into one.
-
-    ```js
-    {{ @col1 }} + " " + str2
-    {{ @col1 }}.concat(" ", str2)
-    ```
-  </Accordion>
-
-  <Accordion icon="" title="String Splitting">
-    Split a string into an array using a separator.
-
-    ```js
-    {{ @col1 }}.split(",") // Split by comma
-    {{ @col1 }}.split(",")[n] // nth split starting from 0
-    ```
-  </Accordion>
-
-  <Accordion icon="" title="String Trimming">
-    Trim whitespace from the start and end of a string.
-
-    ```js
-    {{ @col1 }}.trim() // Trim spaces from start and end
-    ```
-  </Accordion>
-
-  <Accordion icon="" title="String Length">
-    Get the length of a string.
-
-    ```js
-    {{ @col1 }}.length
-    ```
-  </Accordion>
-
-  <Accordion icon="" title="Convert to Uppercase/Lowercase">
-    Convert a string to uppercase or lowercase.
-
-    ```js
-    {{ @col1 }}.toUpperCase()
-    {{ @col1 }}.toLowerCase()
-    ```
-  </Accordion>
-
-  <Accordion icon="" title="Replace Substring">
-    Replace part of a string with another string.
-
-    ```js
-    {{ @col1 }}.replace("oldSubstring", "newSubstring")
-    ```
-  </Accordion>
-
-  <Accordion icon="" title="Extract Substring">
-    Extract a substring from a string using start and end indices.
-
-    ```js
-    {{ @col1 }}.substring(5, 10) // Extract characters from index 5 to 10
-    ```
-  </Accordion>
-
-  <Accordion icon="" title="Repeat a String">
-    Repeat a string multiple times.
-
-    ```js
-    {{ @col1 }}.repeat(3) // Repeat {{ @col1 }} three times
-    ```
-  </Accordion>
-
-  <Accordion icon="" title="Reverse a String">
-    Reverse a string by splitting it into an array, reversing it, and then joining it back together.
-
-    ```js
-    {{ @col1 }}.split("").reverse().join("")
-    ```
-  </Accordion>
-
-  <Accordion icon="" title="Extract Character at Specific Index">
-    Get a character at a specific index of a string.
-
-    ```js
-    {{ @col1 }}.charAt(3) // Get character at index 3
-    ```
-  </Accordion>
-
-  <Accordion icon="" title="Find Index of Substring">
-    Find the index of a specific substring.
-
-    ```js
-    {{ @col1 }}.indexOf("substring")
-    ```
-  </Accordion>
-
-  <Accordion icon="" title="Pad Start/End">
-    Add padding to the start or end of a string to reach a specified length.
-
-    ```js
-    {{ @col1 }}.padStart(10, "0") // Pads with zeros at the start
-    {{ @col1 }}.padEnd(10, ".") // Pads with periods at the end
-    ```
-  </Accordion>
-
-  <Accordion icon="" title="Convert String to Array of Characters">
-    Convert a string into an array of characters.
-
-    ```js
-    Array.from({{ @col1 }})
-    ```
-  </Accordion>
-
-  <Accordion icon="" title="Check if String is Empty">
-    Check if a string is empty (or just contains whitespace).
-
-    ```js
-    {{ @col1 }}.trim() === ""
-    ```
-  </Accordion>
-</AccordionGroup>
+For assistance with formula use cases, reach out via the Bitscale support channel.
