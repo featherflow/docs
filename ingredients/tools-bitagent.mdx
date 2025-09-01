@@ -1,61 +1,90 @@
 ---
 title: "Research - BitAgent"
-description: "Bit Agent lets you scan company websites intelligently using just a natural language prompt. Whether you're trying to understand a company's product, find industry details, or uncover technical integrations, Bit Agent automates the process—no custom code, no manual research."
+description: "Use BitAgent to scrape live websites and conduct structured market research. Configure prompts, apply output formatting (fields or lists), and enrich workflows with reliable, contextual company insights."
 ---
 
-<iframe width="728" height="410" src="https://www.youtube.com/embed/7hpZJFdaAXg?si=Ps8qAtYnzEnVAgYV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="728" height="410" src="https://www.youtube.com/embed/TZm_feZvi0o?si=ve4qJTvWmQ9ey_Bd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ---
 
-## What You Can Do with Bit Agent
+## Overview
 
-**1. Ask Any Question, Get Structured Output**\
-Bit Agent navigates a company’s website—including multiple internal pages—and extracts answers based on your prompt. For example, you can ask:
+**BitAgent** is Bitscale’s unique research agent designed for **live website scraping** and **market research**. It performs structured scrapes of a company’s website, and if the data is unavailable there, it automatically checks other sources such as Google Web Search.
 
-- “What industry is this company in?”
-- “Describe its core product in one sentence.”
-- “What pricing plans are listed?”
-- “Is there any mention of SOC2 or GDPR compliance?”
+BitAgent is widely used for:
 
-Just map the input column (typically the website), define the prompt, and specify the output format—Bit Agent will return a clean JSON with your answers.
+- **Primary research** in customized outreach workflows
+- Detecting website changes or signals (e.g., compliance, certifications)
+- Extracting structured data like **event attendees**
+- Enriching accounts with deeper context for personalization
 
 <img
   height="100"
   src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1735312533/Screenshot_2024-12-27_at_8.39.33_PM_rd9ct0.png"
 />
 
-**2. Control What You Fetch**\
-From the tweak section, you can:
+---
 
-- Choose the LLM (GPT-4.1, Claude, or Bitscale Mini for faster runs).
-- Select specific fields like `industry`, `description`, `product_features`, etc.
-- Set up a reusable action by saving it as a template.
+### **When to Use BitAgent**
 
-**3. Scrape Metadata for Tech Stack or Embeds**\
-Need to know what chatbot, analytics tool, or payment processor a site is using? Bit Agent supports `metadata=true` in your prompt to fetch insights from the raw HTML and page metadata.
-
-**4. Works at Any Scale**\
-Whether you're researching 2 companies or 2,000, Bit Agent runs reliably across your entire grid. Set your prompt once and run it across rows, with results appended as new columns for easier filtering and follow-ups.
+- Use **BitAgent** when you need **in-depth, company-specific insights**.
+- Use **Google Web Search, Google News, or Perplexity agents** when you need broad, surface-level research across multiple sources.
 
 ---
 
-### Example Use Case in Action
+### **Setting Up BitAgent**
 
-Let’s say you want to learn what a company does and the industry it operates in:
-
-1. Add a new Bit Agent column to your grid.
-2. Use a prompt like:\
-   `"Visit the landing page. Determine the company’s product and industry. Output industry and description as text."`
-3. Choose your preferred model.
-4. Run across rows.
-5. Map the returned values into new columns like `industry` and `description`.
-
-You’ll now have structured company-level insights you can use for segmentation, prospecting, or analysis.
+1. Go to the **Enrichments Tab → Web Search → BitAgent**.
+2. Provide an input:
+   - **Preferred**: Company URL
+   - **Alternative**: A direct link to the page you want scraped (e.g., an event attendee list).
+3. Add a **prompt**:
+   - Example: _“Check if the company is SOC2 validated.”_
 
 ---
 
-### Why Bit Agent Matters
+### **Output Formatting**
 
-This isn’t just a scraper—it’s an AI-powered researcher embedded into your grid. With Bit Agent, you’re not just pulling raw data—you’re generating structured insights with every row. It's flexible, accurate, and ready to plug into any outreach or enrichment flow.
+Proper output formatting ensures that responses are structured and usable in downstream workflows. Without formatting, the AI may return unstructured text, which can break dependent steps.
 
-If you're unsure how to write your prompt or choose the right model, just reach out to our team on the Bitscale community—we’ll help you get started fast.
+Two formatting types are supported:
+
+- **Fields**:
+  - Used for single-value or comma-separated responses.
+  - Example: `name` field with 10 names, `company` field with 10 companies (each comma separated).
+- **Lists**:
+  - Used when you want **row-level encapsulation** for each item.
+  - Example: `{name, company}` for each attendee, output as multiple structured records.
+
+> 💡 Use **Fields** when you need flat responses, and **Lists** when you plan to **explode results into multiple rows** in another grid.
+
+---
+
+### **Example: Event Attendees**
+
+- **Fields Output**:
+  - `name`: John, Sarah, Priya
+  - `company`: Acme, Globex, Initech
+- **Lists Output**:
+  - `{name: John, company: Acme}`
+  - `{name: Sarah, company: Globex}`
+  - `{name: Priya, company: Initech}`
+
+Lists are recommended when the output will be mapped into grids for further enrichment.
+
+---
+
+### **Adding Results to Columns**
+
+- After running BitAgent, add the structured output as a **column** in your grid.
+- Example: Column `is_soc_validated` with boolean values `True/False`.
+- Supported output types: **Text**, **True/False**, **Numbers**, etc.
+
+---
+
+### **Best Practices**
+
+- Always provide a **clear and concise prompt** (20–30 words).
+- Use **structured output formatting** to avoid dependency errors.
+- For **boolean checks** (e.g., “Is SOC2 validated?”), use **True/False type** for accuracy.
+- For **bulk lists** (e.g., event attendees), always use the **List** option.
