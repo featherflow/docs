@@ -1,11 +1,72 @@
 ---
-title: "Prompt Engineering 101"
-description: "A good prompt isn’t about asking questions—it’s about asking the right questions in the right way. This playbook guides you through the nuances of crafting prompts, covering structure, clarity, and creativity. Let’s unlock how to generate accurate, useful, and engaging outputs."
+title: "Writing Prompts of Bitscale"
+description: "Learn how to write effective prompts for Bitscale AI agents. Structure objectives, add step-based logic, manage context placement, and use Bit Prompter to generate high-quality, scalable prompts for your workflows."
 ---
 
-***
+<iframe width="728" height="410" src="https://www.youtube.com/embed/2K5F_CoM1js?si=36YCjdL6HK8AwIUP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-# 1. A Good Prompt: More Than Just Questions
+### Overview
+
+Bitscale integrates multiple AI-powered agents (BitAgent, Web Search, LLMs) that rely on well-structured prompts to deliver accurate, high-quality outputs. Writing effective prompts ensures you get actionable insights, clean outputs, and scalable workflows for outreach and research.
+
+This guide covers how to structure prompts, when to provide context, and how to leverage **Bit Prompter**, a built-in helper for first-time prompt creation.
+
+---
+
+### **Structuring a Good Prompt**
+
+A strong prompt typically has three sections:
+
+1. **General Directions**
+   - Start with a concise objective in ~20–30 words.
+   - Clearly state what the AI should achieve.
+   - Example: _“Summarize the website content to highlight product features and flag mentions of compliance.”_
+2. **Structured Steps**
+   - Provide explicit instructions on how the AI should process the input.
+   - Define what to extract, classify, or generate.
+   - Tag important fields like `first_name`, `company_name`, etc.
+3. **Context Placement**
+   - For short inputs (e.g., names, titles), include them directly in the prompt.
+   - For large inputs (e.g., a full website audit), provide context only **after** giving directions and steps.
+   - This ensures the AI knows what to do before parsing long text.
+
+---
+
+### **Output Formatting**
+
+Unlike many platforms where you must specify output formatting inside the prompt, Bitscale provides a **dedicated section for output formatting**.
+
+- Define structured outputs (columns, JSON, bullet points) in the formatting panel.
+- Keep the prompt focused on logic and context, not formatting.
+
+---
+
+### **Using Bit Prompter**
+
+If you’re new to prompt writing, Bitscale provides [**Bit Prompter**](https://chatgpt.com/g/g-67a450dd6c648191b201e4e06ff72004-bitprompter), a tool that converts your raw idea into a structured prompt.
+
+**Example:**
+
+- Input: _“Check if a company has SOC2 compliance using their website.”_
+- Bit Prompter Output:
+  - **Objective**: Verify SOC2 compliance
+  - **Directions**: Parse website content to detect compliance mentions
+  - **Steps**: Look for keywords like “SOC2,” “audit,” or “certified”
+  - **Inputs**: Website dump (if not already included by BitAgent)
+
+This ensures your prompts follow best practices without requiring deep LLM experience.
+
+---
+
+### **Best Practices**
+
+- Always begin with a clear objective.
+- Break instructions into steps to reduce ambiguity.
+- Place large context (like long text dumps) after directions.
+- Use output formatting options in Bitscale instead of inline prompt instructions.
+- For consistency, reuse and iterate on prompts that perform well in your workflows.
+
+---
 
 #### Example 1: Outreach for a New Product Launch
 
@@ -24,20 +85,14 @@ Structure:
 3. Invitation to book a demo.
 
 4. Closing with a call-to-action for a free trial.
-
-Output Format:
-
-Just Return the mail body with no accompanying texts, salutations, signatures etc.
-
 ```
 
 **Why This Works**:
 
-* Targets specific pain points of small business owners.
+- Targets specific pain points of small business owners.
+- Clearly outlines benefits, increasing the likelihood of engagement.
 
-* Clearly outlines benefits, increasing the likelihood of engagement.
-
-***
+---
 
 #### Example 2: Cold Outreach for a Service Company
 
@@ -53,19 +108,14 @@ Structure:
 2. Persuasive paragraph about aligning services with their goals.
 
 3. Closing with an invitation to connect or schedule a 15-minute chat.
-
-Output Format:
-
-Just Return the message body with no accompanying texts, salutations, signatures etc.
 ```
 
 **Why This Works**:
 
-* Creates relevance by referencing the recipient’s role.
+- Creates relevance by referencing the recipient’s role.
+- Offers a clear and actionable next step.
 
-* Offers a clear and actionable next step.
-
-***
+---
 
 #### Example 3: Follow-Up After No Response
 
@@ -89,11 +139,10 @@ Just Return the mail body with no accompanying texts, salutations, signatures et
 
 **Why This Works**:
 
-* Maintains a professional yet approachable tone.
+- Maintains a professional yet approachable tone.
+- Reiterates value without pressuring the recipient.
 
-* Reiterates value without pressuring the recipient.
-
-***
+---
 
 #### Example 4: Outreach Targeting Event Attendance
 
@@ -121,140 +170,7 @@ Event_Info = @event
 
 **Why This Works**:
 
-* Highlights specific value relevant to the recipient’s professional interests.
+- Highlights specific value relevant to the recipient’s professional interests.
+- Builds excitement around the event.
 
-* Builds excitement around the event.
-
-***
-
-# 2. Introduction: Why Prompt Quality Matters
-
-Your prompt is like a compass: it points the model toward the right answer. A well-phrased prompt:
-
-* **Provides Clear Direction**: Avoids ambiguity, ensuring relevant answers.
-
-* **Speaks the Model’s Language**: Uses consistent terms and structures.
-
-* **Maximizes Results**: Bridges the gap between mediocre and exceptional outputs.
-
-Think of working with a skilled assistant—your instructions need to be clear, concise, and specific to achieve optimal results.
-
-***
-
-# 3. Setting Up for Success: Understanding Prompt Types
-
-Different types of prompts yield different results:
-
-* **Question-Based Prompts**: Direct questions seeking facts or ideas.
-
-* **Instructional Prompts**: Step-by-step instructions.
-
-* **Conversational Prompts**: Scenario-driven dialogues.
-
-* **Descriptive Prompts**: Requests for narratives or visualizations.
-
-* **Multi-Part Prompts**: Complex, multi-layered inquiries.
-
-**Tip:** Match the prompt type to your desired outcome before writing.
-
-***
-
-# 4. Crafting Your Prompt: Techniques and Tips
-
-#### 4.1 Start with a Clear Goal
-
-Define what you want:
-
-* Are you seeking facts, steps, or suggestions? Or something creative, like stories or visualizations?
-
-* Decide on the response’s depth: short, medium, or in-depth?
-
-#### 4.2 Use Context Wisely
-
-Provide boundaries and depth:
-
-* **Define Roles**: “As an expert botanist, explain photosynthesis.”
-
-* **Specify Perspectives**: “From the view of a beginner...”
-
-* **Provide Background**: “Assume no prior knowledge of AI.”
-
-#### 4.3 Utilize Tone and Style Indicators
-
-Shape the response with tone and structure:
-
-* **Tone**: Formal, casual, humorous, authoritative.
-
-* **Style**: Bullet points, prose, step-by-step.
-
-#### 4.4 Encourage Structured Responses
-
-Guide clarity by specifying format:
-
-* “List three key points.”
-
-* “Summarize in a paragraph.”
-
-***
-
-# 5. Best Practices for Clarity and Precision
-
-* **Keep It Simple**: Use direct, familiar language.
-
-* **Be Specific**: Define exact terms to avoid ambiguity (e.g., replace “talk about energy” with “explain three solar energy benefits for urban environments”).
-
-* **Set Limits**: Specify length and focus (e.g., “Limit response to 200 words”).
-
-* **Avoid Ambiguity**: Ask clear, focused questions.
-
-***
-
-# 6. Advanced Prompt Structuring
-
-#### 6.1 Use Multi-Step Prompts for Complex Tasks
-
-Break down layered tasks:
-
-* “First, list ingredients. Then, explain preparation steps.”
-
-#### 6.2 Test-and-Refine Strategy
-
-Prompting is iterative. Adjust wording, add context, and rephrase based on responses.
-
-#### 6.3 Encourage Inferences and Connections
-
-Seek deeper insights:
-
-* “How might \[Topic A] influence \[Topic B] over the next decade?”
-
-#### 6.4 Reference External Constraints
-
-Set real-world boundaries:
-
-* “Using a $500 budget, suggest a marketing strategy.”
-
-***
-
-# 7. Common Mistakes and How to Avoid Them
-
-* **Vagueness**: Use clear, detailed instructions.
-
-* **Overloading**: Split overloaded prompts into multi-part or sequential steps.
-
-* **Assumptions**: Don’t assume prior knowledge; provide necessary context.
-
-* **Lack of Direction**: Specify expectations, like “explain in detail” or “summarize briefly.”
-
-***
-
-# 8. Next Steps: Refining Your Prompts
-
-* **Experiment Like a Pro Chef**: Adjust wording and style to tweak outcomes.
-
-* **Challenge Yourself with Prompt Makeovers**: Rephrase prompts for better results.
-
-* **Build Your Prompt Toolkit**: Collect successful prompts as reusable templates.
-
-Keep practicing, experimenting, and refining to master the art of prompting—soon, you’ll guide AI to produce exactly what you need, every time. Happy prompting!
-
-***
+---
