@@ -1,0 +1,71 @@
+---
+title: "Required and Optional Columns"
+description: "Use Required vs Optional Columns in Bitscale to control how workflows handle missing or errored values. Required stops execution without key data, while Optional skips gracefully for cleaner CRM and outreach syncs."
+---
+
+### Overview
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/LZDugCVvNr0?si=ilVZXFOEp_PrvEh-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+In complex workflows, some values are critical for downstream actions (e.g., emails), while others are optional (e.g., revenue, funding). Bitscale allows you to **tag columns as Required or Optional** so you can control how workflows handle missing, empty, or errored values.
+
+This ensures:
+
+- Critical enrichments fail gracefully when required values are missing
+- Optional values don’t block workflows and are simply replaced with empty strings
+- Cleaner data flowing into integrations and CRMs
+
+---
+
+### **Use Case Examples**
+
+- **Required Column**: Email → If missing, stop further enrichments or CRM push.
+- **Optional Column**: Revenue → If missing, still proceed with pushing other available data.
+
+---
+
+### **Where You Can Use Required/Optional Tagging**
+
+1. **Prompt Boxes** (AI/LLM Enrichments)
+   - When referencing values from previous enrichments inside a prompt.
+   - Example: Passing a company description dump to GPT.
+   - **Logic:**
+     - Required = Workflow fails if the value is missing.
+     - Optional = Workflow runs anyway, substituting empty string for missing values.
+2. **Parameters in Integrations or Grid Actions**
+   - When sending data to CRMs, outreach tools, or exporting between grids.
+   - **Logic:**
+     - Required = Any value in the cell (including errors) is passed forward.
+     - Optional = Empty, errored, or unmatched values are replaced with empty strings before being pushed.
+
+---
+
+### **How to Set Required/Optional**
+
+- In **Prompt Boxes**:
+  - Click the **blue tick** to mark as _Required_.
+  - Click the **empty circle** to mark as _Optional_.
+- In **Integration/Grid Actions**:
+  - Toggle between _Required_ and _Optional_ when mapping parameters.
+
+---
+
+### **Best Practices**
+
+- Default to **Optional** for most parameters to avoid propagating errors into CRMs or outreach platforms.
+- Use **Required** for critical fields (e.g., Email, LinkedIn URL) to prevent downstream workflows from running on incomplete data.
+- For AI prompts, set key context columns as **Required** if their absence invalidates the prompt.
+- Combine with **Run Conditions** for granular control in multi-step workflows.
+
+---
+
+### **Summary**
+
+The **Required vs Optional** column setting gives you finer control over workflow execution:
+
+- Required ensures critical data is always present before running
+- Optional keeps workflows flexible by skipping missing values
+
+This simplifies complex flows, prevents bad data from leaking into CRMs, and allows SDRs and RevOps teams to scale confidently.
+
+For advanced use cases or troubleshooting, reach out via the Bitscale support channel.

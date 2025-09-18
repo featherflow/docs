@@ -1,96 +1,78 @@
 ---
-title: 'Run Conditions'
-description: 'Learn how to set up and use run conditions in Bitscale to streamline workflows, save time, and reduce redundant runs.'
+title: "Run Conditions"
+description: "Learn how to set up and use run conditions in Bitscale to streamline workflows, save time, and reduce redundant runs."
 ---
 
-<iframe width="728" height="410" src="https://www.youtube-nocookie.com/embed/KsN4GC_LVQI?si=A944jsvHQkX07vhe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+<iframe width="728" height="410" src="https://www.youtube.com/embed/qoTeRNHU8B0?si=uG58X4AcTVC5QCzm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## **What Are Run Conditions and Why Use Them?**
+## Overview
 
-Run conditions are a powerful feature in Bitscale that allows you to control which rows in your grid are processed on what condition. Instead of running an action across the entire grid, you can target a specific subset of rows based on defined criteria.
+In complex workflows, you often need to **bifurcate or segment flows** based on the output of enrichments or classifications. For example:
 
-This helps you:
+- Separate accounts into **ICP vs. non-ICP** and apply different actions
+- Run specific research steps only for a subset of classified accounts
+- Exclude certain rows from automated enrichments
 
-* **Reduce Redundancy:** Avoid unnecessary runs on rows that don’t meet the desired conditions.
+Bitscale provides **Run Conditions** for almost every enrichment or transformation, allowing you to automate these branching decisions without manual filtering.
 
-* **Save Time and Credits:** Focus only on relevant data and optimize your workflows.
+---
 
-* **Improve Efficiency:** Ensure actions are applied only where needed, reducing clutter in your results.
+### **Using Run Conditions**
 
-***
+1. Select the enrichment or transformation you want to conditionally run.
+2. Open the **Tweak Panel → Run Condition**.
+3. Define conditions using either:
+   - **Building Blocks**: Predefined logical filters
+   - **Custom Formulas**: For advanced, multi-column logic
 
-## **Example Use Case: Filtering for Technology Stack**
+---
 
-In this video, we demonstrate how to use run conditions to perform email waterfall actions only for companies that meet a specific condition:
+### **Building Blocks**
 
-* **Premise:** We’ve retrieved a list of companies, identified their technology stacks, and created a column to check if they use a specific technology. The column returns **“Yes”** or **“No.”**
+Building blocks are simple logical conditions applied to a chosen column.
 
-* **Objective:** Set up a run condition to execute the email waterfall only if the company uses the specified technology (i.e., the column returns **“Yes”**).
+- **Condition Types**:
+  - Greater than / Less than (for numeric values)
+  - Equal to / Not equal to
+  - Contains / Does not contain (for strings)
+- **Combinations**:
+  - **OR**: Enrichment runs if _any_ condition is met
+  - **AND**: Enrichment runs only if _all_ conditions are met
 
-***
+Example:
 
-## **How to Set Up Run Conditions**
+- Column: _Classification_
+- Condition: _Contains “ICP”_
+- Action: Run enrichment only on ICP accounts
 
-### **1. Access the Settings**
+---
 
-Navigate to the action you want to apply a run condition to (e.g., email waterfall). Open the **Settings** tab for the action.
+### **Custom Formulas**
 
-**Note:** While most actions have a straightforward settings tab, some, like email waterfall, may be more detailed. However, the **Run Condition** field is always located at the bottom of the settings tab.
+For more complex scenarios:
 
-***
+- Use **nested AND/OR combinations**
+- Reference multiple columns at once
+- Write custom run logic manually
 
-### **2. Write the Run Condition**
+**Options:**
 
-In the **Run Condition** text box, define the condition that determines whether the action should execute. Run conditions follow a simple **JavaScript inline syntax**, similar to what is used in formula columns.
+- Enter formulas directly in the **Manual Entry** section
+- Or generate formulas automatically using **AI Formula Generation** (similar to Formula Columns)
 
-**Example:**
+---
 
-* Reference the column that checks for the specific technology.
+### **Workflow Applications**
 
-* Write a condition like:`{{ @column_name }} === "Yes"`This ensures the action runs only for rows where the column value is **“Yes.”**
+- Maintain one grid with multiple enrichments, each tied to its own run condition.
+- Split accounts into different grids (e.g., ICP vs. non-ICP) and run targeted enrichments in each.
+- Automate branching workflows without manual filtering or exporting.
 
-***
+---
 
-### **3. Save and Execute**
+### **Best Practices**
 
-Once the run condition is set:
-
-1. Save the action.
-
-2. Execute it for your grid.
-
-***
-
-## **Results and Observations**
-
-After running the email waterfall action with the defined run condition:
-
-* Rows that don’t meet the condition (e.g., where the value is “No”) are skipped.
-
-* The action is executed only for rows where the condition is satisfied.
-
-* Results are displayed in the output column, showing only the relevant emails retrieved.
-
-**Example Outcome:**
-
-* Rows with **“Yes”** in the specified column returned email addresses.
-
-* Rows with **“No”** were skipped, saving time and resources.
-
-***
-
-## **Key Benefits of Run Conditions**
-
-* **Precision:** Apply actions only to relevant rows, ensuring targeted processing.
-
-* **Cost-Efficiency:** Reduce unnecessary runs, saving credits and time.
-
-* **Customizability:** Write flexible, logic-based conditions tailored to your workflow.
-
-***
-
-## **Get Started**
-
-Try setting up run conditions in your workflows today!
-
-**Pro Tip:** Use run conditions for actions like lead enrichment, email waterfalls, or custom workflows to optimize performance and minimize redundant tasks.
+- Use **Building Blocks** for simple bifurcations.
+- Use **Custom Formulas** for multi-column or nested conditions.
+- Always test run conditions on sample rows before applying at scale.
+- Combine with **Export to Grid** for clean separation of branches.

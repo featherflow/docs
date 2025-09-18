@@ -1,0 +1,150 @@
+---
+title: "Bitscale for SDRs"
+description: "The SDR Playbook shows how to build qualified lists in Bitscale. Find companies, flag ICP accounts, enrich personas, run Email/Phone Waterfalls, and push contacts into outbound or CRM tools for seamless prospecting."
+---
+
+### Overview
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/eNHbsOv0zXw?si=wLp0bsRtBRD-Q3oo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Many SDRs use Bitscale as their **starting point for list building** — from qualifying accounts, enriching them with context, finding relevant personas, and retrieving verified contact data for outreach.
+
+This playbook provides a **step-by-step workflow** for SDRs to build and qualify lists efficiently using Bitscale. It covers:
+
+- Finding and qualifying accounts
+- Filtering and ICP flagging
+- Finding people within accounts
+- Exporting contacts into new grids
+- Running Email and Phone Waterfalls
+- Pushing enriched contacts into outbound or CRM tools
+
+---
+
+## **Step 1: Find Companies (Account-Level List Building)**
+
+1. Go to **Data Sources → Find Companies**.
+2. Apply filters such as:
+   - **Headcount**: e.g., 200–500 or 500–1000 employees
+   - **Geography**: e.g., United States
+   - **Industry**: e.g., Software, Security, SaaS
+   - **Company Keywords** (optional, for niche markets)
+3. Preview results.
+4. Save filters for reuse.
+5. Import results into a **new grid**.
+   - The first fetch includes 100 rows (by design).
+   - Use **Fetch More Rows** (in batches up to 1,000) until you reach your desired count.
+
+**Best Practice:** Start broad, then refine industries/keywords to narrow the list.
+
+---
+
+## **Step 2: Enrich Company Data**
+
+1. Use **Enrich Company** to pull accurate LinkedIn-sourced details.
+2. Optionally, add external providers like RocketReach, Apollo, ContactOut, etc.
+3. Run in **batches of 10 rows** while testing workflows.
+4. Once finalized, run enrichment on all rows.
+
+**Tip:** Use filters like _“Enrich Company is empty”_ to selectively enrich only new or missing rows.
+
+---
+
+## **Step 3: Apply ICP Filtering**
+
+Use AI models (GPT-4, Claude, DeepSeek) to flag ICP accounts:
+
+1. Open **AI Enrichment → GPT (or other model)**.
+2. Write a structured prompt, e.g.:
+
+   > “Check if this company is an ICP. Output TRUE if industry is Computer Software and employee count is between 200–1000. Otherwise FALSE.”
+3. Tag the **Enrich Company dump** at the bottom of the prompt.
+4. Save results as a new column (e.g., `is_ICP`).
+
+**Run Condition:**
+
+- When running future enrichments, set conditions so they execute only when `is_ICP = TRUE`.
+
+---
+
+## **Step 4: Find People from Company**
+
+Once ICP accounts are flagged:
+
+1. Use **Find People from Company** enrichment.
+2. Input: Company URL.
+3. Search by:
+   - **Job Titles** (recommended for specific personas, e.g., “Head of Sales”)
+   - **Department + Seniority** (useful for SMBs to maximize coverage).
+4. Set fetch limits (e.g., 5 contacts per account).
+5. Apply filters such as **Location** (e.g., United States).
+
+**Best Practice:** Limit to a handful of personas per company to avoid oversaturation and keep future outreach options open.
+
+---
+
+## **Step 5: Export Contacts to a New Grid**
+
+By default, multiple contacts are stored inside one cell per company. To work with them individually:
+
+1. Click **Export Leads**.
+2. Choose **Create New Grid**.
+3. Select columns to carry over (e.g., Company Revenue, Enrich Company fields).
+4. Run the export.
+
+The result is a **Contact-Level Grid** linked to the Account Grid.
+
+---
+
+## **Step 6: Enrich Contact Data**
+
+Inside the contact-level grid:
+
+- Run **Email Waterfall**:
+  - Required fields: Name + Company or Company URL.
+  - Only charges for the provider that successfully returns the result.
+  - Optional validation reduces bounce rates to \<0.5%.
+- Run **Phone Waterfall**:
+  - Required field: LinkedIn URL.
+  - Works with the same multi-provider, validation-enabled logic.
+
+**Coverage:**
+
+- Emails: ~80–85% coverage
+- Phones: Often higher coverage
+
+---
+
+## **Step 7: Push to Outreach or CRM Tools**
+
+Once contacts are enriched:
+
+- **Email Tools**: Push to Instantly, Smartlead, or Lemlist.
+- **LinkedIn Tools**: Push to Heyreach.
+- **CRMs**: Push directly into HubSpot or Salesforce.
+- **Slack**: Send accounts or contacts to Slack for manual review or team notifications.
+
+**Tip:**
+
+- Personalization variables (e.g., Value Props, ICP notes) can be mapped into outbound tools for contextual messaging.
+
+---
+
+## **Step 8: Managing Lists**
+
+- Use **Run Conditions** to maintain different flows for ICP and non-ICP accounts.
+- Hide intermediate enrichment columns to keep exported grids clean.
+- Save company/people filters for repeated list building.
+
+---
+
+## **Summary**
+
+This SDR playbook takes you through an **end-to-end Bitscale workflow**:
+
+1. Find companies
+2. Enrich and filter with ICP logic
+3. Find and export relevant personas
+4. Run contact waterfalls for emails/phones
+5. Push results into outbound and CRM tools
+
+With this process, SDRs can consistently build **qualified, ready-to-contact lists** while minimizing manual effort and maximizing coverage.

@@ -50,6 +50,7 @@
         "ingredients/prompts_101",
         "ingredients/run_conditions",
         "ingredients/tutorial-contact-validation",
+        "ingredients/tutorial-required-optional",
         "ingredients/tools-vlookup",
         "ingredients/workbooks",
         "ingredients/source-scheduling",
@@ -61,6 +62,7 @@
       "group": "Playbook",
         "pages": [
             "playbook/list-building",
+            "playbook/sdr-playbook",
             "playbook/company-firmography",
             "playbook/instantly-magic",
             "playbook/enrich-hubspot",
