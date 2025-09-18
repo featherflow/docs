@@ -1,0 +1,73 @@
+---
+title: "Integrations - Lemlist"
+description: "Integrate Lemlist with Bitscale to push enriched leads into campaigns or look up existing leads. Map variables, control duplicates, and streamline multi-channel outreach."
+---
+
+### Overview
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/-I-erO2OhpI?si=hmrnRvtiMAKLhsIt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Lemlist is a **multi-channel outreach platform** that supports touchpoints across LinkedIn, email, and more. Since many Bitscale users rely on Lemlist for outbound campaigns, we provide a **native integration** to streamline lead enrichment and campaign execution.
+
+This integration allows you to:
+
+- **Add or update leads** in Lemlist campaigns directly from Bitscale
+- **Look up leads** in Lemlist to avoid duplication or retrieve specific profiles
+
+---
+
+### **Available Actions**
+
+1. **Add or Update Leads**
+   - Push enriched, filtered, or qualified leads from Bitscale into Lemlist campaigns.
+   - Map campaign variables (e.g., name, company, personalization).
+   - Control duplicate handling with a simple toggle.
+2. **Lookup Leads**
+   - Query Lemlist for a specific lead by email or ID.
+   - Useful for avoiding duplicate outreach or building dashboards with synced leads.
+
+---
+
+### **Setting Up the Integration**
+
+1. In Bitscale, go to **Enrichments → Integrations → Lemlist**.
+2. Select either **Add/Update Lead** or **Lookup Lead**.
+3. Click **Add Account** → Enter a name for the account (e.g., _Marketing Account_).
+4. Retrieve your **API Key** from Lemlist:
+   - Go to _Lemlist → Settings → Integrations_.
+   - Generate and copy your API key (it will only be shown once).
+5. Paste the API key in Bitscale and save.
+
+Your Lemlist account is now connected.
+
+---
+
+### **Pushing Leads to Lemlist**
+
+1. Select your connected Lemlist account.
+2. Choose the target **campaign**.
+3. Set the action: **Add or Update Leads**.
+4. Map required fields:
+   - **Email** (primary unique identifier in Lemlist)
+   - Additional fields such as **First Name**, **Company**, or custom variables
+5. Optionally:
+   - Enable/disable duplicates
+   - Map personalization variables to Lemlist’s custom fields
+
+---
+
+### **Looking Up Leads**
+
+1. Select the **Lookup Lead** action.
+2. Provide an email (or Lemlist ID).
+3. Bitscale retrieves the lead’s full details from Lemlist.
+4. Use this data to enrich further or prevent duplicate outreach.
+
+---
+
+### **Best Practices**
+
+- Always map **Email** as the unique identifier when pushing leads.
+- Use **Lookup Lead** before large pushes to avoid duplicates.
+- Maintain personalization variables in your Bitscale grid and map them into Lemlist for contextual messaging.
+- Keep API keys stored securely, as they are only shown once during creation.

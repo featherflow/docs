@@ -76,6 +76,7 @@
         "ingredients/integrations-webhook-export",
         "ingredients/integrations-webhook-import",
         "ingredients/integrations-outplay",
+        "ingredients/integrations-lemlist",
         "ingredients/integrations-heyreach",
         "ingredients/tools-waterfall",
         "ingredients/tools-buildwith",
