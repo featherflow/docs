@@ -85,7 +85,7 @@
         "ingredients/tools-textmodels",
         "ingredients/tools-googleweb",
         "ingredients/tools-perplexity",
-        "ingredients/tools-bitagent",
+        "ingredients/tools-linkscrape",
         "ingredients/source-google-search",
         "ingredients/source-post-interactors",
         "ingredients/find-people",
