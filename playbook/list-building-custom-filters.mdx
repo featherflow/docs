@@ -1,0 +1,110 @@
+---
+title: "List Building - Custom Filters & Signals"
+description: "Use Custom Filters & Signals in Bitscale to go beyond preset enrichments. Stack hiring, tech stack, and product signals with AI logic to score accounts and target high-intent prospects."
+---
+
+### Overview
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/YXAxj6BNyvY?si=uAbySzQ73frfNujs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+While Bitscale provides a set of **preset signals and filters** to help you build your first lists, advanced outbound workflows often require **hyper-specific targeting**. As SDRs and GTM teams exhaust broader TAM lists, they need to identify **niche accounts and personas** using custom conditions.
+
+Bitscale enables you to **stack enrichments, AI layers, and signals** to create these custom filters directly in your grids, allowing you to prioritize accounts with the highest buying intent.
+
+---
+
+### **When to Use**
+
+- Your TAM is largely covered and you need more granular targeting.
+- You want to identify **high-intent accounts** using multiple conditions.
+- You need to validate specific traits (e.g., tech stack, hiring activity, product signals).
+- You want to **score and segment accounts** into different outbound campaigns.
+
+---
+
+### **Step 1: Start with a Base List**
+
+1. Use **Find Companies** to generate an ICP-aligned list.
+   - Example filters:
+     - Employee count: 200–500
+     - Geography: United States
+     - Industry: Software (optional)
+2. Import results into a grid.
+3. Expand by fetching additional rows (up to your search limits).
+
+---
+
+### **Step 2: Add Custom Intent Signals**
+
+#### Example 1: Hiring SDRs
+
+- Enrichment: **Active Jobs (Company-Level)**
+- Prompt (AI Layer):
+
+  > “Check whether @company_name is hiring for sales roles.”
+- Output Format: Boolean (`True/False`)
+
+**Use Case:** Hiring SDRs signals growth and a need for enablement tools.
+
+---
+
+#### Example 2: Tech Stack Validation
+
+- Enrichment: **BuiltWith** (Company URL → Tech Stack)
+- Initialize technologies into a clean column.
+- AI Layer Prompt:
+
+  > “Check whether Salesforce or HubSpot is mentioned in the below list.”
+- Output Format: Boolean (`True/False`)
+
+**Use Case:** Prioritize accounts using CRMs that integrate well with your product.
+
+---
+
+#### Example 3: Product Feature Check
+
+- Enrichment: **BitAgent** (Website Scrape)
+- Prompt:
+
+  > “Check whether @company_website has a login feature.”
+- Output Format: Boolean (`True/False`)
+
+**Use Case:** Identify companies with SaaS/product platforms by validating if they support login functionality.
+
+---
+
+### **Step 3: Layer Filters Together**
+
+Each custom filter acts as a **scoring layer**:
+
+- Hiring SDRs = Growth Signal
+- Uses Salesforce/HubSpot = Tech Fit
+- Has Login Feature = Product-Led SaaS
+
+Accounts meeting multiple conditions rise to the **top of the pecking order** for outbound campaigns.
+
+---
+
+### **Step 4: Prioritize & Segment**
+
+- **High Intent Accounts**: Meet multiple signals (e.g., GitHub hiring sales roles + using Salesforce + SaaS login).
+- **Medium Intent Accounts**: Match one or two conditions.
+- **Low Intent Accounts**: Remain in the grid for future nurturing or broad campaigns.
+
+---
+
+### **Best Practices**
+
+- Start broad, then chip away with layered filters.
+- Use Boolean outputs (`True/False`) for clarity and easy run conditions.
+- Combine **hiring**, **tech stack**, and **product validation** for strong intent scoring.
+- Keep grids clean by adding validated signals as separate columns.
+- Iterate — custom filters will evolve as your outbound strategy matures.
+
+---
+
+### **Summary**
+
+Custom Filters and Signals in Bitscale let you go beyond preset enrichments to design **hyper-specific targeting workflows**. By combining hiring data, tech stack insights, product validation, and AI logic, you can create multi-layered account scoring systems and prioritize outreach where intent is highest.
+
+For help designing advanced filters, reach out via the Bitscale support channel.

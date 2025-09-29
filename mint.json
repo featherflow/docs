@@ -62,6 +62,7 @@
       "group": "Playbook",
         "pages": [
             "playbook/list-building",
+            "playbook/list-building-custom-filters",
             "playbook/sdr-playbook",
             "playbook/company-firmography",
             "playbook/instantly-magic",
@@ -89,6 +90,7 @@
         "ingredients/source-google-search",
         "ingredients/source-post-interactors",
         "ingredients/source-linkedin-jobs",
+        "ingredients/source-lookalikes",
         "ingredients/find-people",
         "ingredients/find-people-from-company",
         "ingredients/list-building-1",
