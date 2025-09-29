@@ -23,11 +23,15 @@
     {
       "name": "Website",
       "url": "https://bitscale.ai/"
+    },
+    {
+      "name": "Platform",
+      "url": "https://app.bitscale.ai/"
     }
   ],
   "topbarCtaButton": {
-    "name": "Platform",
-    "url": "https://app.bitscale.ai"
+    "name": "Demo",
+    "url": "https://meetings.hubspot.com/team-bitscale"
   },
   "tabs": [
     {
