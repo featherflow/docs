@@ -55,6 +55,7 @@
         "ingredients/run_conditions",
         "ingredients/tutorial-contact-validation",
         "ingredients/tutorial-required-optional",
+        "ingredients/tutorial-column-templates",
         "ingredients/tools-vlookup",
         "ingredients/workbooks",
         "ingredients/source-scheduling",
