@@ -1,0 +1,146 @@
+---
+title: "Hiring Signals"
+description: "Use Hiring Signals in Bitscale to identify and qualify companies hiring for roles your product complements or replaces. Capture real-time intent, enrich contacts, and align outreach timing for higher conversions."
+---
+
+### Overview
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/915c1_ldZNc?si=JDTnw3xfcK1TqCIg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+**Hiring signals** are one of the most effective intent indicators in B2B outreach. They help identify companies that are either:
+
+- **Hiring for roles your product complements** (e.g., hiring SDRs if you sell sales enablement software), or
+- **Hiring for roles your product replaces** (e.g., hiring QA testers if you automate testing).
+
+By aligning your outreach with these hiring moments, you reach companies at the right time—when budget, need, and intent are aligned.
+
+Bitscale supports two main workflows for leveraging hiring intent:
+
+1. **Find Companies Hiring for a Specific Role** (intent-based source)
+2. **Track Active Jobs for Existing Accounts** (enrichment inside a grid)
+
+---
+
+## **Workflow 1: Find Companies Hiring for a Specific Role**
+
+### **Step 1: Create the Intent-Based Source**
+
+1. Go to **New Grid → Intent-Based Sources → Find LinkedIn Jobs Data**.
+2. Enter your **Job Titles**:
+   - Example: “SDR,” “Sales Development Representative.”
+3. (Optional) Add filters:
+   - **Description Keyword** – refine roles (e.g., “Azure” for Cloud Engineers).
+   - **Location** – e.g., _United States._
+   - **Experience Level / Job Type / Date Posted / Workplace Type.**
+4. Choose **Number of Results** (e.g., 1,000) and click **Import to New Grid**.
+   - Each company found represents an **active hiring intent signal**.
+
+---
+
+### **Step 2: Enrich the Company Data**
+
+1. Run **Enrich Company (LinkedIn)** on the imported list.
+   - Input: Company LinkedIn URL.
+   - Output: Live company data such as size, industry, and description.
+
+---
+
+### **Step 3: Qualify Companies (ICP Layer)**
+
+Use a **Formula Column** or **AI Enrichment** to flag ICP accounts.
+
+**Example (AI Formula):**
+
+> “Check if @employee_count is greater than 40. If yes, return Yes. Else, return No.”
+
+This helps identify target accounts that meet your size and relevance thresholds.
+
+---
+
+### **Step 4: Find Relevant People**
+
+1. Run **Find People from Company** on the qualified list.
+2. Inputs: Company URL, Department, Seniority, Location.
+3. Recommended setup for SDR-related hiring signals:
+   - **Department:** Sales
+   - **Seniority:** Head, VP, Director, Manager
+   - **Location:** United States
+4. Add a **Run Condition**:
+   - Only run for rows where `ICP Checker` contains “Yes.”
+
+---
+
+### **Step 5: Export Contacts & Refine**
+
+1. **Export to New Grid** – move contacts into a dedicated Contact-Level grid.
+2. Map key account-level data (e.g., employee count, industry) for reference.
+3. Run **GPT Mini** or **Formula Columns** to verify contact seniority:
+   - Prompt example:
+
+     > “Check if @title is a senior sales role or decision-making position.”
+4. Filter results to keep only decision-makers or relevant roles.
+
+---
+
+### **Step 6: Enrich Contact Data**
+
+Run the following enrichments:
+
+- **Email Waterfall** (find verified work/personal emails).
+- **Phone Waterfall** (find phone numbers).
+
+> 💡 Coverage typically averages **80–85% for emails** and **90%+ for phones**.
+
+---
+
+### **Step 7: Outreach & Automation**
+
+Push the final list into your outbound or CRM systems:
+
+- **Email Tools:** Instantly, Smartlead, Lemlist
+- **LinkedIn Tools:** Heyreach
+- **CRMs:** HubSpot, Salesforce
+
+You can also send data to **Slack** for manual review or internal visibility.
+
+---
+
+## **Workflow 2: Track Active Jobs for Existing Accounts**
+
+### **Step 1: Use Active Jobs Enrichment**
+
+1. In any existing Account Grid, go to **Enrichments → Active Jobs**.
+2. Input: Company LinkedIn URL.
+3. Run to fetch the last 10 active job listings for each company.
+
+---
+
+### **Step 2: Apply AI Filters**
+
+Layer a **GPT Mini** enrichment to qualify or extract intent from the job data:
+
+> “Check if the company is hiring for SDRs or Sales roles.”
+
+This identifies **existing ICP accounts** that have recently begun hiring for relevant roles—great for re-engagement or timing your follow-up.
+
+---
+
+## **Best Practices**
+
+- Use **Find Jobs Data** for discovering new intent-based companies.
+- Use **Active Jobs Enrichment** for tracking signals within your existing CRM or account list.
+- Combine hiring signals with other filters (e.g., funding rounds, tech stack) for deeper qualification.
+- Leverage **AI layers** to automate role-based classification.
+- Refresh the “Find Jobs Data” source weekly using the built-in **auto-fetch scheduling** feature.
+
+---
+
+## **Summary**
+
+Hiring Signals help you prioritize outreach by identifying companies that are actively expanding their teams in relevant roles. Whether you’re discovering new accounts or tracking existing ones, Bitscale’s hiring workflows let you:
+
+- Detect high-intent companies in real time
+- Qualify and segment accounts automatically
+- Find and enrich the right decision-makers for outreach
+
+For deeper playbooks or campaign examples, reach out to the Bitscale support team.

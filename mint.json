@@ -74,6 +74,7 @@
             "playbook/enrich-hubspot",
             "playbook/inbound-outbound",
             "playbook/salesforce-2-way",
+            "playbook/hiring-signals",
             "playbook/apify-find-jobs"
         ]
     },
@@ -93,6 +94,7 @@
         "ingredients/tools-perplexity",
         "ingredients/tools-linkscrape",
         "ingredients/source-google-search",
+        "ingredients/source-google-maps",
         "ingredients/source-post-interactors",
         "ingredients/source-linkedin-jobs",
         "ingredients/source-lookalikes",
