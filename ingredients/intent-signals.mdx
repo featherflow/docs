@@ -1,0 +1,293 @@
+---
+title: "Catch Intent Signals"
+description: "Bitscale lets you detect, enrich, and act on 15 high-impact intent signals , each revealing when your target accounts or prospects are ready for outreach. Signals can be combined, enriched, or automated into workflows to trigger personalized messages, CRM updates, or Slack alerts."
+---
+
+## 1. Hiring Signal (Tier 1) — Post-Based Hiring Detection
+
+**What it is:**\
+Detects individual LinkedIn posts where a person is directly hiring for a role (e.g., “We’re hiring a Product Manager!”).
+
+**How to implement on Bitscale:**
+
+1. Create a **LinkedIn Post Data** grid.
+2. Use enrichment filters for phrases like _“we’re hiring”_, _“join our team”_, etc.
+3. Bitscale extracts:
+   - Poster name, title, and company
+   - Post content, link, likes/comments count
+   - Detected job category (Backend, Product, Growth, etc.)
+4. Enrich poster details → find contact info → push to outreach tools.
+
+**Business impact:**
+
+- Highest-quality, real-time hiring intent.
+- Reach **the exact hiring manager**.
+- Enables contextual, one-to-one outreach right after a post goes live.
+
+---
+
+## 2. Hiring Signal (Tier 2) — Company-Level Hiring via LinkedIn Jobs
+
+**What it is:**\
+Finds companies hiring for specific roles directly through LinkedIn Jobs.
+
+**How to implement on Bitscale:**
+
+1. Create a **LinkedIn Job Data** grid.
+2. Enter keywords (e.g., _Sales Manager_, _Berlin_).
+3. Bitscale lists companies hiring for those roles.
+4. Run “Find People” → target HR or department heads.
+
+**Business impact:**
+
+- Great for **mid-market and enterprise** targeting.
+- Reveals companies in expansion mode.
+- Captures **latent budget signals** for your product or service.
+
+---
+
+## 3. Hiring Signal (Tier 3) — External Job Boards (via Apify)
+
+**What it is:**\
+Detects hiring intent from external job boards such as Indeed or Wellfound via Apify integrations.
+
+**How to implement on Bitscale:**
+
+1. Use **Apify import** to scrape job listings.
+2. Extract company, role, and location.
+3. Enrich company → find department decision-makers → trigger outreach.
+
+**Business impact:**
+
+- Expands reach beyond LinkedIn.
+- Ideal for **recruiters, agencies, and B2B SaaS** selling to fast-hiring sectors.
+- Surfaces **hidden hiring intent** not visible on mainstream platforms.
+
+---
+
+## 4. Hiring Signal (Tier 4) — Static Account Monitoring
+
+**What it is:**\
+Tracks hiring activity for a pre-defined list of target accounts.
+
+**How to implement on Bitscale:**
+
+1. Create or import a company list grid.
+2. Run “Detect Hiring Roles” enrichment.
+3. Schedule periodic auto-runs for updates.
+
+**Business impact:**
+
+- Continuous **ABM-level hiring visibility**.
+- Detects new department creation or expansion.
+- Keeps your account watchlist always current.
+
+---
+
+## 5. Funding & Growth Signal (Direct Detection)
+
+**What it is:**\
+Identifies companies that have recently raised capital or announced expansion.
+
+**How to implement on Bitscale:**
+
+1. Enrich company grid with “Get Funding Data” or “Google News Search.”
+2. Filter results by amount or round stage.
+3. Auto-trigger Slack or CRM updates for new funding events.
+
+**Business impact:**
+
+- Real-time **budget and growth awareness**.
+- Perfect for sales prioritization.
+- Slack alerts keep GTM teams instantly informed.
+
+---
+
+## 6. Funding & Growth Signal (Indirect / PR Based)
+
+**What it is:**\
+Detects mentions of new markets, product launches, or expansions in news or press coverage.
+
+**How to implement on Bitscale:**
+
+1. Run “Perplexity” or “Google Web Search” enrichment.
+2. Parse summaries for triggers like _launch_, _partnership_, _expanding into_.
+3. Route flagged companies into an outreach campaign.
+
+**Business impact:**
+
+- Surfaces **emerging demand signals** early.
+- Enables relevant outreach tied to current business momentum.
+
+---
+
+## 7. Job Change Signal (Method 1) — Find People (Recently Moved)
+
+**What it is:**\
+Detects individuals who recently switched companies or roles.
+
+**How to implement on Bitscale:**
+
+1. Use **Find People** enrichment with `recently moved` filter.
+2. Bitscale returns updated positions and companies.
+3. Enrich and sync changes to CRM.
+
+**Business impact:**
+
+- Ideal for **re-engaging past prospects** in new roles.
+- Turns warm relationships into new opportunities.
+
+---
+
+## 8. Job Change Signal (Method 2) — Static List Monitoring via Live LinkedIn Scrape
+
+**What it is:**\
+Keeps existing contact lists or CRM entries updated by live-scraping LinkedIn profiles.
+
+**How to implement on Bitscale:**
+
+1. Upload or sync CRM contacts.
+2. Enable “Live Profile Scrape” enrichment.
+3. GPT compares historical and current data to flag promotions or moves.
+
+**Business impact:**
+
+- Maintains **fresh, deduplicated contact data**.
+- Prevents wasted outreach on obsolete roles.
+- Automates CRM hygiene.
+
+---
+
+## 9. Social Signal (Type 1) — Account-Level Posts & Reactions
+
+**What it is:**\
+Fetches all LinkedIn posts from a company’s page, including engagement metrics.
+
+**How to implement on Bitscale:**
+
+1. Run **Get Company Posts** enrichment using company LinkedIn URL.
+2. Bitscale captures post text, link, date, likes/comments.
+3. Optionally, extract reactors/commenters for engagement mapping.
+
+**Business impact:**
+
+- Identifies **actively posting companies**.
+- Great for content-based outreach or ad-trigger campaigns.
+
+---
+
+## 10. Social Signal (Type 2) — Contact-Level Posts & Comments
+
+**What it is:**\
+Finds all posts and comments made by a specific individual on LinkedIn.
+
+**How to implement on Bitscale:**
+
+1. Run **Scrape LinkedIn Posts/Comments** on person URL.
+2. Bitscale returns URLs, topics, and engagement stats.
+3. Reference their activity in outreach for personalization.
+
+**Business impact:**
+
+- Strengthens **thought-leadership personalization**.
+- Helps build social context around high-value targets.
+
+---
+
+## 11. Social Signal (Type 3) — Viral Post Reactor and Commenter Extraction
+
+**What it is:**\
+Scrapes a single viral LinkedIn post to extract all reactors and commenters.
+
+**How to implement on Bitscale:**
+
+1. Use **LinkedIn Post URL** as grid source.
+2. Bitscale extracts all reactors and commenters with profile URLs.
+3. Enrich → filter by job function → push to outreach.
+
+**Business impact:**
+
+- Builds warm prospect pools from viral discussions.
+- Perfect for **community-driven lead generation**.
+
+---
+
+## 12. Tech Stack Signal
+
+**What it is:**\
+Detects the front-end, backend, and SaaS tools a company uses.
+
+**How to implement on Bitscale:**
+
+1. Run **Detect Tech Stack** or **BuiltWith Integration** enrichment.
+2. Filter by specific stacks or competing products.
+
+**Business impact:**
+
+- Enables **integration-based** or **replacement** campaigns.
+- Prioritizes accounts already aligned with your ecosystem.
+
+---
+
+## 13. Decision-Maker and Champion Signal
+
+**What it is:**\
+Identifies and classifies key roles into C-Level, Decision-Maker, and Champion tiers.
+
+**How to implement on Bitscale:**
+
+1. Use **Find People from Sales Navigator** enrichment.
+2. Bitscale parses job titles → categorizes contact.
+3. Optionally run **Live Profile Scrape** for validation.
+
+**Business impact:**
+
+- Drives **multi-threaded outreach** strategies.
+- Prevents single-contact dependency in sales cycles.
+
+---
+
+## 14. Website Engagement Signal (Level 1) — Page Visit Intent
+
+**What it is:**\
+Captures website visitors and their page-level engagement from tools like Factors, Vectors, or Rb2b.
+
+**How to implement on Bitscale:**
+
+1. Connect via **Webhook Integration**.
+2. Push visitor and session data to Bitscale.
+3. Enrich companies/contacts, score engagement by URL type (e.g., /pricing = high intent).
+
+**Business impact:**
+
+- Converts **anonymous traffic** to named accounts.
+- Enables **intent-based segmentation** for follow-up.
+
+---
+
+## 15. Website Engagement Signal (Level 2) — Behavioral Scoring & Automation
+
+**What it is:**\
+Goes beyond page visits to segment or trigger campaigns based on specific behavioral patterns.
+
+**How to implement on Bitscale:**
+
+1. Add scoring logic in grid (e.g., +10 points for /demo page, +20 for /pricing).
+2. Auto-trigger workflows when score \> threshold.
+3. Push qualified accounts to CRM or outreach tools.
+
+**Business impact:**
+
+- Creates a **real-time intent scoring engine**.
+- Automates campaign routing based on buyer readiness.
+
+---
+
+## Pro Tip — Compound Intent Signals
+
+Combine multiple signals in one workflow for exponential precision.
+
+> Example:\
+> “Companies hiring for Growth roles + raised Series A funding + VP Marketing recently commented on a LinkedIn post.”
+
+Use filters, logic columns, and auto-run enrichments to connect these signals inside your Bitscale grid.
