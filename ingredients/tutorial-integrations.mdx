@@ -1,0 +1,110 @@
+---
+title: "Setting up integrations on Bitscale"
+description: "Integrate Bitscale with CRMs, outbound tools, or data platforms using Bridge, API Key, or Webhook methods. Connect HubSpot, Instantly, Smartlead, and more to automate data syncs and workflows."
+---
+
+### Overview
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/GYg-gksF2dc?si=yuVEQiSWUYefB52G" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Bitscale connects seamlessly with your favorite tools for **data enrichment, outbound automation, CRM syncs, and alert workflows**. Integrations can be set up in one of three ways:
+
+1. **Bridge-Based Integrations** – For CRMs and complex tools like HubSpot or Salesforce.
+2. **API Key Integrations** – For outbound tools and enrichment platforms like Instantly or Smartlead.
+3. **Webhook Integrations** – For incoming alerts or data pushes from other software into Bitscale.
+
+---
+
+### **1. Bridge-Based Integrations**
+
+Bridge-based integrations handle authentication automatically.
+
+**Examples:**
+
+- HubSpot
+- Salesforce
+- Slack
+
+**Steps:**
+
+1. Go to **Integrations** from the sidebar.
+2. Click on the integration (e.g., HubSpot).
+3. Follow the bridge authentication process — a new window will open asking for permissions.
+4. Once connected, the integration appears as “Active” in your account.
+
+> 💡 No need to copy or paste API keys — everything is authorized through the bridge.
+
+---
+
+### **2. API Key Integrations**
+
+Most outbound and data tools connect via API keys.
+
+**Examples:**
+
+- Instantly
+- Smartlead
+- Lemlist
+- Heyreach
+
+**Steps:**
+
+1. Go to **Integrations → Add Integration**.
+2. Select the platform (e.g., Instantly).
+3. Enter:
+   - **Integration Name** (for your reference).
+   - **API Key** from your account on that platform.
+4. Save and test the connection.
+
+**Where to Find API Keys:**
+
+- Usually under _Settings → Integrations_ on the respective tool.
+- Copy and paste the API key into Bitscale.
+
+> 💡 You can reuse the same API key for multiple grids or workflows if your plan allows.
+
+---
+
+### **3. Webhook Integrations (Incoming Data)**
+
+For inbound data — such as alerts or lead pushes — use **Webhooks**.
+
+**Use Case:**\
+If another platform (e.g., Zapier, CRM, or form tool) sends data to Bitscale, you can set up a webhook endpoint to receive it.
+
+**Steps:**
+
+1. Go to **New Grid → Import Data → Webhook**.
+2. Copy the unique **Webhook URL** generated.
+3. Paste it into the source platform that sends the data.
+4. When the source sends an alert or payload, Bitscale automatically populates your grid in real time.
+
+> 💡 Webhooks are ideal for connecting alert systems, CRMs, or automation tools that send JSON data.
+
+---
+
+### **Custom API Integrations**
+
+For advanced users, Bitscale supports **custom HTTP API calls** to connect with unsupported platforms.
+
+Check the **Custom API Integration** documentation for step-by-step instructions on creating POST/GET requests, passing headers, and automating actions.
+
+---
+
+### **Best Practices**
+
+- Use **Bridge Integrations** for secure CRM connections.
+- Use **API Keys** for outbound or enrichment tools.
+- Use **Webhooks** for inbound alerts or automated data pushes.
+- Maintain separate integration names for multiple accounts (e.g., “Sales Team HubSpot” vs “Marketing HubSpot”).
+- Verify each integration with a test run before using it in workflows.
+
+---
+
+### **Summary**
+
+Bitscale integrations allow you to connect to CRMs, outreach platforms, and external systems through **three flexible methods** — Bridge, API Key, and Webhook. Whether you’re syncing data, pushing leads, or automating alerts, integrations ensure a smooth, end-to-end data flow between Bitscale and your sales stack.
+
+For any integration setup assistance, reach out via the Bitscale support channel.
+
+---
