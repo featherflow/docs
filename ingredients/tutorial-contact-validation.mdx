@@ -5,7 +5,7 @@ description: "Bitscale's contact enrichment waterfalls—whether for email or ph
 
 ### How the Waterfall Logic Works:
 
-<iframe width="728" height="410" src="https://www.youtube.com/embed/1ExF-HmttXA?si=Z-NLqCuBl0pTjEGf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="728" height="410" src="https://www.youtube.com/embed/1ExF-HmttXA?si=Z-NLqCuBl0pTjEGf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 Each waterfall is a ranked list of enrichment providers. When run, the process works as follows:
 
@@ -25,7 +25,7 @@ When this setting is enabled inside the waterfall:
 - Any email returned by a provider is first validated using a third-party service.
 - This validation checks for deliverability indicators like validity, catch-all domains, disposable emails, and other quality markers.
 - If the result is invalid or low-quality, that contact is **rejected**, and the waterfall continues to the next provider.
-- You are charged for all results that are returned.
+- You are charged for all providers that give a response.
 
 This ensures your outbound efforts rely on high-quality, deliverable contacts—at the expense of potentially more API calls and credits.
 
