@@ -12,7 +12,7 @@ Each waterfall is a ranked list of enrichment providers. When run, the process w
 1. Bitscale queries the first provider in the list.
 2. If that provider returns a contact (email or phone number), the result is returned and you're charged for that provider.
 3. If the provider does not return a result, the waterfall moves to the next one in the sequence.
-4. The process continues until a valid contact is found—or the waterfall ends.
+4. The process continues until a valid contact is found, or the waterfall ends.
 
 This approach ensures you only pay for the provider that successfully returns usable contact information.
 
@@ -27,7 +27,7 @@ When this setting is enabled inside the waterfall:
 - If the result is invalid or low-quality, that contact is **rejected**, and the waterfall continues to the next provider.
 - You are charged for all providers that give a response.
 
-This ensures your outbound efforts rely on high-quality, deliverable contacts—at the expense of potentially more API calls and credits.
+This ensures your outbound efforts rely on high-quality, deliverable contacts at the expense of potentially more API calls and credits.
 
 ---
 
@@ -37,7 +37,7 @@ How and where you apply validation depends on your workflow and intent.
 
 #### When to Keep Validation Outside the Waterfall
 
-If you are in the early stages of list building—perhaps testing segments, exploring new ICPs, or using large lead pools—it is more efficient to:
+If you are in the early stages of list building—perhaps testing segments, exploring new ICPs, or using large lead pools, it is more efficient to:
 
 - First collect all available emails (even unvalidated),
 - Then run a bulk validation pass outside the waterfall,
