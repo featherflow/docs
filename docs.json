@@ -1,0 +1,125 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Bitscale",
+  "colors": {
+    "primary": "#272B30",
+    "light": "#272B30"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "quickstart",
+              "glossary"
+            ]
+          },
+          {
+            "group": "Tutorials",
+            "pages": [
+              "ingredients/common-formulae",
+              "ingredients/prompts_101",
+              "ingredients/intent-signals",
+              "ingredients/run_conditions",
+              "ingredients/tutorial-contact-validation",
+              "ingredients/tutorial-required-optional",
+              "ingredients/tutorial-column-templates",
+              "ingredients/tutorial-integrations",
+              "ingredients/tutorial-first-grid",
+              "ingredients/tutorial-credit-types",
+              "ingredients/tools-vlookup",
+              "ingredients/workbooks",
+              "ingredients/source-scheduling",
+              "ingredients/tutorial-grid-nav",
+              "ingredients/rate_limits"
+            ]
+          },
+          {
+            "group": "Playbook",
+            "pages": [
+              "playbook/list-building",
+              "playbook/list-building-custom-filters",
+              "playbook/sdr-playbook",
+              "playbook/company-firmography",
+              "playbook/instantly-magic",
+              "playbook/enrich-hubspot",
+              "playbook/inbound-outbound",
+              "playbook/salesforce-2-way",
+              "playbook/hiring-signals",
+              "playbook/apify-find-jobs"
+            ]
+          },
+          {
+            "group": "Ingredients",
+            "pages": [
+              "ingredients/integrations-customAPI",
+              "ingredients/integrations-webhook-export",
+              "ingredients/integrations-webhook-import",
+              "ingredients/integrations-outplay",
+              "ingredients/integrations-lemlist",
+              "ingredients/integrations-heyreach",
+              "ingredients/tools-waterfall",
+              "ingredients/tools-buildwith",
+              "ingredients/tools-textmodels",
+              "ingredients/tools-googleweb",
+              "ingredients/tools-perplexity",
+              "ingredients/tools-linkscrape",
+              "ingredients/source-google-search",
+              "ingredients/source-google-maps",
+              "ingredients/source-post-interactors",
+              "ingredients/source-linkedin-jobs",
+              "ingredients/source-lookalikes",
+              "ingredients/find-people",
+              "ingredients/find-people-from-company",
+              "ingredients/list-building-1",
+              "ingredients/rollover-policy",
+              "ingredients/account-profiling-with-just-name"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg",
+    "href": "https://bitscale.ai"
+  },
+  "appearance": {
+    "default": "light",
+    "strict": true
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Community",
+        "href": "https://join.slack.com/t/bitscale-ai/shared_invite/zt-2o9qo2k9x-4_k5QuB9382FMGbgbTN3eg"
+      },
+      {
+        "label": "Website",
+        "href": "https://bitscale.ai/"
+      },
+      {
+        "label": "Platform",
+        "href": "https://app.bitscale.ai/"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Demo",
+      "href": "https://meetings.hubspot.com/team-bitscale"
+    }
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/bit_scale",
+      "linkedin": "https://www.linkedin.com/company/bit-scale",
+      "youtube": "https://www.youtube.com/@bitscale"
+    }
+  }
+}
