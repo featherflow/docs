@@ -3,7 +3,11 @@
   "theme": "mint",
   "name": "Bitscale",
   "csp": {
-    "frame-ancestors": ["'self'", "http://localhost:4000", "https://app.bitscale.ai"]
+    "frame-ancestors": [
+      "'self'",
+      "https://plug-platform.devrev.ai",
+      "https://api.devrev.ai"
+    ]
   },
   "colors": {
     "primary": "#272B30",
