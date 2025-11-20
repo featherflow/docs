@@ -2,13 +2,6 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Bitscale",
-  "csp": {
-    "frame-ancestors": [
-      "'self'",
-      "https://plug-platform.devrev.ai",
-      "https://api.devrev.ai"
-    ]
-  },
   "colors": {
     "primary": "#272B30",
     "light": "#272B30"
