@@ -87,3 +87,30 @@ description: "This page is a quick directory and ready reckoner for Bitscale’s
 | Amplemarket | Add leads to Amplemarket sequence                                 |
 | Lemlist     | Add/Update Lead, Lookup Lead                                      |
 | Close       | CRM lead/contact sync                                             |
+
+## Internal Database (Company & Contact)
+
+Bitscale ships with a large, ready-to-query internal dataset so you can build lists without leaving the app.
+
+- **Coverage:** ~**30M companies** and ~**400M contacts**
+- **Sourcing:**
+  - **Web crawling** of public web data (standardized and deduplicated).
+  - **B2B databases** (currently **whitelabelled**; we may **deanonymize** sources over time, the likes of **Apollo**, **Crunchbase**, **Bright Data**, **ContactOut etc.**)
+- **Access:**
+  - **New Grid → Find Companies** (firmographics-first)
+  - **New Grid → Find People** (persona-first)
+
+### What you get
+
+- **Company-level:** name, domain, location, basic firmographics (e.g., industry, size), and links you can enrich further.
+- **Contact-level:** name, title/seniority, company, profile links you can enrich with **Email/Phone Waterfalls**.
+
+### Credits & usage
+
+- Queries against the internal database consume **Search Credits** (auto-resets monthly).
+- Downstream enrichments (e.g., LinkedIn scrape, Email/Phone Waterfalls, AI steps) consume **Platform Credits**.
+
+### Best practices
+
+- Start with **Find Companies/Find People**, then layer **Enrich Company** and **Find People from Company** for precision.
+- Use **Run Conditions** and **ICP columns** to focus spend before running waterfalls or AI steps.
