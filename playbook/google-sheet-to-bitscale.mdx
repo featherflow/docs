@@ -1,0 +1,266 @@
+---
+title: "Google Sheet To Bitscale"
+description: "Sync Google Sheets into Bitscale automatically using a lightweight Apps Script. SDRs keep working in Sheets while Bitscale ingests new rows in near–realtime via webhooks."
+---
+
+### Overview
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/Ya90I3J64a8?si=6G5IxZXAYXg6MGVs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Bitscale is designed to **fit into your existing GTM stack**, not replace it overnight.
+
+In practice, many SDR and BDR teams still use **Google Sheets** as their first touchpoint for:
+
+- Early list building
+- Campaign tracking
+- Manual research
+- Lightweight collaboration
+
+To support this reality, Bitscale provides a **plug-and-play Google Apps Script** that lets you **sync Google Sheets into Bitscale automatically**, without changing how your team already works.
+
+---
+
+## What This Solves
+
+- SDRs continue working inside **Google Sheets**
+- Bitscale ingests new rows **automatically**
+- No manual exports or CSV uploads
+- Near–realtime sync (5, 10, 15-minute granularity)
+- Works with **any sheet structure** (fully modular)
+
+This setup is ideal when:
+
+- Multiple SDRs update the same sheet
+- You want Bitscale to act as the **processing engine**
+- You don’t want to disrupt existing workflows
+
+---
+
+## How It Works (High Level)
+
+1. SDRs maintain a Google Sheet
+2. A small **Apps Script** scans the sheet periodically
+3. Rows that have **not yet been pushed** are sent to Bitscale
+4. A `status` column is automatically created and updated
+5. Data lands in a **Webhook-based Grid** inside Bitscale
+
+---
+
+## Key Design Principles
+
+- **No fixed schema**: Any number of columns, any naming
+- **Single control column**: `status` (managed by the script)
+- **Idempotent sync**: Rows are pushed once and marked
+- **Pull-based ingestion**: Bitscale does not poll Google, the script pushes
+
+> ⚠️ Do **not** create a column named `status` manually.\
+> The script creates and manages it automatically.
+
+---
+
+## Prerequisites
+
+- A Google Sheet used by SDRs
+- A Bitscale workspace
+- A Webhook-based Grid in Bitscale
+
+---
+
+## Step 1: Create a Webhook Grid in Bitscale
+
+1. Go to **New Grid**
+2. Select **Import Data via Webhook**
+3. Copy the generated **Webhook URL**
+4. Keep this handy (you’ll need it in the script)
+
+---
+
+## Step 2: Set Up Google Apps Script
+
+1. Go to [**https://script.google.com**](https://script.google.com)
+2. Create a new project
+3. Name it something like `Sheets to Bitscale`
+4. Paste the provided script (shared in this documentation)
+
+You only need to configure **three values**:
+
+### Required Configuration
+
+```javascript
+const SPREADSHEET_ID = "your_spreadsheet_id";
+const SHEET_NAME = "Sheet1";
+const WEBHOOK_URL = "https://webhook.bitscale.ai/...";
+```
+
+#### How to find the Spreadsheet ID
+
+From a Google Sheets URL:
+
+```
+https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit
+```
+
+Copy the string between `/d/` and `/edit`.
+
+### Complete Script:
+
+```javascript expandable
+/**
+ * Automates sending new rows to a webhook.
+ * Automatically creates a 'Status' column and tracks sent rows.
+ */
+function sendNewRowsToWebhook() {
+  // --- CONFIGURATION ---
+  const SPREADSHEET_ID = '1crnBDXb4qmuqTM5q26rT0qACyeXS673fUerJopospfM'; // Get this from your browser URL
+  const SHEET_NAME = 'Sheet1';               // The name of the tab (case sensitive)
+  const WEBHOOK_URL = 'https://api.bitscale.ai/api/source/webhook/pull/02d2f070-0e9c-48c7-84cf-0eba02961bf9'; 
+  // ---------------------
+
+  try {
+    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    const sheet = ss.getSheetByName(SHEET_NAME);
+    
+    if (!sheet) {
+      Logger.log("Error: Could not find sheet named '" + SHEET_NAME + "'");
+      return;
+    }
+
+    // Get all data
+    const range = sheet.getDataRange();
+    const data = range.getValues();
+    const headers = data[0];
+
+    // Find or Create the "Status" column
+    let statusColIndex = headers.indexOf("Status");
+    if (statusColIndex === -1) {
+      statusColIndex = headers.length;
+      sheet.getRange(1, statusColIndex + 1).setValue("Status")
+           .setFontWeight("bold")
+           .setBackground("#f3f3f3");
+      headers.push("Status");
+      Logger.log("Added new Status column.");
+    }
+
+    // Loop through rows (starting at index 1 to skip header)
+    let processedCount = 0;
+    for (let i = 1; i < data.length; i++) {
+      let row = data[i];
+      let rowStatus = row[statusColIndex];
+
+      // Process only if the Status cell is empty
+      if (!rowStatus || rowStatus.toString().trim() === "") {
+        let payload = {};
+        headers.forEach((header, colIdx) => {
+          if (header !== "Status") {
+            payload[header] = row[colIdx];
+          }
+        });
+
+        const options = {
+          "method": "post",
+          "contentType": "application/json",
+          "payload": JSON.stringify(payload),
+          "muteHttpExceptions": true
+        };
+
+        try {
+          const response = UrlFetchApp.fetch(WEBHOOK_URL, options);
+          const responseCode = response.getResponseCode();
+
+          if (responseCode >= 200 && responseCode < 300) {
+            sheet.getRange(i + 1, statusColIndex + 1).setValue("Sent: " + new Date().toLocaleString());
+            processedCount++;
+          } else {
+            sheet.getRange(i + 1, statusColIndex + 1).setValue("Error: " + responseCode);
+          }
+        } catch (err) {
+          sheet.getRange(i + 1, statusColIndex + 1).setValue("Network Failed");
+        }
+      }
+    }
+    
+    Logger.log("Success: " + processedCount + " new rows processed.");
+
+  } catch (globalError) {
+    Logger.log("Critical Error: " + globalError.toString());
+  }
+}
+
+/**
+ * Creates a custom menu in the Google Sheet to run the script manually.
+ */
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('🚀 Webhook Sync')
+    .addItem('Sync New Rows Now', 'sendNewRowsToWebhook')
+    .addToUi();
+}
+```
+
+---
+
+## Step 3: Run Once (Manual Test)
+
+- Click **Run** inside Apps Script
+- Approve permissions
+- The script will:
+  - Create a `status` column (if missing)
+  - Push unprocessed rows to Bitscale
+  - Update their status automatically
+
+Refresh your Bitscale grid — data should appear.
+
+---
+
+## Step 4: Automate with Triggers
+
+To make this fully automatic:
+
+1. Go to **Triggers** in Apps Script
+2. Click **Add Trigger**
+3. Select:
+   - Function: the sync function
+   - Event type: **Time-driven**
+   - Frequency: every **10–15 minutes** (recommended)
+
+### Why not every minute?
+
+- SDRs may still be typing
+- Partial rows could sync prematurely
+- 10–15 minutes gives the best reliability
+
+Once set, **no manual action is required**.
+
+---
+
+## What Happens After Sync
+
+Inside Bitscale, the webhook grid behaves like any other grid:
+
+- You can enrich rows
+- Apply ICP filters
+- Find people
+- Run email/phone waterfalls
+- Push data to CRM or outreach tools
+
+The Google Sheet remains the **input layer**\
+Bitscale becomes the **execution layer**
+
+---
+
+## Common Use Cases
+
+- SDRs tagging accounts as “Ready for Enrichment”
+- Researchers pasting manual findings
+- Campaign managers coordinating multiple contributors
+- Transitional setups before full CRM adoption
+
+---
+
+## Best Practices
+
+- Keep one sheet per use case
+- Avoid editing rows after status is marked
+- Use Bitscale for downstream processing only
+- Pair with **Run Conditions** to control spend
+- Store the Apps Script under a shared Google account
