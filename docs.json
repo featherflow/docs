@@ -51,6 +51,7 @@
               "playbook/inbound-outbound",
               "playbook/salesforce-2-way",
               "playbook/hiring-signals",
+              "playbook/google-sheet-to-bitscale",
               "playbook/apify-find-jobs"
             ]
           },
