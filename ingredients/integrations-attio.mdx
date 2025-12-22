@@ -1,0 +1,143 @@
+---
+title: "Integrations - Attio"
+description: "The Attio integration allows Bitscale to act as a powerful intelligence layer on top of your CRM. You can ingest data, enrich it, traverse object relationships, and push updates back, all without disrupting your existing GTM workflows.
+
+If you’re using Attio and have custom workflow requirements, reach out to the Bitscale support team."
+---
+
+### Overview
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/zLWBJzrEmck?si=rosIBtHbeUbomlLX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Bitscale is designed to **fit into your existing GTM stack**, not replace it. Many teams already use Attio as their system of record, and Bitscale works alongside it as the **enrichment, intelligence, and automation layer**.
+
+With the native **Attio integration**, you can:
+
+- Pull data from Attio into Bitscale
+- Enrich and process it using data, AI, and workflows
+- Push updates back to Attio
+- Traverse relationships between objects (Person ↔ Company ↔ Deal)
+
+The integration works similarly to HubSpot and Salesforce integrations on Bitscale.
+
+---
+
+## What You Can Do with Attio + Bitscale
+
+- Import **people, companies, and deals** from Attio
+- Apply enrichments, AI layers, and intent signals
+- Look up **related objects** (person → company, company → people)
+- Update Attio records directly from Bitscale
+- Build multi-step CRM workflows without leaving your GTM stack
+
+---
+
+## Setting Up the Integration
+
+### Step 1: Connect Attio
+
+1. Go to **Integrations** in Bitscale.
+2. Click **Add Integration**.
+3. Select **Attio**.
+4. You’ll be redirected to Attio’s authorization screen.
+5. Approve access and return to Bitscale.
+
+That’s it. The integration is now active.
+
+> Attio uses a secure **bridge-based (OAuth)** connection. No API keys are required.
+
+---
+
+## Importing Data from Attio
+
+### Step 2: Pull Attio Records into a Grid
+
+1. Go to **New Grid**.
+2. Select **Import from Attio**.
+3. Choose:
+   - **Attio account**
+   - **Object type** (Person, Company, Deal)
+4. Apply filters (example: _Lead Status is not empty_).
+5. Select required fields:
+   - **Record ID** (mandatory)
+   - Other attributes (e.g., Email)
+6. Click **Preview Results**.
+7. Import into a **New Grid**.
+
+You now have Attio records inside Bitscale, ready for enrichment.
+
+---
+
+## Looking Up Related Attio Objects
+
+### Use Case: Person → Company Lookup
+
+If your grid contains **Person records** with Attio Record IDs:
+
+1. Go to **Enrichments → Integrations → Attio Lookup Object**.
+2. Select:
+   - **Object Type:** Person
+   - **Match Field:** Record ID
+3. Fetch the related **Company Record ID**.
+4. Run the enrichment and add it as a column.
+
+---
+
+### Use Case: Fetch Company Attributes
+
+Once the Company Record ID is available:
+
+1. Run another **Attio Lookup Object**.
+2. Select:
+   - **Object Type:** Company
+   - **Match Field:** Company Record ID
+3. Fetch attributes like:
+   - Domain
+   - Description
+   - Industry
+4. Add results as columns.
+
+This allows you to traverse Attio relationships directly from Bitscale.
+
+---
+
+## Updating Attio Records from Bitscale
+
+### Step 3: Push Updates Back to Attio
+
+After enriching or computing new values:
+
+1. Go to **Enrichments → Integrations → Attio**.
+2. Select:
+   - **Object Type** (Company or Person)
+   - **Action:** Update Record
+3. Map:
+   - **Record ID** (from your grid)
+   - **Fields to update** (e.g., Description, Domain)
+4. Run the enrichment.
+
+All mapped values are written directly back to Attio.
+
+**Examples**
+
+- Push enriched domains to Company records
+- Update descriptions with AI-generated summaries
+- Sync ICP flags or scoring back to CRM
+
+---
+
+## Common Workflows
+
+- Import Attio leads → Enrich emails & phones → Update Attio
+- Import people → Lookup companies → Enrich firmographics → Sync back
+- Run ICP classification → Write tier or score to Attio
+- Combine Attio data with external intent before outreach
+
+---
+
+## Best Practices
+
+- Always include **Record ID** when importing from Attio
+- Use **Run Conditions** to limit CRM updates to qualified records
+- Push only **final or validated values** back to CRM
+- Separate grids for **import**, **processing**, and **sync-back** when workflows grow complex
