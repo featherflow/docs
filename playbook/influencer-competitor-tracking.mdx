@@ -1,0 +1,214 @@
+---
+title: "Influencer and Competitor Tracking"
+description: "This workflow turns LinkedIn engagement, from both competitors and influencers, into a repeatable, high-intent outbound engine. With minimal setup, Bitscale handles discovery, qualification, enrichment, and delivery into your GTM stack."
+---
+
+### Overview
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/ACGgcWjBy80?si=pqpesxFqeXXGXjwW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+One of the most reliable sources of **high-intent outbound leads** on LinkedIn is **organic engagement on relevant posts**.
+
+This applies equally to:
+
+- **Competitor posts** (people actively engaging with alternatives)
+- **Influencer posts** (people consuming and reacting to content in your problem space)
+
+When someone **comments or reacts** to these posts, it signals awareness, interest, and timing. Bitscale allows you to systemize this signal and convert it into a scalable outbound workflow.
+
+This guide walks through a **multi-grid workflow** that:
+
+- Tracks competitors _and_ influencers
+- Pulls their recent posts
+- Captures commenters and reactors
+- Deduplicates and qualifies contacts
+- Pushes sales-ready leads into your outbound stack
+
+---
+
+## Workflow Architecture (High Level)
+
+This setup uses **three grids**, each responsible for a specific stage:
+
+1. **Creator Tracking Grid** – Who to monitor
+2. **Post Qualification Grid** – Which posts to act on
+3. **Contact Grid** – Who to reach out to
+
+The workflow is identical for **competitors and influencers**.\
+Only the **creator list and messaging angle** change.
+
+---
+
+## Step 1: Track Competitors & Influencers
+
+### Purpose
+
+Maintain a static list of LinkedIn creators whose posts consistently attract your target audience.
+
+This can include:
+
+- Direct competitors
+- Adjacent competitors
+- Industry influencers
+- Founders
+- Operators
+- Subject-matter experts
+- Community builders
+
+### Setup
+
+- Create a grid with input columns:
+  - Creator Name
+  - LinkedIn Profile URL
+- Use Bitscale’s LinkedIn post discovery enrichment to:
+  - Fetch recent posts for each creator
+- Export posts into a second grid
+
+This grid is long-lived and low-maintenance. You update it only when you want to add or remove tracked creators.
+
+---
+
+## Step 2: Qualify and Deduplicate Posts
+
+### Purpose
+
+Ensure outreach is driven by **high-signal content**, not noise.
+
+### What Happens in This Grid
+
+- Each row represents a **single LinkedIn post**
+- Captured attributes include:
+  - Post URL
+  - Post text
+  - Like count
+  - Comment count
+
+### Best Practices Implemented
+
+- **Post deduplication** using Post URL\
+  Prevents repeatedly targeting engagement from the same post.
+- **Engagement thresholds**\
+  Example:
+  - Process only posts with 200+ combined likes and comments\
+    This works well for founders and mid-tier influencers.
+- **Optional post classification**
+  - Skip promotional posts
+  - Prioritize educational or opinionated content
+
+Post text can be retained for personalization or reference later.
+
+---
+
+## Step 3: Capture Commenters and Reactors
+
+### Purpose
+
+Extract people who showed **explicit, organic intent**.
+
+### How It Works
+
+For each qualified post:
+
+- Bitscale fetches:
+  - Commenters
+  - Reactors
+- Each profile is pushed into a **contact-level grid**
+
+From a small set of creators, this typically yields **thousands of engaged profiles**.
+
+Example:
+
+> 4 competitors or influencers → ~4,000 engaged contacts
+
+This applies equally whether the creator is:
+
+- A competing product
+- A well-known influencer
+- A niche domain expert
+
+---
+
+## Step 4: Contact-Level Qualification
+
+### Purpose
+
+Convert engagement into **sales-ready prospects**.
+
+### Processing in This Grid
+
+- Deduplicate contacts using LinkedIn URL
+- Enrich basic profile and company data
+- Apply ICP logic
+  - Recommended: replace the default ICP logic with your own
+- Normalize titles and company names
+- Remove emojis and noisy text for clean outbound copy
+
+### CRM Safety Check
+
+- Lookup against HubSpot (or another CRM)
+- Exclude:
+  - Existing customers
+  - Active opportunities
+  - Contacts already in sequences
+
+This prevents overlapping outreach and poor buyer experience.
+
+---
+
+## Step 5: Context-Aware Outreach
+
+### Final Actions
+
+- Run email and phone waterfalls
+- Apply run conditions to control spend
+- Push qualified contacts to:
+  - HeyReach
+  - Instantly
+  - Lemlist
+  - Smartlead
+  - Any supported outbound tool
+
+### Messaging Angle (Key Difference)
+
+The workflow is the same, but the **copy angle changes**:
+
+- **Competitor posts**
+  - Position as an alternative
+  - Reference the broader problem space
+  - Avoid direct competitor call-outs
+- **Influencer posts**
+  - Reference shared learning or insight
+  - Anchor on thought leadership
+  - Position as a complementary solution
+
+Bitscale allows you to branch messaging logic without duplicating workflows.
+
+---
+
+## What You Need to Maintain
+
+Only two inputs:
+
+1. Creator Name
+2. Creator LinkedIn URL
+
+Everything else, post discovery, engagement capture, deduplication, ICP filtering, enrichment, and routing, runs automatically.
+
+---
+
+## Why This Works
+
+- Engagement is **organic**, not inferred
+- Intent is captured at the moment of interest
+- Works across competitors _and_ influencers
+- Scales without exhausting your TAM
+- Keeps outreach contextual and human
+
+---
+
+## Recommended Enhancements
+
+- Separate competitor and influencer creators into tags
+- Use engagement count to score accounts
+- Generate post-aware first lines using AI
+- Route influencers vs competitors into different campaigns
