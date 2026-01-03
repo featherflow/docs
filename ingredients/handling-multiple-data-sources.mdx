@@ -1,0 +1,138 @@
+---
+title: "Handling Multiple Data Sources"
+---
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/zYfL0e-0vsc?si=nZ8zECEhB1oFrWwk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+This guide covers a few core Bitscale concepts that you’ll use in almost every workflow:
+
+- Adding multiple data sources to a grid
+- Fetching more rows from an existing source
+- Creating and using workbooks
+- Scheduling data sources
+- Adding rows to blank grids
+
+If you understand these well, most Bitscale workflows will feel intuitive.
+
+---
+
+## Accessing a Grid
+
+From the Bitscale home screen, you can either:
+
+- Create a **new grid**, or
+- Open an **existing grid**
+
+Both actions bring you to the same grid interface, an Excel-like workspace where data flows from left to right through enrichments, transformations, and outputs.
+
+---
+
+## Adding Multiple Data Sources to the Same Grid
+
+A single grid can ingest data from **multiple sources**, as long as the same downstream logic applies to all rows.
+
+### When to use this
+
+- You want to process multiple lists with identical enrichment logic
+- You are combining people or company lists from different sources
+- You want a unified output without duplicating workflows
+
+### How it works
+
+1. Inside a grid, go to **Data Sources** (top-left)
+2. Select a source such as:
+   - Find Companies
+   - Find People
+   - Import CSV
+3. Configure filters and preview results
+4. Click **Add to current grid**
+
+The new rows are appended to the existing grid and automatically flow through all configured steps.
+
+---
+
+## Fetching More Rows from an Existing Source
+
+Most sources return only an initial batch (usually 100 rows) by default. This allows you to test workflows before scaling.
+
+### To fetch more rows
+
+1. Open **Data Sources**
+2. Click on the source you previously used
+3. Choose how many rows to fetch (up to 1,000 per batch)
+4. Click **Fetch rows**
+
+You can repeat this until:
+
+- You exhaust the available results, or
+- You reach your search credit limit
+
+There is no hard limit on total rows, only batch size.
+
+---
+
+## Creating a Workbook (Multiple Grids Together)
+
+A **workbook** is simply a collection of grids grouped together.
+
+### Why use workbooks
+
+- Keep related grids organized
+- Pass data between grids
+- Separate account-level and contact-level processing
+- Maintain clean workspaces for complex workflows
+
+### Two ways to create a workbook
+
+#### 1. Exporting data to a new grid
+
+When you export rows (for example, contacts found from companies) and choose **Create new grid**, Bitscale automatically creates a workbook.
+
+#### 2. Importing a source into a new grid
+
+1. Open **Data Sources**
+2. Configure any source
+3. Click **Import to new grid**
+
+This creates a new grid inside the same workbook.
+
+You’ll see multiple grids listed at the bottom-left of the interface.
+
+---
+
+## Scheduling Data Sources
+
+Some sources can be scheduled to run automatically.
+
+### Common use cases
+
+- Daily ingestion of new people or companies
+- Ongoing intent monitoring
+- Evergreen outbound pipelines
+
+### How to schedule a source
+
+1. Open **Data Sources**
+2. Select the source you want to schedule
+3. Enable scheduling
+4. Set frequency (daily, weekly, etc.)
+5. Save
+
+To fully automate processing:
+
+- Enable **Auto-run grid**
+- Enable **Auto-run enrichments**
+
+New rows will be fetched and processed automatically.
+
+---
+
+## Working with Blank Grids
+
+You can also start with a **blank grid** if:
+
+- You want to manually input data
+- You are receiving data via webhook
+- You plan to populate rows later via exports or integrations
+
+Once rows are added, the grid behaves exactly like any other grid and supports all enrichments, formulas, and outputs.

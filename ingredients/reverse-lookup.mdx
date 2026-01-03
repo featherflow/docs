@@ -1,0 +1,152 @@
+---
+title: "Reverse Lookup"
+---
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/hNvJOsBB2uo?si=jDQhS6kk_4Cn3NEi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Reverse lookup is one of the most valuable use cases for **product-led growth** and **inbound-heavy teams**.
+
+Most product companies:
+
+- Ask only for an **email** at signup
+- Want to keep onboarding friction low
+- Enrich the user **after** signup to understand who they are
+
+Bitscale enables this by letting you reverse-enrich a user starting from just an email address.
+
+---
+
+## When to Use Reverse Lookup
+
+This workflow is commonly used by:
+
+- Product-led SaaS companies
+- Freemium tools
+- Trial-based platforms
+- Inbound motion teams
+- Growth and lifecycle teams
+
+Typical goals:
+
+- Identify the user’s role and seniority
+- Understand their company and ICP fit
+- Personalize onboarding or sales follow-ups
+- Route leads to the right workflow or team
+
+---
+
+## Supported Inputs
+
+Bitscale supports reverse lookup from:
+
+- **Work emails** (most common in B2B)
+- **Personal emails** (Gmail, Outlook, etc.)
+
+You can route emails automatically based on domain type.
+
+---
+
+## Step 1: Start with an Email Column
+
+Create or ingest a grid that contains an **inbound email** column.
+
+This can come from:
+
+- Signup events (via webhook)
+- CSV imports
+- Product analytics tools
+- CRM syncs
+
+---
+
+## Step 2: Route Work vs Personal Emails (Recommended)
+
+Before running enrichment, add simple conditions:
+
+- If email **does not contain**:
+  - `gmail`
+  - `outlook`
+  - `yahoo`
+  - other personal ESPs\
+    → Treat as **work email**
+- Else → Treat as **personal email**
+
+This improves match accuracy and avoids wasted credits.
+
+---
+
+## Step 3: Find LinkedIn Profile from Email
+
+Bitscale provides two dedicated enrichments:
+
+- **Find LinkedIn via Work Email**
+- **Find LinkedIn via Personal Email**
+
+### Why LinkedIn is the key output
+
+Once you have a LinkedIn URL:
+
+- Most people-level enrichments unlock
+- Accuracy increases significantly
+- Downstream workflows become reliable
+
+Map the inbound email to the correct enrichment and run it.
+
+---
+
+## Step 4: Enrich the Person Using LinkedIn
+
+After retrieving the LinkedIn URL:
+
+1. Add it as a column
+2. Run **Enrich Person**
+3. Bitscale scrapes and structures:
+   - Name
+   - Current role
+   - Company
+   - Seniority
+   - Skills
+   - Experience
+   - Summary
+
+This gives you a full profile from a single email.
+
+---
+
+## Step 5: Expand the Workflow (Optional)
+
+Once the person is enriched, you can:
+
+- Find **phone numbers**
+- Enrich the **company**
+- Run **Bit Agent** to infer:
+  - ICP fit
+  - Use case
+  - Industry relevance
+- Push data to:
+  - CRM
+  - Sales tools
+  - Lifecycle automation
+  - Slack alerts
+
+All from a single email input.
+
+---
+
+## Common Product Use Cases
+
+- Lead scoring at signup
+- Sales-assisted onboarding
+- Trial-to-paid routing
+- Account-based personalization
+- Founder / decision-maker detection
+- Enterprise signal detection from inbound signups
+
+---
+
+## Best Practices
+
+- Always aim to resolve a **LinkedIn URL first**
+- Use conditional routing for personal vs work emails
+- Treat reverse lookup as the **entry point**, not the final step
+- Layer company enrichment and AI classification for best results

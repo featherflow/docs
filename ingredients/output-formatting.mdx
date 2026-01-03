@@ -1,0 +1,163 @@
+---
+title: "Output Formatting"
+description: "Output formatting allows you to - Enforce structure on AI responses - Build reliable, multi-step workflows - Prevent hallucination-driven failures - Safely automate downstream actions"
+---
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/VdYoEvdnzOA?si=U_YibEP1x0sP7Zr8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+When building automated workflows, **structure matters**.
+
+Any response you generate, especially from AI models, needs to follow a predictable format so it can be:
+
+- Referenced by later steps
+- Used in conditions or classifications
+- Pushed reliably to CRMs, grids, or integrations
+
+AI models are powerful, but by default they can:
+
+- Change response formats
+- Add extra text
+- Reorder information
+- Hallucinate structure even with strict prompts
+
+To solve this, Bitscale provides **Output Formatting**, a built-in way to enforce structured AI responses across all AI enrichments.
+
+---
+
+## Why Output Formatting Is Important
+
+Without structured outputs:
+
+- Workflows break unpredictably
+- Downstream enrichments fail
+- CRM pushes become unreliable
+- Automation becomes fragile
+
+With output formatting:
+
+- Every run produces the same schema
+- Columns are always consistent
+- AI results can safely drive logic and actions
+
+---
+
+## Where Output Formatting Is Available
+
+Output formatting is available on:
+
+- **Bit Agent**
+- **GPT / Claude / AI enrichments**
+- **Any text-based AI step**
+
+You’ll find it under **Set Output Format** in the enrichment configuration.
+
+---
+
+## Fields vs Lists
+
+Bitscale supports two output types:
+
+### Fields
+
+- Used for **single values** or **comma-separated values**
+- Best for:
+  - Industry
+  - ICP classification
+  - Boolean flags
+  - Short summaries
+
+**Example:**
+
+```
+Industry: SaaS, DevTools
+Target Demography: Mid-market B2B
+```
+
+---
+
+### Lists
+
+- Used for **multiple structured entries**
+- Each item is treated as a separate entity
+- Best for:
+  - Event attendees
+  - Customers
+  - Technologies
+  - People lists
+  - Anything you may want to explode into rows later
+
+**Example:**
+
+```
+Customer 1: Name, Company
+Customer 2: Name, Company
+```
+
+If you plan to export or explode results into another grid, always use **Lists**.
+
+---
+
+## Manually Defining Output Formats
+
+You can manually define:
+
+- Field name
+- Data type (text, boolean, number, etc.)
+- Output structure
+
+This gives maximum control but requires clarity on what the model should return.
+
+---
+
+## Using “Generate with AI” (Recommended)
+
+For most users, the easiest and safest approach is **Use AI**.
+
+### How it works
+
+- Bitscale reads your prompt
+- Understands the intent
+- Automatically generates the correct output schema
+
+### Example
+
+Prompt:
+
+> Go through @company_website and find their target demography and customers
+
+Click **Use AI**, and Bitscale generates:
+
+- Target Demography
+- Industry
+- Customers
+
+All correctly typed and structured.
+
+This dramatically reduces prompt engineering effort and prevents format drift.
+
+---
+
+## Running and Storing Structured Outputs
+
+Once the enrichment runs:
+
+1. The AI response is forced into the defined structure
+2. Each output field becomes a reusable column
+3. These columns can now be:
+   - Referenced in later prompts
+   - Used in run conditions
+   - Exported to CRMs
+   - Passed to other grids or integrations
+
+No matter how many times the enrichment runs, the structure remains consistent.
+
+---
+
+## Best Practices
+
+- Always use output formatting for **AI-driven workflows**
+- Use **Fields** unless you explicitly need row-level expansion
+- Prefer **Use AI** unless you have very strict schema requirements
+- Treat structured outputs as **foundational workflow primitives**
+
+---
