@@ -1,0 +1,261 @@
+---
+title: "Run Bitscale Grids via API"
+description: "Using Bitscale as a backend service allows you to:
+
+Enrich data programmatically
+
+Embed GTM intelligence anywhere
+
+Keep workflows modular and scalable
+
+Avoid rebuilding enrichment logic
+
+If you’re designing a custom architecture or need help wiring listeners, the Bitscale support team can help you plan this end to end."
+---
+
+<iframe width="728" height="410" src="https://www.youtube.com/embed/PkClX7lKKN8?si=xdO-xP7h1V3LSjj0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+Many teams don’t use Bitscale as a standalone UI tool.
+
+Instead, they use it as a **backend GTM and enrichment engine** that plugs into existing systems, such as:
+
+- Product backends
+- Admin panels
+- PLG workflows
+- Internal GTM tools
+- Custom RevOps pipelines
+
+In these setups, Bitscale:
+
+- Receives data via APIs
+- Runs enrichment and logic
+- Sends structured results back
+- Stays completely invisible to end users
+
+This guide explains how to set up and operate this pattern end to end.
+
+---
+
+## Why Use Bitscale This Way?
+
+Teams choose this approach when:
+
+- They already have workflows in place
+- They want to avoid rebuilding logic elsewhere
+- They need reliable enrichment at scale
+- They want GTM intelligence without UI dependency
+
+Typical reasons:
+
+- Enriching signups in real time
+- Filling missing CRM data on demand
+- Powering internal dashboards
+- Running enrichment as a background service
+
+---
+
+## High-Level Architecture
+
+The flow always looks like this:
+
+1. **Your system sends data to Bitscale**
+2. **Bitscale runs enrichments and AI logic**
+3. **Bitscale sends enriched data back**
+4. **Your system continues its workflow**
+
+Bitscale becomes one step in a larger system.
+
+---
+
+## Example Architectures
+
+### Example 1: PLG Signup Enrichment
+
+**Scenario**\
+A user signs up with a personal email.
+
+**Flow**
+
+1. Backend sends email to Bitscale
+2. Bitscale:
+   - Detects personal email
+   - Finds LinkedIn
+   - Enriches person
+   - Infers company and role
+3. Data is sent back
+4. Backend:
+   - Scores lead
+   - Routes to sales or nurture
+
+---
+
+### Example 2: Internal Admin Panel
+
+**Scenario**\
+Ops team clicks “Fill missing data” for an account.
+
+**Flow**
+
+1. Admin panel sends partial data to Bitscale
+2. Bitscale:
+   - Finds missing LinkedIn
+   - Enriches company
+   - Normalizes fields
+3. Data is pushed back
+4. Admin panel updates records instantly
+
+---
+
+### Example 3: Custom GTM Engine
+
+**Scenario**\
+A company runs outbound from an internal tool.
+
+**Flow**
+
+1. Tool sends a lead to Bitscale
+2. Bitscale:
+   - Enriches contact
+   - Finds phone + email
+   - Classifies ICP
+3. Results are pushed back
+4. Tool triggers outreach automatically
+
+---
+
+## Step 1: Create a Webhook Input Grid
+
+1. Go to **New Grid**
+2. Select **Import data from Webhook**
+3. Create the grid
+
+This grid now acts as a **public ingestion endpoint**.
+
+---
+
+## Step 2: Send Data to Bitscale
+
+### Webhook URL
+
+- Open the grid
+- Go to **Data Sources → Webhook**
+- Copy the URL
+
+### Example Request
+
+```
+POST /webhook-url
+{
+  "user_id": "abc123",
+  "email": "user@gmail.com",
+  "source": "signup"
+}
+```
+
+Each request:
+
+- Creates a new row
+- Automatically maps keys to columns
+
+---
+
+## Step 3: Build the Enrichment Workflow
+
+Inside the grid, you can add any logic you need.
+
+### Common enrichment chain
+
+- Detect email type
+- Reverse lookup LinkedIn
+- Enrich person
+- Enrich company
+- AI-based classification
+- Normalization
+
+All logic is visual, editable, and debuggable.
+
+---
+
+## Step 4: Push Data Back to Your System
+
+Use **HTTP API enrichment** to send data back.
+
+### Example Payload
+
+```
+{
+  "user_id": "{{user_id}}",
+  "linkedin_url": "{{linkedin_url}}",
+  "company": "{{company_name}}",
+  "seniority": "{{seniority}}"
+}
+```
+
+This allows:
+
+- Partial updates
+- Idempotent writes
+- Safe concurrency
+
+---
+
+## Step 5: Automate Everything
+
+Enable:
+
+- **Auto-run grid**
+- **Auto-run enrichments**
+
+Now:
+
+- Every webhook triggers the full pipeline
+- No manual runs required
+- Fully asynchronous processing
+
+---
+
+## Handling Concurrency and Updates
+
+Best practices:
+
+- Always send a **unique ID**
+- Use that ID in callbacks
+- Treat Bitscale as stateless
+
+This ensures:
+
+- Multiple requests don’t conflict
+- Re-runs are safe
+- Updates overwrite cleanly
+
+---
+
+## Advanced Patterns
+
+### Multi-Step Callbacks
+
+- Push intermediate results
+- Trigger multiple listeners
+- Fan out enrichment results
+
+### Conditional Pipelines
+
+- Run different logic for different inputs
+- Route data based on ICP or intent
+
+### Async Batch Processing
+
+- Queue data
+- Process in Bitscale
+- Consume results later
+
+---
+
+## Why This Pattern Scales Well
+
+- Bitscale absorbs enrichment complexity
+- Your system stays lightweight
+- Logic is editable without redeploys
+- Easy to extend workflows later
+- Debugging via grid UI
