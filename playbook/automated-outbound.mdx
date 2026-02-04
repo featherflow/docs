@@ -1,0 +1,199 @@
+---
+title: "Automated Outbound From CRM to Cold Email"
+---
+
+<div style={{ position:"relative",width:"100%",paddingTop:"56.25%" }}>
+<iframe src="https://www.youtube.com/embed/PuUS1Cvol-I?si=rdVF3QooTPID0ydv" title="YouTube video player" style={{ position:"absolute",inset:0,width:"100%",height:"100%",border:0 }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen />
+
+</div>
+
+<Card title="Set up fully automated outbound that runs end to end without manual work
+
+" icon="b" iconType="brands" color="#5a0c0c" horizontal href="app.bitscale.ai">
+  <Badge color="orange" size="lg" shape="pill" stroke="true" iconType="solid">Try Bitscale Now!</Badge>
+</Card>
+
+## What this workflow does
+
+This workflow shows how to run automated outbound at scale.
+
+It handles:
+
+- Research on companies and people
+- Intent detection
+- ICP qualification
+- Personalized copy generation
+- Pushing ready emails into your outbound tool
+
+Once set up, it runs automatically whenever new companies appear in your data source.
+
+---
+
+## How the workflow is structured
+
+The workflow is split into two grids:
+
+### Account level grid
+
+This grid handles everything related to companies.
+
+It answers questions like:
+
+- Is this company relevant for us?
+- Are they showing buying intent?
+- Are they a good ICP fit?
+
+### Contact level grid
+
+This grid handles everything related to people.
+
+It answers questions like:
+
+- Who should we reach out to?
+- What is the best personalization angle?
+- What should the email say?
+
+Copy generation always happens at the contact level.
+
+---
+
+## Step 1: Load companies automatically
+
+In this example, companies are pulled from a CRM.
+
+- New companies added to the CRM are auto enrolled
+- The sync can run monthly, weekly, daily, hourly, or every 30 minutes
+- The cadence depends on your outbound volume and use case
+
+All existing CRM fields like record IDs and object IDs are retained.
+
+---
+
+## Step 2: Enrich company data
+
+Once a company is loaded:
+
+- The latest LinkedIn profile is fetched
+- Missing or outdated company information is refreshed
+- All enriched fields are stored for later use
+
+This ensures research is always based on current data.
+
+---
+
+## Step 3: Detect intent signals
+
+In this workflow, intent is based on hiring activity.
+
+- A list of relevant job titles is defined
+- Active job openings are fetched for each company
+- Jobs are matched against your relevant role list
+
+If a company is hiring for a relevant role, it passes this step.
+
+The matched job titles are also stored for human validation if needed.
+
+---
+
+## Step 4: Check ICP fit using website research
+
+Next, the workflow checks if the company is a real ICP match.
+
+How this works:
+
+- A short description of your product is provided
+- The Bit Agent scans the company website and public data
+- It looks for scenarios where your product can provide value
+
+Based on this research, the company is marked as ICP qualified or not.
+
+Only ICP qualified companies move forward.
+
+---
+
+## Step 5: Find people only after qualification
+
+Contacts are found only after:
+
+- Intent is confirmed
+- ICP fit is verified
+
+This avoids wasting time finding people at companies you would never reach out to.
+
+Qualified contacts are pushed into the contact level grid.
+
+---
+
+## Step 6: Prepare data for personalization
+
+In the contact grid:
+
+- All enrichment data is auto populated
+- ICP reasoning and website audit context is retained
+- Intent signals from the account level are carried over
+
+This gives full context for copy generation.
+
+---
+
+## Step 7: Add a strong personalization hook
+
+A job change check is used as a personalization angle.
+
+- The workflow checks how long the contact has been in their role
+- If they joined within the last year, it is flagged
+- Recent joiners are more open to exploring new tools
+
+This information is later referenced in the email opener.
+
+---
+
+## Step 8: Generate cold email copy automatically
+
+Cold emails are generated using Bitscale’s internal copy engine.
+
+Each email is created in three parts:
+
+- Icebreaker
+- Value proposition
+- Call to action
+
+All parts are combined into a final email.
+
+---
+
+## Step 9: Push to your outbound tool
+
+The generated emails are pushed directly to your outbound platform.
+
+In this example, Instantly is used, but the workflow can be adapted to other tools.
+
+Once enabled, the entire process runs automatically with no monitoring needed.
+
+---
+
+## Other data sources you can use
+
+This workflow is not limited to one CRM.
+
+You can also:
+
+- Connect other CRMs like HubSpot
+- Use Bitscale’s internal company database with ICP filters
+- Pull SMBs using Google Maps searches
+- Trigger workflows using intent based signals
+
+Cadences can range from hundreds to thousands of companies depending on your TAM.
+
+---
+
+## Why this matters
+
+This setup removes manual outbound work entirely.
+
+As long as a company exists in your data source and has not gone through the workflow, it will:
+
+- Get researched
+- Get qualified
+- Get personalized outreach generated
+- Get pushed to execution automatically

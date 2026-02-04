@@ -44,6 +44,7 @@
           {
             "group": "Playbook",
             "pages": [
+              "playbook/automated-outbound",
               "playbook/list-building",
               "playbook/list-building-custom-filters",
               "playbook/call-grid-via-api",
