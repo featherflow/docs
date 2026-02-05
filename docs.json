@@ -20,9 +20,18 @@
             ]
           },
           {
+            "group": "Basics",
+            "pages": []
+          },
+          {
+            "group": "Advanced",
+            "pages": [
+              "ingredients/round-robin"
+            ]
+          },
+          {
             "group": "Tutorials",
             "pages": [
-              "ingredients/round-robin",
               "ingredients/common-formulae",
               "ingredients/prompts_101",
               "ingredients/intent-signals",
