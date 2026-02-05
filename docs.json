@@ -92,6 +92,24 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Enrichments"
+      },
+      {
+        "tab": "Integrations"
+      },
+      {
+        "tab": "For SDRs"
+      },
+      {
+        "tab": "For Revops"
+      },
+      {
+        "tab": "For Marketing"
+      },
+      {
+        "tab": "For Growth"
       }
     ]
   },
