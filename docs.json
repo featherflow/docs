@@ -103,22 +103,62 @@
         ]
       },
       {
-        "tab": "Enrichments"
+        "tab": "List Building"
       },
       {
-        "tab": "Integrations"
+        "tab": "Enrichments",
+        "groups" : [{
+            "group": "Basics",
+            "pages": []
+          },
+          {
+            "group": "Advanced",
+            "pages": []
+          }]
       },
       {
-        "tab": "For SDRs"
+        "tab": "Integrations",
+        "groups" : [{
+            "group": "Basics",
+            "pages": []
+          },
+          {
+            "group": "Advanced",
+            "pages": []
+          }]
       },
       {
-        "tab": "For Revops"
+        "tab": "For SDRs",
+        "groups" : [{
+            "group": "Basics",
+            "pages": []
+          },
+          {
+            "group": "Advanced",
+            "pages": []
+          }]
       },
       {
-        "tab": "For Marketing"
+        "tab": "For Revops",
+                "groups" : [{
+            "group": "Basics",
+            "pages": []
+          },
+          {
+            "group": "Advanced",
+            "pages": []
+          }]
       },
       {
-        "tab": "For Growth"
+        "tab": "For Growth",
+                "groups" : [{
+            "group": "Basics",
+            "pages": []
+          },
+          {
+            "group": "Advanced",
+            "pages": []
+          }]
       }
     ]
   },
