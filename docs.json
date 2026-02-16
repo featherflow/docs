@@ -21,7 +21,10 @@
           },
           {
             "group": "Basics",
-            "pages": []
+            "pages": [
+              "basics/navigating-bitscale",
+              "basics/run-grids-on-bitscale"
+            ]
           },
           {
             "group": "Advanced",
