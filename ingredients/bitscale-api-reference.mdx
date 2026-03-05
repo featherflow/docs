@@ -1,6 +1,4 @@
----
-title: "BitScale API Reference"
----
+# BitScale API Reference
 
 > **Version:** 1.1.0 **Base URL:** `https://api.bitscale.ai/api/v1` **Last Updated:** March 2026
 
@@ -21,6 +19,9 @@ title: "BitScale API Reference"
    - [List Grids in a Workspace](#4-list-grids-in-a-workspace)
    - [Get Grid Details](#5-get-grid-details)
    - [Run a Grid](#6-run-a-grid)
+8. [Examples](#examples)
+   - [Email Waterfall Grid](#example-1-email-waterfall-grid)
+   - [Phone Waterfall Grid](#example-2-phone-waterfall-grid)
 
 ---
 
@@ -765,6 +766,288 @@ curl -X POST "https://api.bitscale.ai/api/v1/grids/grid_001/run" \
 curl -X GET "https://api.bitscale.ai/api/v1/grids/grid_001/runs/run_xyz789" \
   -H "api_key: your_api_key_here" \
   -H "workspace-id: ws_abc123"
+```
+
+---
+
+## Examples
+
+The following examples demonstrate common BitScale grid workflows. Each example starts with the grid details response (to identify column UUIDs) and shows both synchronous and asynchronous run options.
+
+---
+
+### Example 1: Email Waterfall Grid
+
+This grid takes a person's name, company domain, and LinkedIn URL as inputs and returns their professional email address via a waterfall of enrichment sources.
+
+**Grid ID:** `grid_email_wf_01`
+
+---
+
+#### Step 1 — Get grid details
+
+Fetch the grid to retrieve column UUIDs needed for the run call:
+
+```bash
+curl -X GET "https://api.bitscale.ai/api/v1/grids/grid_email_wf_01" \
+  -H "api_key: your_api_key_here" \
+  -H "workspace-id: ws_abc123"
+```
+
+**Response**
+
+```json
+{
+  "id": "grid_email_wf_01",
+  "name": "Email Waterfall",
+  "description": "Finds professional email via multi-source waterfall enrichment.",
+  "columns": [
+    {
+      "id": "11aa2b3c-4d5e-6f70-8901-abcdef123456",
+      "name": "Person Name",
+      "type": "input"
+    },
+    {
+      "id": "22bb3c4d-5e6f-7081-9012-bcdef1234567",
+      "name": "Company Domain",
+      "type": "input"
+    },
+    {
+      "id": "33cc4d5e-6f70-8192-0123-cdef12345678",
+      "name": "LinkedIn URL",
+      "type": "input"
+    },
+    {
+      "id": "dd5e6f54-7081-9203-1234-def123456789",
+      "name": "Email Waterfall",
+      "type": "action"
+    },
+    {
+      "id": "44dd5e6f-7081-9203-1234-def123456789",
+      "name": "Email",
+      "type": "formula"
+    }
+  ]
+}
+```
+
+---
+
+#### Step 2 — Run the grid
+
+**Synchronous**
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/grids/grid_email_wf_01/run" \
+  -H "api_key: your_api_key_here" \
+  -H "workspace-id: ws_abc123" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "mode": "sync",
+    "inputs": {
+      "11aa2b3c-4d5e-6f70-8901-abcdef123456": "Jane Doe",
+      "22bb3c4d-5e6f-7081-9012-bcdef1234567": "acmecorp.com",
+      "33cc4d5e-6f70-8192-0123-cdef12345678": "https://linkedin.com/in/janedoe"
+    },
+    "output_columns": ["44dd5e6f-7081-9203-1234-def123456789"]
+  }'
+```
+
+**Response**
+
+```json
+{
+  "mode": "sync",
+  "status": "completed",
+  "outputs": {
+    "44dd5e6f-7081-9203-1234-def123456789": "jane.doe@acmecorp.com"
+  },
+  "credits": {
+    "consumed": 2,
+    "remaining": 65792
+  }
+}
+```
+
+---
+
+**Asynchronous (with webhook)**
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/grids/grid_email_wf_01/run" \
+  -H "api_key: your_api_key_here" \
+  -H "workspace-id: ws_abc123" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "mode": "async",
+    "inputs": {
+      "11aa2b3c-4d5e-6f70-8901-abcdef123456": "Jane Doe",
+      "22bb3c4d-5e6f-7081-9012-bcdef1234567": "acmecorp.com",
+      "33cc4d5e-6f70-8192-0123-cdef12345678": "https://linkedin.com/in/janedoe"
+    },
+    "output_columns": ["44dd5e6f-7081-9203-1234-def123456789"],
+    "webhook_url": "https://your-server.com/webhooks/bitscale"
+  }'
+```
+
+**Response**
+
+```json
+{
+  "mode": "async",
+  "run_id": "run_em001",
+  "status": "queued",
+  "poll_url": "https://api.bitscale.ai/api/v1/grids/grid_email_wf_01/runs/run_em001"
+}
+```
+
+**Webhook payload (on completion)**
+
+```json
+{
+  "run_id": "run_em001",
+  "grid_id": "grid_email_wf_01",
+  "status": "completed",
+  "outputs": {
+    "44dd5e6f-7081-9203-1234-def123456789": "jane.doe@acmecorp.com"
+  },
+  "credits": {
+    "consumed": 2,
+    "remaining": 65792
+  },
+  "started_at": "2026-03-05T10:00:00Z",
+  "completed_at": "2026-03-05T10:00:05Z"
+}
+```
+
+---
+
+### Example 2: Phone Waterfall Grid
+
+This grid takes a person's LinkedIn URL as input and returns their phone number via a waterfall of enrichment sources.
+
+**Grid ID:** `grid_phone_wf_01`
+
+---
+
+#### Step 1 — Get grid details
+
+```bash
+curl -X GET "https://api.bitscale.ai/api/v1/grids/grid_phone_wf_01" \
+  -H "api_key: your_api_key_here" \
+  -H "workspace-id: ws_abc123"
+```
+
+**Response**
+
+```json
+{
+  "id": "grid_phone_wf_01",
+  "name": "Phone Waterfall",
+  "description": "Finds a person's phone number via multi-source waterfall enrichment.",
+  "columns": [
+    {
+      "id": "55ee6f70-8192-0314-2345-ef1234567890",
+      "name": "LinkedIn URL",
+      "type": "input"
+    },
+    {
+      "id": "ff708166-9203-1425-3456-f12345678901",
+      "name": "Phone Number",
+      "type": "formula"
+    },
+    {
+      "id": "66ff7081-9203-1425-3456-f12345678901",
+      "name": "Phone Number",
+      "type": "formula"
+    }
+  ]
+}
+```
+
+---
+
+#### Step 2 — Run the grid
+
+**Synchronous**
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/grids/grid_phone_wf_01/run" \
+  -H "api_key: your_api_key_here" \
+  -H "workspace-id: ws_abc123" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "mode": "sync",
+    "inputs": {
+      "55ee6f70-8192-0314-2345-ef1234567890": "https://linkedin.com/in/janedoe"
+    },
+    "output_columns": ["66ff7081-9203-1425-3456-f12345678901"]
+  }'
+```
+
+**Response**
+
+```json
+{
+  "mode": "sync",
+  "status": "completed",
+  "outputs": {
+    "66ff7081-9203-1425-3456-f12345678901": "+14155550192"
+  },
+  "credits": {
+    "consumed": 15,
+    "remaining": 65787
+  }
+}
+```
+
+---
+
+**Asynchronous (with webhook)**
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/grids/grid_phone_wf_01/run" \
+  -H "api_key: your_api_key_here" \
+  -H "workspace-id: ws_abc123" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "mode": "async",
+    "inputs": {
+      "55ee6f70-8192-0314-2345-ef1234567890": "https://linkedin.com/in/janedoe"
+    },
+    "output_columns": ["66ff7081-9203-1425-3456-f12345678901"],
+    "webhook_url": "https://your-server.com/webhooks/bitscale"
+  }'
+```
+
+**Response**
+
+```json
+{
+  "mode": "async",
+  "run_id": "run_ph001",
+  "status": "queued",
+  "poll_url": "https://api.bitscale.ai/api/v1/grids/grid_phone_wf_01/runs/run_ph001"
+}
+```
+
+**Webhook payload (on completion)**
+
+```json
+{
+  "run_id": "run_ph001",
+  "grid_id": "grid_phone_wf_01",
+  "status": "completed",
+  "outputs": {
+    "66ff7081-9203-1425-3456-f12345678901": "+14155550192"
+  },
+  "credits": {
+    "consumed": 15,
+    "remaining": 65787
+  },
+  "started_at": "2026-03-05T10:00:00Z",
+  "completed_at": "2026-03-05T10:00:03Z"
+}
 ```
 
 ---
