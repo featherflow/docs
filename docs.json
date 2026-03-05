@@ -29,7 +29,8 @@
           {
             "group": "Advanced",
             "pages": [
-              "ingredients/round-robin"
+              "ingredients/round-robin",
+              "ingredients/bitscale-api-reference"
             ]
           },
           {
@@ -110,58 +111,68 @@
       },
       {
         "tab": "Enrichments",
-        "groups" : [{
+        "groups": [
+          {
             "group": "Basics",
             "pages": []
           },
           {
             "group": "Advanced",
             "pages": []
-          }]
+          }
+        ]
       },
       {
         "tab": "Integrations",
-        "groups" : [{
+        "groups": [
+          {
             "group": "Basics",
             "pages": []
           },
           {
             "group": "Advanced",
             "pages": []
-          }]
+          }
+        ]
       },
       {
         "tab": "For SDRs",
-        "groups" : [{
+        "groups": [
+          {
             "group": "Basics",
             "pages": []
           },
           {
             "group": "Advanced",
             "pages": []
-          }]
+          }
+        ]
       },
       {
         "tab": "For Revops",
-                "groups" : [{
+        "groups": [
+          {
             "group": "Basics",
             "pages": []
           },
           {
             "group": "Advanced",
             "pages": []
-          }]
+          }
+        ]
       },
       {
         "tab": "For Growth",
-                "groups" : [{
+        "groups": [
+          {
             "group": "Basics",
             "pages": []
           },
           {
             "group": "Advanced",
             "pages": []
-          }]
+          }
+        ]
       }
     ]
   },
