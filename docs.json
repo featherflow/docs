@@ -30,7 +30,8 @@
             "group": "Advanced",
             "pages": [
               "ingredients/round-robin",
-              "ingredients/bitscale-api-reference"
+              "ingredients/bitscale-api-reference",
+              "ingredients/using-webhooks"
             ]
           },
           {
