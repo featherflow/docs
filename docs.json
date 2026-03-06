@@ -80,7 +80,6 @@
             "pages": [
               "ingredients/integrations-customAPI",
               "ingredients/integrations-webhook-export",
-              "ingredients/integrations-webhook-import",
               "ingredients/integrations-outplay",
               "ingredients/integrations-attio",
               "ingredients/integrations-lemlist",
@@ -172,6 +171,17 @@
           {
             "group": "Advanced",
             "pages": []
+          }
+        ]
+      },
+      {
+        "tab": "CRM",
+        "groups": [
+          {
+            "group": "Hubspot",
+            "pages": [
+              "ingredients/import-hubspot-lists"
+            ]
           }
         ]
       }

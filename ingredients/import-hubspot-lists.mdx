@@ -1,0 +1,128 @@
+---
+title: 'Import HubSpot Lists into Bitscale'
+---
+
+<div style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
+ <iframe
+   src="https://www.youtube.com/embed/Cw8WGbVBgec?si=JRDUuNnUjxvDcLmW"
+   title="YouTube video player"
+   style={{
+     position: "absolute",
+     inset: 0,
+     width: "100%",
+     height: "100%",
+     border: 0,
+   }}
+   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+   referrerPolicy="strict-origin-when-cross-origin"
+   allowFullScreen
+ />
+</div>
+
+<Card title="Use HubSpot lists as a live feeder for enrichment and outbound workflows" color="#5a0c0c" href="https://app.bitscale.ai" >
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## What this lets you do
+
+If your team uses HubSpot Lists heavily, you can pull those list records into Bitscale and use the list as the starting point for workflows like:
+- CRM re-enrichment
+- list-based outbound automation
+- cadences or routing workflows powered by HubSpot filters
+
+**The list becomes the feeder**. If someone enters the list in HubSpot, they can be processed in Bitscale using the same workflow logic.
+
+## Prerequisite
+
+You need to have your **HubSpot account connected** in Bitscale before you can import a list.
+
+## Import a HubSpot list into a new grid
+
+1. Click **New grid**
+2. Select **Import records from HubSpot lists**
+
+<img
+  style={{ maxWidth: "100%", borderRadius: "8px" }}
+  src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1772791450/Screenshot_2026-03-06_153245_rxdaxe.png"
+  alt="Selecting the Import records from HubSpot lists option when creating a new grid"
+/>
+
+3. Click **Select account** and choose your connected HubSpot account
+4. Select the HubSpot list you want to pull from
+5. Click **Import to new grid**
+
+Bitscale creates a new grid and brings in:
+- the list records
+- the HubSpot record IDs
+
+## Why Bitscale does not pull every HubSpot field automatically
+
+Bitscale only pulls the records and their IDs first.
+
+This is intentional because different teams want different fields, and you may only need a small subset for your workflow.
+
+The next step is to choose exactly what properties you want to fetch.
+
+## Pull specific HubSpot fields using the record ID
+
+1. Open the new grid
+2. Go to **Enrichments**
+3. Open **Integrations** from side menu
+4. Choose the **HubSpot lookup enrichment**
+
+<img
+  style={{ maxWidth: "100%", borderRadius: "8px" }}
+  src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1772792005/Screenshot_2026-03-06_154216_d27rzf.png"
+  alt="Opening the HubSpot lookup enrichment from the Enrichments panel"
+/>
+
+5. Select the same HubSpot account
+6. Set the correct **Object type**
+   - example: **Companies** (if your list is company-level)
+7. Match:
+   - the **Record ID** in your grid
+   - with the **HubSpot ID** field pulled in from the list
+8. Choose the property you want to fetch
+   - example: **Website URL**
+
+<img
+  style={{ maxWidth: "100%", borderRadius: "8px" }}
+  src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1772793065/Screenshot_2026-03-06_160050_yxemvq.png"
+  alt="HubSpot lookup configuration showing object type, record ID mapping, and property selection"
+/>
+
+9. **Save**
+10. Run it for **all rows**
+
+After the run finishes, you can create a new column for the field you fetched (like Website), and Bitscale auto-populates values wherever they exist.
+
+## What to do next
+
+Once your list records are in the grid and your required properties are pulled in, you can add the rest of your workflow steps, like:
+- enrich contacts or companies
+- qualify records
+- trigger outbound actions
+- sync data back to HubSpot or other tools
+
+## Common use cases
+
+### HubSpot re-enrichment powered by lists
+Keep a HubSpot list as the source of truth, and run enrichment workflows from it whenever needed.
+
+### Automated outbound using a list as the feeder
+If your outbound targeting is defined by HubSpot list filters, just update the list and Bitscale will process the right records.
+
+### Simple way to enroll new records into a workflow
+To send a company or contact through the workflow, add them to the HubSpot list or update the list filter so they qualify.
+
+<Card title="Connect your Hubspot and begin right away" color="#5a0c0c" href="https://app.bitscale.ai" >
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## Need help?
+
+If you have questions about pulling lists or setting up the lookup enrichment, reach out to the team. We are happy to help.
