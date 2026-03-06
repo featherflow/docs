@@ -23,7 +23,8 @@
             "group": "Basics",
             "pages": [
               "basics/navigating-bitscale",
-              "basics/run-grids-on-bitscale"
+              "basics/run-grids-on-bitscale",
+              "basics/import-sales-nav-leads"
             ]
           },
           {
@@ -107,7 +108,15 @@
         ]
       },
       {
-        "tab": "List Building"
+        "tab": "List Building",
+        "groups": [
+          {
+            "group": "Basics",
+            "pages": [
+              "basics/import-sales-nav-leads"
+            ]
+          }
+        ]
       },
       {
         "tab": "Enrichments",
