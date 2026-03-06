@@ -24,6 +24,7 @@
             "pages": [
               "basics/navigating-bitscale",
               "basics/run-grids-on-bitscale",
+              "basics/find-companies",
               "basics/import-sales-nav-leads"
             ]
           },
