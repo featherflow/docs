@@ -115,7 +115,8 @@
           {
             "group": "Basics",
             "pages": [
-              "basics/import-sales-nav-leads"
+              "basics/import-sales-nav-leads",
+              "basics/find-companies"
             ]
           }
         ]
