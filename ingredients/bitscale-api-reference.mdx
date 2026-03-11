@@ -18,13 +18,14 @@ title: "Bitscale API Reference"
 
 1. [Overview](#1-overview)
 2. [Authentication](#2-authentication)
-3. [Error Format](#3-error-format)
-4. [Endpoints](#4-endpoints)
-   - [4.1 POST /grids/:gridId/run — Run a Grid](#41-run-a-grid)
-   - [4.2 GET /run/status/:requestId — Get Run Status](#42-get-run-status)
-   - [4.3 POST /api-key/rotate — Rotate API Key](#43-rotate-api-key)
-5. [Sync vs Async Modes](#5-sync-vs-async-modes)
-6. [Error Code Reference](#6-error-code-reference)
+3. [Rate Limits](#3-rate-limits)
+4. [Error Format](#4-error-format)
+5. [Endpoints](#5-endpoints)
+   - [5.1 POST /grids/:gridId/run — Run a Grid](#51-run-a-grid)
+   - [5.2 GET /run/status/:requestId — Get Run Status](#52-get-run-status)
+   - [5.3 POST /api-key/rotate — Rotate API Key](#53-rotate-api-key)
+6. [Sync vs Async Modes](#6-sync-vs-async-modes)
+7. [Error Code Reference](#7-error-code-reference)
 
 ---
 
@@ -66,7 +67,7 @@ curl -X POST "https://api.bitscale.ai/api/v1/grids/GRID_ID/run" \
 1. Log into your BitScale workspace.
 2. Navigate to **Settings → Accounts → API Keys**.
 3. Copy the displayed workspace API key.
-4. To generate a new key, use [`POST /api/v1/api-key/rotate`](#43-rotate-api-key) or rotate it from the dashboard.
+4. To generate a new key, use [`POST /api/v1/api-key/rotate`](#53-rotate-api-key) or rotate it from the dashboard.
 
 > **⚠ Important** — Your API key identifies your entire workspace. Keep it secret and never expose it in client-side code or public repositories. If compromised, rotate it immediately.
 
@@ -78,7 +79,21 @@ curl -X POST "https://api.bitscale.ai/api/v1/grids/GRID_ID/run" \
 
 ---
 
-## 3. Error Format
+## 3. Rate Limits
+
+The BitScale External API enforces a default rate limit of **5 requests per second** per workspace.
+
+| Limit        | Default | Scope          |
+| ------------ | ------- | -------------- |
+| Requests/sec | 5       | Per workspace  |
+
+Exceeding this limit will result in a `429 Too Many Requests` response. If your integration requires a higher (or lower) limit, reach out to your account manager or contact support at [team@bitscale.ai](mailto:team@bitscale.ai) to have it adjusted.
+
+> **ℹ Note** — Rate limits apply across all endpoints within a workspace. Polling `GET /run/status/:requestId` counts toward your limit, so poll at a reasonable interval (every 2–5 seconds) rather than as fast as possible.
+
+---
+
+## 4. Error Format
 
 When a request fails, the API returns a JSON object with a top-level `error` key containing a machine-readable `code` and a human-readable `message`.
 
@@ -106,11 +121,11 @@ HTTP/1.1 401 Unauthorized
 
 ---
 
-## 4. Endpoints
+## 5. Endpoints
 
 ---
 
-### 4.1 Run a Grid
+### 5.1 Run a Grid
 
 ```text
 POST /api/v1/grids/:gridId/run
@@ -121,7 +136,7 @@ Appends a new row to the specified grid using the provided inputs and triggers a
 - `sync (default)` — waits up to 120 seconds for completion and returns outputs directly. If still processing at the deadline, returns a `request_id` to poll.
 - **`async`** — returns a `request_id` immediately. Poll `GET /run/status/:requestId` for results.
 
-> **💡 Get your curl instantly from the app** — Open any grid in [app.bitscale.ai](https://app.bitscale.ai), click on the **Data source** column select Bitscale API source, and you'll find a ready-to-use curl command pre-filled with your grid ID, API key, and input fields. Use the output column toggles to include or exclude specific columns — the curl updates live to reflect your selection. Copy it directly into your terminal or integration.
+> **💡 Get your curl instantly from the app** — Open any grid in [app.bitscale.ai](https://app.bitscale.ai), click on the **Data source** column, select the BitScale API source, and you'll find a ready-to-use curl command pre-filled with your grid ID, API key, and input fields. Use the output column toggles to include or exclude specific columns — the curl updates live to reflect your selection. Copy it directly into your terminal or integration.
 
 #### Path Parameters
 
@@ -236,12 +251,13 @@ Each key in `outputs` is a column UUID. The value is an object with:
 | `403` | `FEATURE_DISABLED`       | BitScale APIs not enabled on your plan. Upgrade to Enterprise. |
 | `403` | `GRID_NOT_FOUND`         | Grid exists but does not belong to your workspace.             |
 | `404` | `GRID_NOT_FOUND`         | No grid found for the provided `gridId`.                       |
+| `429` | `RATE_LIMIT_EXCEEDED`    | Too many requests. Default limit is 5 req/sec per workspace.   |
 | `500` | `RUN_FAILED`             | Row run encountered an error. Check `message` for details.     |
 | `500` | `INTERNAL_ERROR`         | Unexpected server error. Contact support if this persists.     |
 
 ---
 
-### 4.2 Get Run Status
+### 5.2 Get Run Status
 
 ```text
 GET /api/v1/run/status/:requestId
@@ -249,7 +265,7 @@ GET /api/v1/run/status/:requestId
 
 Returns the current status of a run identified by its `request_id`. Call this after receiving a `request_id` from `POST /grids/:gridId/run` — either in async mode or when sync mode times out.
 
-> **ℹ Note** — Poll every 2–5 seconds until `status` is `"completed"` or `"failed"`. Avoid polling more frequently as it may trigger rate-limiting in future versions.
+> **ℹ Note** — Poll every 2–5 seconds until `status` is `"completed"` or `"failed"`. Avoid polling more frequently as requests count toward your rate limit.
 
 #### Path Parameters
 
@@ -308,11 +324,12 @@ X-API-KEY: sk-live-abc123xyz
 | `200` | —                   | Status returned successfully. Check `status` field.                           |
 | `401` | `INVALID_API_KEY`   | `X-API-KEY` header is missing or invalid.                                     |
 | `404` | `REQUEST_NOT_FOUND` | No run request found for `requestId`, or it belongs to a different workspace. |
+| `429` | `RATE_LIMIT_EXCEEDED` | Too many requests. Default limit is 5 req/sec per workspace.                |
 | `500` | `RUN_FAILED`        | The run encountered an error. Message contains details.                       |
 
 ---
 
-### 4.3 Rotate API Key
+### 5.3 Rotate API Key
 
 ```text
 POST /api/v1/api-key/rotate
@@ -355,7 +372,7 @@ X-API-KEY: sk-live-abc123xyz
 
 ---
 
-## 5. Sync vs Async Modes
+## 6. Sync vs Async Modes
 
 When calling `POST /grids/:gridId/run`, you choose how to handle the response using the `mode` field.
 
@@ -420,7 +437,7 @@ Client                              BitScale API
 
 ---
 
-## 6. Error Code Reference
+## 7. Error Code Reference
 
 | Code                     | HTTP  | Description                                                                                |
 | ------------------------ | ----- | ------------------------------------------------------------------------------------------ |
@@ -434,6 +451,7 @@ Client                              BitScale API
 | `GRID_NOT_FOUND`         | `404` | No grid exists for the given `gridId`, or it belongs to a different workspace.             |
 | `REQUEST_NOT_FOUND`      | `404` | No run request found for the given `requestId`, or it belongs to a different workspace.    |
 | `FEATURE_DISABLED`       | `403` | BitScale APIs is an Enterprise-only feature. Upgrade your workspace plan.                  |
+| `RATE_LIMIT_EXCEEDED`    | `429` | Too many requests. Default is 5 req/sec per workspace. Contact [team@bitscale.ai](mailto:team@bitscale.ai) or your account manager to adjust. |
 | `RUN_FAILED`             | `500` | The row run failed during execution. Check the error message for details.                  |
 | `ROTATE_FAILED`          | `500` | API key rotation failed unexpectedly. Retry or contact BitScale support.                   |
 | `INTERNAL_ERROR`         | `500` | An unexpected server error occurred. Contact support if this persists.                     |
