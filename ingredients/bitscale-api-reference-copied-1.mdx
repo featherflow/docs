@@ -64,7 +64,7 @@ curl -X POST "https://api.bitscale.ai/api/v1/grids/GRID_ID/run" \
 ### Obtaining Your API Key
 
 1. Log into your BitScale workspace.
-2. Navigate to **Settings → API Keys**.
+2. Navigate to **Settings → Accounts → API Keys**.
 3. Copy the displayed workspace API key.
 4. To generate a new key, use [`POST /api/v1/api-key/rotate`](#43-rotate-api-key) or rotate it from the dashboard.
 
@@ -118,10 +118,10 @@ POST /api/v1/grids/:gridId/run
 
 Appends a new row to the specified grid using the provided inputs and triggers all column enrichments. Supports two execution modes:
 
-- **`sync (default)`** — waits up to 60 seconds for completion and returns outputs directly. If still processing at the deadline, returns a `request_id` to poll.
+- `sync (default)` — waits up to 120 seconds for completion and returns outputs directly. If still processing at the deadline, returns a `request_id` to poll.
 - **`async`** — returns a `request_id` immediately. Poll `GET /run/status/:requestId` for results.
 
-> **💡 Get your curl instantly from the app** — Open any grid in [app.bitscale.ai](https://app.bitscale.ai), click on the **API Datasource** column, and you'll find a ready-to-use curl command pre-filled with your grid ID, API key, and input fields. Use the output column toggles to include or exclude specific columns — the curl updates live to reflect your selection. Copy it directly into your terminal or integration.
+> **💡 Get your curl instantly from the app** — Open any grid in [app.bitscale.ai](https://app.bitscale.ai), click on the **Data source** column select Bitscale API source, and you'll find a ready-to-use curl command pre-filled with your grid ID, API key, and input fields. Use the output column toggles to include or exclude specific columns — the curl updates live to reflect your selection. Copy it directly into your terminal or integration.
 
 #### Path Parameters
 
@@ -183,7 +183,7 @@ Content-Type: application/json
 
 #### Responses
 
-**200 OK — Sync Completed** _(run finished within 60 seconds)_
+**200 OK — Sync Completed** _(run finished within 120 seconds)_
 
 ```json
 {
@@ -363,7 +363,7 @@ When calling `POST /grids/:gridId/run`, you choose how to handle the response us
 
 Set `mode: "sync"` or omit the field entirely.
 
-- Server waits up to **60 seconds** for the run to complete.
+- Server waits up to **120 seconds** for the run to complete.
 - On success: outputs are returned inline in the response.
 - On timeout: a `request_id` is returned; poll `GET /run/status/:requestId`.
 - Best for: fast grids, interactive use cases, MCP tool integrations.
@@ -374,7 +374,7 @@ Set `mode: "async"`.
 
 - Server returns a `request_id` **immediately** (no waiting).
 - Poll `GET /run/status/:requestId` every 2–5 seconds for results.
-- Suitable for long-running grids (\> 60 seconds).
+- Suitable for long-running grids (\> 120 seconds).
 - Best for: pipelines, batch jobs, background processing.
 
 ### Sync Flow
@@ -385,12 +385,12 @@ Client                              BitScale API
   │── POST /grids/:gridId/run ──────────▶│
   │   { mode: 'sync', inputs: {...} }    │
   │                                     │── Runs row enrichments
-  │                                     │   (waits up to 60s)
+  │                                     │   (waits up to 120s)
   │                                     │
-  │◀── 200 OK { status: 'completed', ───│  (success within 60s)
+  │◀── 200 OK { status: 'completed', ───│  (success within 120s)
   │            outputs: {...} }          │
   │                                     │
-  │◀── 200 OK { status: 'running',  ────│  (timeout after 60s)
+  │◀── 200 OK { status: 'running',  ────│  (timeout after 120s)
   │            request_id: '...',        │
   │            poll_url: '...' }         │
   │                                     │
