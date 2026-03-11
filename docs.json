@@ -33,7 +33,8 @@
             "group": "Advanced",
             "pages": [
               "ingredients/round-robin",
-              "ingredients/using-webhooks"
+              "ingredients/using-webhooks",
+              "ingredients/http-api"
             ]
           },
           {

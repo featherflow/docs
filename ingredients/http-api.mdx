@@ -1,0 +1,153 @@
+---
+title: 'HTTP API Integration'
+---
+
+<div style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
+ <iframe
+   src="https://www.youtube.com/embed/mTUMdLK8WtE?si=a4Ug1pZPyPgfxi4f"
+   title="YouTube video player"
+   style={{
+     position: "absolute",
+     inset: 0,
+     width: "100%",
+     height: "100%",
+     border: 0,
+   }}
+   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+   referrerPolicy="strict-origin-when-cross-origin"
+   allowFullScreen
+ />
+</div>
+
+<Card title="Connect any tool to Bitscale with a custom API" color="#5a0c0c" href="https://app.bitscale.ai" >
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## What this feature does
+
+Bitscale lets you create custom integrations using API calls.
+
+If a platform supports an API, you can call it from Bitscale, templatize it, and use it as a step inside your workflows.
+
+This is useful when:
+- you want to connect a tool that is not available as a native integration
+- you want a very specific API action (not a generic integration)
+- you want the API call to run row-by-row as part of your workflow
+
+## Where to find it
+
+1. Open your grid
+2. Go to **Enrichments -> Data toolkit**
+3. Select **HTTP API**
+
+<img
+  style={{ maxWidth: "100%", borderRadius: "8px" }}
+  src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1773214273/Screenshot_2026-03-11_130026_jmrnuh.png"
+  alt="Opening the HTTP API option from Enrichments under the Data Toolkit"
+/>
+
+## Option 1: Set up the API call manually
+
+This option is ideal if you understand API basics and want full control.
+
+### 1) Choose the method
+Pick the HTTP method you need:
+- GET, POST, PUT, or others depending on your API
+
+### 2) Add the endpoint URL
+Paste the API endpoint into the URL field.
+
+#### Pass values from columns into the URL (variables)
+If the endpoint needs row-specific values (like company name), you can inject grid columns into the URL using variables.
+<img
+  style={{ maxWidth: "100%", borderRadius: "8px" }}
+  src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1773214699/Screenshot_2026-03-11_130805_phadqf.png"
+  alt="Injecting grid column variables into the API endpoint URL"
+/>
+
+### 3) Add headers (optional)
+Headers are key-value pairs. This is where you can add:
+- content type
+- API keys
+- auth tokens
+- any required authentication headers
+
+### 4) Add the request body (optional)
+For POST or PUT requests, you can send a request body as:
+- JSON
+- key-value pairs
+
+### 5) Save and run
+Run the column like any other enrichment.
+
+After the run:
+- the **status code** of the call is visible
+- the **response body** is visible if the API returns data
+- you can add those outputs as columns in the grid
+
+## Option 2: Build the API call using a Documentation Link
+
+This is the fastest way to create API calls, especially if you are not technical.
+
+Instead of setting everything manually, you can let Bitscale parse the documentation and create the request for you.
+
+### 1) Create a new HTTP API column
+1. Go to **Enrichments → Data toolkit → HTTP API**
+2. Choose **Use documentation link**
+
+### 2) Paste the API documentation URL
+1. Copy the URL of the API docs page (example: an Instantly API reference page)
+2. Paste it into Bitscale
+
+<img
+  style={{ maxWidth: "100%", borderRadius: "8px" }}
+  src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1773215337/Screenshot_2026-03-11_131451_jnpnez.png"
+  alt="Using the documentation link option to automatically generate an API request"
+/>
+
+### 3) Fetch available API calls
+Click the option to fetch the list of API calls from the documentation.
+
+Bitscale will show you all available requests described in the docs.
+
+<img
+  style={{ maxWidth: "100%", borderRadius: "8px" }}
+  src="https://res.cloudinary.com/dbfzpmxn2/image/upload/v1773215338/Screenshot_2026-03-11_131811_ihc1ye.png"
+  alt="Fetching available API calls parsed from the documentation"
+/>
+
+### 4) Select the request you want
+Pick the exact endpoint/action you want to run (example: replying to an email).
+
+### 5) Map fields
+Click **Map fields** and Bitscale will auto-fill:
+- method
+- endpoint URL
+- required headers
+- request body schema
+- keys you can send
+
+Now you only need to:
+- map request fields to the right grid columns
+- remove fields you do not need
+
+Then you are ready to run it as a workflow step.
+
+## Best practices
+
+- Start by testing on a small batch of rows
+- Use variables in the URL and body when the API needs row-specific data
+- Keep headers consistent if they include auth tokens
+- Use the documentation link method if you want speed and fewer setup mistakes
+
+<Card title="Turn any API documentation into a workflow step in minutes" color="#5a0c0c" href="https://app.bitscale.ai" >
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## Need help?
+
+If you are unsure which request to choose, or how to map fields, reach out on the support channel and the team will help you set it up.
