@@ -193,8 +193,8 @@
           {
             "group": "V1",
             "pages": [
-              "ingredients/bitscale-api-reference",
-              "ingredients/bitscale-api-reference-copied-1"
+              "ingredients/bitscale-api-reference-old",
+              "ingredients/bitscale-api-reference"
             ]
           },
           {
