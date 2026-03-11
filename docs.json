@@ -187,12 +187,15 @@
           }
         ]
       },
-            {
+      {
         "tab": "API Reference",
         "groups": [
           {
             "group": "V1",
-            "pages": ["ingredients/bitscale-api-reference"]
+            "pages": [
+              "ingredients/bitscale-api-reference",
+              "ingredients/bitscale-api-reference-copied-1"
+            ]
           },
           {
             "group": "Advanced",
