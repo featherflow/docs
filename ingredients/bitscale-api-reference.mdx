@@ -1,1067 +1,443 @@
 ---
-title: "BitScale API Reference - Old"
-hidden: true
+title: "Bitscale API Reference"
 ---
 
-> **Version:** 1.1.0 **Base URL:** `https://api.bitscale.ai/api/v1` **Last Updated:** March 2026
+**Version:** v1 · **Plan Required:** Enterprise
+
+|                    |                                  |
+| ------------------ | -------------------------------- |
+| **Base URL**       | `https://api.bitscale.ai/api/v1` |
+| **Authentication** | `X-API-KEY: <your-api-key>`      |
+| **Content-Type**   | `application/json`               |
+
+> **Enterprise Only** — BitScale APIs is an Enterprise feature. Your workspace plan must be upgraded before any of these endpoints will respond successfully.
 
 ---
 
 ## Table of Contents
 
-1. [Overview](#overview)
-2. [Versioning](#versioning)
-3. [Authentication](#authentication)
-4. [Request & Response Format](#request--response-format)
-5. [Rate Limiting](#rate-limiting)
-6. [Error Handling](#error-handling)
-7. [Endpoints](#endpoints)
-   - [Get Current User](#1-get-current-user)
-   - [List Workspaces](#2-list-workspaces)
-   - [Get Workspace Details](#3-get-workspace-details)
-   - [List Grids in a Workspace](#4-list-grids-in-a-workspace)
-   - [Get Grid Details](#5-get-grid-details)
-   - [Run a Grid](#6-run-a-grid)
-8. [Examples](#examples)
-   - [Email Waterfall Grid](#example-1-email-waterfall-grid)
-   - [Phone Waterfall Grid](#example-2-phone-waterfall-grid)
+1. [Overview](#1-overview)
+2. [Authentication](#2-authentication)
+3. [Error Format](#3-error-format)
+4. [Endpoints](#4-endpoints)
+   - [4.1 POST /grids/:gridId/run — Run a Grid](#41-run-a-grid)
+   - [4.2 GET /run/status/:requestId — Get Run Status](#42-get-run-status)
+   - [4.3 POST /api-key/rotate — Rotate API Key](#43-rotate-api-key)
+5. [Sync vs Async Modes](#5-sync-vs-async-modes)
+6. [Error Code Reference](#6-error-code-reference)
 
 ---
 
-## Overview
+## 1. Overview
 
-The BitScale API allows enterprise customers to programmatically interact with their BitScale workspaces, grids, and AI enrichment pipelines. All API interactions are performed over HTTPS and return JSON-encoded responses.
+The BitScale External API lets you programmatically trigger grid runs, poll for results, and manage your workspace API key. It is designed for use with MCP integrations, CI/CD pipelines, and any external system that needs to run BitScale grids automatically.
 
-This reference covers authentication, request formats, error handling, and all available endpoints. If you have questions or need support, contact your dedicated BitScale account manager or reach out at [team@bitscale.ai](mailto:team@bitscale.ai).
+### Endpoints at a Glance
+
+| Method | Path                     | Description                          |
+| ------ | ------------------------ | ------------------------------------ |
+| `POST` | `/grids/:gridId/run`     | Trigger a grid run (sync or async)   |
+| `GET`  | `/run/status/:requestId` | Poll run status and retrieve outputs |
+| `POST` | `/api-key/rotate`        | Generate a new workspace API key     |
 
 ---
 
-## Versioning
+## 2. Authentication
 
-The BitScale API is versioned via the URL path. The current stable version is **v1**.
+All requests must include a workspace-level API key in the `X-API-KEY` header. The key uniquely identifies your workspace — no separate workspace ID header is required.
 
-```text
-https://api.bitscale.ai/api/v1
+### Request Header
+
+| Header      | Value                             |
+| ----------- | --------------------------------- |
+| `X-API-KEY` | Your workspace API key (required) |
+
+### Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/grids/GRID_ID/run" \
+  -H "X-API-KEY: sk-live-abc123xyz" \
+  -H "Content-Type: application/json" \
+  -d '{ "mode": "sync", "inputs": { "company_name": "Acme Corp" } }'
 ```
 
-The API version must be included in every request URL. When a new version is released, the previous version will remain available for a deprecation window — enterprise customers will be notified in advance of any breaking changes.
+### Obtaining Your API Key
 
-| Version | Status    | Base URL                         |
-| ------- | --------- | -------------------------------- |
-| `v1`    | ✅ Current | `https://api.bitscale.ai/api/v1` |
+1. Log into your BitScale workspace.
+2. Navigate to **Settings → Accounts → API Keys**.
+3. Copy the displayed workspace API key.
+4. To generate a new key, use [`POST /api/v1/api-key/rotate`](#43-rotate-api-key) or rotate it from the dashboard.
 
-> **Stability guarantee:** Within a given version, BitScale will not introduce breaking changes. New optional fields may be added to responses at any time and should be handled gracefully by your integration.
+> **⚠ Important** — Your API key identifies your entire workspace. Keep it secret and never expose it in client-side code or public repositories. If compromised, rotate it immediately.
 
----
+### Authentication Errors
 
-## Authentication
-
-All API requests must include two headers:
-
-| Header         | Type     | Required | Description                                                          |
-| -------------- | -------- | -------- | -------------------------------------------------------------------- |
-| `api_key`      | `string` | ✅ Yes    | Your personal API key, available from your BitScale account settings |
-| `workspace-id` | `string` | ✅ Yes    | The ID of the workspace context for the request                      |
-
-> **Note:** Some endpoints (such as [Get Current User](#1-get-current-user) and [List Workspaces](#2-list-workspaces)) do not require `workspace-id`, as they operate at the account level.
-
-**Example headers:**
-
-```http
-GET /api/v1/user/me HTTP/1.1
-Host: api.bitscale.ai
-api_key: your_api_key_here
-workspace-id: ws_abc123xyz
-Content-Type: application/json
-```
-
-> ⚠️ **Security:** Never expose your API key in client-side code or public repositories. Rotate your key immediately if you suspect it has been compromised.
+| HTTP  | Code              | Description                                                  |
+| ----- | ----------------- | ------------------------------------------------------------ |
+| `401` | `INVALID_API_KEY` | Missing `X-API-KEY` header, or the key is invalid / expired. |
 
 ---
 
-## Request & Response Format
+## 3. Error Format
 
-- All request bodies must be sent as **JSON** with the header `Content-Type: application/json`
-- All responses are returned as **JSON**
-- Timestamps are returned in **ISO 8601** format (`YYYY-MM-DDTHH:mm:ssZ`)
-- Boolean values are represented as `true` / `false`
-
----
-
-## Rate Limiting
-
-| Plan       | Requests per minute            |
-| ---------- | ------------------------------ |
-| Enterprise | _Contact your account manager_ |
-
-Rate limit details are returned in response headers:
-
-| Header                  | Description                              |
-| ----------------------- | ---------------------------------------- |
-| `X-RateLimit-Limit`     | Maximum requests allowed per window      |
-| `X-RateLimit-Remaining` | Requests remaining in the current window |
-| `X-RateLimit-Reset`     | Unix timestamp when the window resets    |
-
----
-
-## Error Handling
-
-BitScale uses standard HTTP status codes. All error responses follow this structure:
+When a request fails, the API returns a JSON object with a top-level `error` key containing a machine-readable `code` and a human-readable `message`.
 
 ```json
 {
   "error": {
-    "code": "ERROR_CODE",
-    "message": "A human-readable description of what went wrong."
+    "code":    "ERROR_CODE_STRING",
+    "message": "Human readable description of the error."
   }
 }
 ```
 
-### HTTP Status Codes
-
-| Status Code                 | Meaning                                                            |
-| --------------------------- | ------------------------------------------------------------------ |
-| `200 OK`                    | Request succeeded                                                  |
-| `201 Created`               | Resource created successfully                                      |
-| `400 Bad Request`           | Invalid request body or missing required parameters                |
-| `401 Unauthorized`          | Missing or invalid `api_key`                                       |
-| `403 Forbidden`             | Valid key, but insufficient permissions for the requested resource |
-| `404 Not Found`             | The requested resource does not exist                              |
-| `422 Unprocessable Entity`  | Request is well-formed but contains semantic errors                |
-| `429 Too Many Requests`     | Rate limit exceeded                                                |
-| `500 Internal Server Error` | Unexpected server error — contact support if this persists         |
-
-### Common Error Codes
-
-| `error.code`              | Description                                                               |
-| ------------------------- | ------------------------------------------------------------------------- |
-| `INVALID_API_KEY`         | The provided `api_key` is invalid or expired                              |
-| `WORKSPACE_NOT_FOUND`     | No workspace found for the given ID                                       |
-| `GRID_NOT_FOUND`          | No grid found for the given ID                                            |
-| `MISSING_REQUIRED_FIELD`  | A required field was not provided in the request                          |
-| `INVALID_COLUMN_TYPE`     | An input column value does not match the expected type                    |
-| `RUN_LIMIT_EXCEEDED`      | Grid run quota has been reached for your plan                             |
-| `INSUFFICIENT_CREDITS`    | The workspace does not have enough credits to complete this run           |
-| `WEBHOOK_DELIVERY_FAILED` | The provided `webhook_url` was unreachable or returned a non-2xx response |
-
----
-
-## Endpoints
-
----
-
-### 1. Get Current User
-
-Retrieves profile and account information for the authenticated user associated with the provided `AiKey`.
+### Example — Missing API Key
 
 ```text
-GET /user/me
-```
+HTTP/1.1 401 Unauthorized
 
-**Headers**
-
-| Header         | Required |
-| -------------- | -------- |
-| `api_key`      | ✅ Yes    |
-| `workspace-id` | ❌ No     |
-
-**Request**
-
-No request body required.
-
-**Response**
-
-```json
 {
-  "id": "usr_abc123",
-  "name": "Jane Doe",
-  "email": "jane.doe@company.com",
-  "avatar_url": "https://cdn.bitscale.ai/avatars/usr_abc123.png",
-  "created_at": "2024-01-15T08:30:00Z",
-  "plan": "enterprise"
-}
-```
-
-**Response Fields**
-
-| Field        | Type     | Description                               |
-| ------------ | -------- | ----------------------------------------- |
-| `id`         | `string` | Unique identifier for the user            |
-| `name`       | `string` | Full display name                         |
-| `email`      | `string` | Email address associated with the account |
-| `avatar_url` | `string` | URL to the user's profile image           |
-| `created_at` | `string` | ISO 8601 timestamp of account creation    |
-| `plan`       | `string` | Current subscription plan                 |
-
-**Example cURL**
-
-```bash
-curl -X GET https://api.bitscale.ai/api/v1/user/me \
-  -H "api_key: your_api_key_here"
-```
-
----
-
-### 2. List Workspaces
-
-Returns a list of all workspaces the authenticated user is a member of.
-
-```text
-GET /workspaces
-```
-
-**Headers**
-
-| Header         | Required |
-| -------------- | -------- |
-| `api_key`      | ✅ Yes    |
-| `workspace-id` | ❌ No     |
-
-**Request**
-
-No request body required.
-
-**Response**
-
-```json
-{
-  "workspaces": [
-    {
-      "id": "ws_abc123",
-      "name": "Acme Corp — Sales",
-      "role": "admin",
-      "member_count": 12,
-      "created_at": "2024-02-01T10:00:00Z"
-    },
-    {
-      "id": "ws_def456",
-      "name": "Acme Corp — Marketing",
-      "role": "member",
-      "member_count": 5,
-      "created_at": "2024-03-10T14:20:00Z"
-    }
-  ],
-  "total": 2
-}
-```
-
-**Response Fields**
-
-| Field                       | Type      | Description                                                           |
-| --------------------------- | --------- | --------------------------------------------------------------------- |
-| `workspaces`                | `array`   | List of workspace objects                                             |
-| `workspaces[].id`           | `string`  | Unique workspace identifier                                           |
-| `workspaces[].name`         | `string`  | Display name of the workspace                                         |
-| `workspaces[].role`         | `string`  | Authenticated user's role in this workspace (`admin`, `member`, etc.) |
-| `workspaces[].member_count` | `integer` | Total number of members in the workspace                              |
-| `workspaces[].created_at`   | `string`  | ISO 8601 creation timestamp                                           |
-| `total`                     | `integer` | Total number of workspaces returned                                   |
-
-**Example cURL**
-
-```bash
-curl -X GET https://api.bitscale.ai/api/v1/workspaces \
-  -H "api_key: your_api_key_here"
-```
-
----
-
-### 3. Get Workspace Details
-
-Returns full details for a specific workspace, including its plan, credit balance, member information, and metadata.
-
-```text
-GET /workspaces/{workspaceId}
-```
-
-**Headers**
-
-| Header         | Required |
-| -------------- | -------- |
-| `api_key`      | ✅ Yes    |
-| `workspace-id` | ❌ No     |
-
-**Path Parameters**
-
-| Parameter     | Type     | Required | Description                            |
-| ------------- | -------- | -------- | -------------------------------------- |
-| `workspaceId` | `string` | ✅ Yes    | The unique identifier of the workspace |
-
-**Request**
-
-No request body required.
-
-**Response**
-
-```json
-{
-  "id": "ws_abc123",
-  "name": "Acme Corp — Sales",
-  "created_at": "2024-02-01T10:00:00Z",
-  "created_by": {
-    "id": "usr_abc123",
-    "name": "Jane Doe",
-    "email": "jane.doe@company.com"
-  },
-  "plan": {
-    "name": "Enterprise",
-    "credits_included": 100000,
-    "renewal_date": "2026-04-01T00:00:00Z"
-  },
-  "credits": {
-    "total": 100000,
-    "used": 34200,
-    "remaining": 65800
-  },
-  "members": {
-    "total": 12,
-    "admins": 2
+  "error": {
+    "code":    "INVALID_API_KEY",
+    "message": "Missing or invalid X-API-KEY header"
   }
 }
 ```
 
-**Response Fields**
+---
 
-| Field                   | Type      | Description                                              |
-| ----------------------- | --------- | -------------------------------------------------------- |
-| `id`                    | `string`  | Unique workspace identifier                              |
-| `name`                  | `string`  | Display name of the workspace                            |
-| `created_at`            | `string`  | ISO 8601 timestamp of workspace creation                 |
-| `created_by`            | `object`  | Details of the user who created the workspace            |
-| `created_by.id`         | `string`  | User ID of the workspace creator                         |
-| `created_by.name`       | `string`  | Full name of the workspace creator                       |
-| `created_by.email`      | `string`  | Email address of the workspace creator                   |
-| `plan`                  | `object`  | Current subscription plan details                        |
-| `plan.name`             | `string`  | Plan tier name (e.g., `Starter`, `Growth`, `Enterprise`) |
-| `plan.credits_included` | `integer` | Total credits included in the current billing cycle      |
-| `plan.renewal_date`     | `string`  | ISO 8601 timestamp of the next billing renewal           |
-| `credits`               | `object`  | Credit usage summary for the current billing cycle       |
-| `credits.total`         | `integer` | Total credits allocated to this workspace                |
-| `credits.used`          | `integer` | Credits consumed so far in this billing cycle            |
-| `credits.remaining`     | `integer` | Credits available for use                                |
-| `members`               | `object`  | Membership summary                                       |
-| `members.total`         | `integer` | Total number of members in the workspace                 |
-| `members.admins`        | `integer` | Number of members with admin role                        |
-
-> **Tip:** Use this endpoint to proactively check `credits.remaining` before submitting large grid runs to avoid `INSUFFICIENT_CREDITS` errors.
-
-**Example cURL**
-
-```bash
-curl -X GET "https://api.bitscale.ai/api/v1/workspaces/ws_abc123" \
-  -H "api_key: your_api_key_here"
-```
+## 4. Endpoints
 
 ---
 
-### 4. List Grids in a Workspace
-
-Returns all grids within a specified workspace. Supports optional filtering by grid name.
+### 4.1 Run a Grid
 
 ```text
-GET /workspaces/{workspaceId}/grids
+POST /api/v1/grids/:gridId/run
 ```
 
-**Headers**
+Appends a new row to the specified grid using the provided inputs and triggers all column enrichments. Supports two execution modes:
 
-| Header         | Required |
-| -------------- | -------- |
-| `api_key`      | ✅ Yes    |
-| `workspace-id` | ✅ Yes    |
+- `sync (default)` — waits up to 120 seconds for completion and returns outputs directly. If still processing at the deadline, returns a `request_id` to poll.
+- **`async`** — returns a `request_id` immediately. Poll `GET /run/status/:requestId` for results.
 
-**Path Parameters**
+> **💡 Get your curl instantly from the app** — Open any grid in [app.bitscale.ai](https://app.bitscale.ai), click on the **Data source** column select Bitscale API source, and you'll find a ready-to-use curl command pre-filled with your grid ID, API key, and input fields. Use the output column toggles to include or exclude specific columns — the curl updates live to reflect your selection. Copy it directly into your terminal or integration.
 
-| Parameter     | Type     | Required | Description                            |
-| ------------- | -------- | -------- | -------------------------------------- |
-| `workspaceId` | `string` | ✅ Yes    | The unique identifier of the workspace |
+#### Path Parameters
 
-**Query Parameters**
+| Parameter | Description                                                                     |
+| --------- | ------------------------------------------------------------------------------- |
+| `gridId`  | UUID of the grid to run. Found in the grid URL: `app.bitscale.ai/grid/{gridId}` |
 
-| Parameter | Type     | Required | Description                                                      |
-| --------- | -------- | -------- | ---------------------------------------------------------------- |
-| `search`  | `string` | ❌ No     | Filter grids by name (case-insensitive, partial match supported) |
+#### Request Headers
 
-**Request**
-
-No request body required.
-
-**Response**
-
-```json
-{
-  "grids": [
-    {
-      "id": "grid_001",
-      "name": "Lead Enrichment — Q1",
-      "description": "Enriches inbound leads with company and contact data.",
-      "row_count": 1500,
-      "column_count": 12,
-      "created_at": "2024-04-01T09:00:00Z",
-      "updated_at": "2024-04-15T11:30:00Z"
-    }
-  ],
-  "total": 1
-}
-```
-
-**Response Fields**
-
-| Field                  | Type      | Description                                |
-| ---------------------- | --------- | ------------------------------------------ |
-| `grids`                | `array`   | List of grid objects                       |
-| `grids[].id`           | `string`  | Unique grid identifier                     |
-| `grids[].name`         | `string`  | Display name of the grid                   |
-| `grids[].description`  | `string`  | Optional description of the grid's purpose |
-| `grids[].row_count`    | `integer` | Total number of rows in the grid           |
-| `grids[].column_count` | `integer` | Total number of columns in the grid        |
-| `grids[].created_at`   | `string`  | ISO 8601 creation timestamp                |
-| `grids[].updated_at`   | `string`  | ISO 8601 timestamp of last modification    |
-| `total`                | `integer` | Total number of matching grids             |
-
-**Example cURL**
-
-```bash
-# List all grids
-curl -X GET "https://api.bitscale.ai/api/v1/workspaces/ws_abc123/grids" \
-  -H "api_key: your_api_key_here" \
-  -H "workspace-id: ws_abc123"
-
-# Search by name
-curl -X GET "https://api.bitscale.ai/api/v1/workspaces/ws_abc123/grids?search=lead" \
-  -H "api_key: your_api_key_here" \
-  -H "workspace-id: ws_abc123"
-```
-
----
-
-### 5. Get Grid Details
-
-Returns full metadata for a specific grid, including all column definitions, their types, and grid-level settings.
-
-```text
-GET /grids/{gridId}
-```
-
-**Headers**
-
-| Header         | Required |
-| -------------- | -------- |
-| `api_key`      | ✅ Yes    |
-| `workspace-id` | ✅ Yes    |
-
-**Path Parameters**
-
-| Parameter | Type     | Required | Description                       |
-| --------- | -------- | -------- | --------------------------------- |
-| `gridId`  | `string` | ✅ Yes    | The unique identifier of the grid |
-
-**Request**
-
-No request body required.
-
-**Response**
-
-```json
-{
-  "id": "grid_001",
-  "name": "Lead Enrichment — Q1",
-  "description": "Enriches inbound leads with company and contact data.",
-  "settings": {
-    "row_limit": 5000,
-    "auto_run": false,
-    "visibility": "workspace"
-  },
-  "columns": [
-    {
-      "id": "3f7a1c2e-9b4d-4e8f-a012-bc3d56ef7890",
-      "name": "Full Name",
-      "type": "text",
-      "is_input": true,
-      "is_output": false,
-      "required": true
-    },
-    {
-      "id": "7c2b0f4a-1d3e-4a9c-b567-de8f90ab1234",
-      "name": "Company",
-      "type": "text",
-      "is_input": true,
-      "is_output": false,
-      "required": false
-    },
-    {
-      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "name": "Enriched Email",
-      "type": "ai_enrichment",
-      "is_input": false,
-      "is_output": true,
-      "required": false
-    }
-  ],
-  "row_count": 1500,
-  "created_at": "2024-04-01T09:00:00Z",
-  "updated_at": "2024-04-15T11:30:00Z"
-}
-```
-
-**Response Fields**
-
-| Field                 | Type      | Description                                                                                                        |
-| --------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| `id`                  | `string`  | Unique grid identifier                                                                                             |
-| `name`                | `string`  | Display name of the grid                                                                                           |
-| `description`         | `string`  | Description of the grid's purpose                                                                                  |
-| `settings`            | `object`  | Grid-level configuration (see below)                                                                               |
-| `settings.row_limit`  | `integer` | Maximum number of rows the grid can hold                                                                           |
-| `settings.auto_run`   | `boolean` | Whether the grid runs automatically on new row insertion                                                           |
-| `settings.visibility` | `string`  | Access scope: `workspace`, `private`, or `public`                                                                  |
-| `columns`             | `array`   | Ordered list of column definitions                                                                                 |
-| `columns[].id`        | `string`  | Unique column UUID — use this as the key in `inputs` and `output_columns` when calling [Run a Grid](#6-run-a-grid) |
-| `columns[].name`      | `string`  | Human-readable column name                                                                                         |
-| `columns[].type`      | `string`  | Column data type (see **Column Types** below)                                                                      |
-| `columns[].is_input`  | `boolean` | Whether this column accepts input when running the grid                                                            |
-| `columns[].is_output` | `boolean` | Whether this column produces AI-enriched output                                                                    |
-| `columns[].required`  | `boolean` | Whether this column must be provided when running the grid                                                         |
-| `row_count`           | `integer` | Total number of rows currently in the grid                                                                         |
-| `created_at`          | `string`  | ISO 8601 creation timestamp                                                                                        |
-| `updated_at`          | `string`  | ISO 8601 timestamp of last modification                                                                            |
-
-**Column Types**
-
-| Type            | Description                                      |
-| --------------- | ------------------------------------------------ |
-| `text`          | Plain text string                                |
-| `number`        | Numeric value (integer or float)                 |
-| `url`           | A valid URL string                               |
-| `email`         | An email address string                          |
-| `date`          | ISO 8601 date string                             |
-| `boolean`       | `true` or `false`                                |
-| `ai_enrichment` | Output column populated by a BitScale AI agent   |
-| `formula`       | Computed column derived from other column values |
-
-**Example cURL**
-
-```bash
-curl -X GET "https://api.bitscale.ai/api/v1/grids/grid_001" \
-  -H "api_key: your_api_key_here" \
-  -H "workspace-id: ws_abc123"
-```
-
----
-
-### 6. Run a Grid
-
-Executes a grid with the provided input column values and returns enriched output. Supports both **synchronous** and **asynchronous** execution modes.
-
-```text
-POST /grids/{gridId}/run
-```
-
-**Headers**
-
-| Header         | Required                           |
-| -------------- | ---------------------------------- |
-| `api_key`      | ✅ Yes                              |
-| `workspace-id` | ✅ Yes                              |
-| `Content-Type` | ✅ Yes — must be `application/json` |
-
-**Path Parameters**
-
-| Parameter | Type     | Required | Description                              |
-| --------- | -------- | -------- | ---------------------------------------- |
-| `gridId`  | `string` | ✅ Yes    | The unique identifier of the grid to run |
-
----
+| Header         | Value                             |
+| -------------- | --------------------------------- |
+| `X-API-KEY`    | Your workspace API key (required) |
+| `Content-Type` | `application/json` (required)     |
 
 #### Request Body
 
+| Field            | Type       | Required | Description                                                                                                                                    |
+| ---------------- | ---------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mode`           | `string`   | No       | `"sync"` or `"async"`. Defaults to `"sync"` if omitted.                                                                                        |
+| `inputs`         | `object`   | **Yes**  | Key-value map of column keys (e.g. `"company_name"`) to their input values. Use the column key shown in the API Datasource panel — not a UUID. |
+| `output_columns` | `string[]` | No       | Array of column UUID keys to include in the response. If omitted, all enriched columns are returned.                                           |
+| `source_id`      | `string`   | No       | UUID of the BitScale API source on the grid. If omitted, the first available source is used automatically.                                     |
+| `webhook_url`    | `string`   | No       | _(async only)_ HTTPS callback URL for when the run completes. Reserved for future use.                                                         |
+
+#### Example — Sync Mode
+
 ```json
+POST /api/v1/grids/a1b2c3d4-e5f6-7890-abcd-ef1234567890/run
+X-API-KEY: sk-live-abc123xyz
+Content-Type: application/json
+
+{
+  "mode": "sync",
+  "inputs": {
+    "company_name": "Acme Corp",
+    "website":      "acme.com"
+  },
+  "output_columns": [
+    "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+    "6ba7b811-9dad-11d1-80b4-00c04fd430c8"
+  ]
+}
+```
+
+#### Example — Async Mode
+
+```json
+POST /api/v1/grids/a1b2c3d4-e5f6-7890-abcd-ef1234567890/run
+X-API-KEY: sk-live-abc123xyz
+Content-Type: application/json
+
 {
   "mode": "async",
   "inputs": {
-    "3f7a1c2e-9b4d-4e8f-a012-bc3d56ef7890": "Jane Doe",
-    "7c2b0f4a-1d3e-4a9c-b567-de8f90ab1234": "Acme Corp"
-  },
-  "output_columns": [
-    "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "b2c3d4e5-f6a7-8901-bcde-f12345678901"
-  ],
-  "webhook_url": "https://your-server.com/webhooks/bitscale"
-}
-```
-
-**Request Fields**
-
-| Field            | Type               | Required | Description                                                                                                                                                   |
-| ---------------- | ------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `mode`           | `string`           | ❌ No     | Execution mode: `sync` (default) or `async`                                                                                                                   |
-| `inputs`         | `object`           | ✅ Yes    | Key-value pairs mapping column UUIDs to their input values. Column UUIDs can be found in the `columns[].id` field via [Get Grid Details](#5-get-grid-details) |
-| `output_columns` | `array of strings` | ❌ No     | List of column UUIDs to include in the response. If omitted, all columns are returned as key-value pairs                                                      |
-| `webhook_url`    | `string`           | ❌ No     | _(async only)_ A publicly accessible HTTPS URL. BitScale will POST the completed run result to this URL when execution finishes. Ignored in `sync` mode       |
-
----
-
-#### Synchronous Response (`mode: "sync"`)
-
-The API processes the row and returns the result directly.
-
-```json
-{
-  "mode": "sync",
-  "status": "completed",
-  "outputs": {
-    "3f7a1c2e-9b4d-4e8f-a012-bc3d56ef7890": "Jane Doe",
-    "7c2b0f4a-1d3e-4a9c-b567-de8f90ab1234": "Acme Corp",
-    "a1b2c3d4-e5f6-7890-abcd-ef1234567890": "jane.doe@acmecorp.com",
-    "b2c3d4e5-f6a7-8901-bcde-f12345678901": "https://linkedin.com/in/janedoe"
-  },
-  "credits": {
-    "consumed": 12,
-    "remaining": 65788
+    "company_name": "Acme Corp"
   }
 }
 ```
 
----
+#### Responses
 
-#### Asynchronous Response (`mode: "async"`)
-
-The API immediately returns a run ID. Use the run ID to poll for results, or provide a `webhook_url` to receive a callback when the run completes.
+**200 OK — Sync Completed** _(run finished within 120 seconds)_
 
 ```json
 {
-  "mode": "async",
-  "run_id": "run_xyz789",
-  "status": "queued",
-  "poll_url": "https://api.bitscale.ai/api/v1/grids/grid_001/runs/run_xyz789"
+  "mode":   "sync",
+  "status": "completed",
+  "outputs": {
+    "6ba7b810-9dad-11d1-80b4-00c04fd430c8": {
+      "value": "AI-powered data enrichment platform",
+      "name":  "Company Description"
+    },
+    "6ba7b811-9dad-11d1-80b4-00c04fd430c8": {
+      "value": "Series B",
+      "name":  "Funding Stage"
+    }
+  }
 }
 ```
 
-**Polling for Results**
+**200 OK — Async Started / Sync Timeout** _`(poll request_id for results)`_
+
+```json
+{
+  "mode":       "async",
+  "status":     "running",
+  "request_id": "550e8400-e29b-41d4-a716-446655440000",
+  "poll_url":   "https://api.bitscale.ai/api/v1/run/status/550e8400-e29b-41d4-a716-446655440000",
+  "message":    "Row is still running. Poll the poll_url for results."
+}
+```
+
+#### Output Object Shape
+
+Each key in `outputs` is a column UUID. The value is an object with:
+
+| Field   | Description                                                                     |
+| ------- | ------------------------------------------------------------------------------- |
+| `value` | The enriched output (string, number, array, or object depending on column type) |
+| `name`  | Human-readable display name of the column as set in the grid                    |
+
+#### Response Status Codes
+
+| HTTP  | Code                     | Description                                                    |
+| ----- | ------------------------ | -------------------------------------------------------------- |
+| `200` | —                        | Request accepted. Check `status` field in body.                |
+| `400` | `MISSING_REQUIRED_FIELD` | `inputs` is missing or request body is malformed JSON.         |
+| `400` | `MISSING_SOURCE`         | Grid has no BitScale API source. Add one in grid settings.     |
+| `400` | `INVALID_SOURCE`         | The `source_id` provided does not exist for this grid.         |
+| `400` | `INVALID_REQUEST`        | `mode` is not `"sync"` or `"async"`.                           |
+| `401` | `INVALID_API_KEY`        | `X-API-KEY` header is missing or invalid.                      |
+| `403` | `FEATURE_DISABLED`       | BitScale APIs not enabled on your plan. Upgrade to Enterprise. |
+| `403` | `GRID_NOT_FOUND`         | Grid exists but does not belong to your workspace.             |
+| `404` | `GRID_NOT_FOUND`         | No grid found for the provided `gridId`.                       |
+| `500` | `RUN_FAILED`             | Row run encountered an error. Check `message` for details.     |
+| `500` | `INTERNAL_ERROR`         | Unexpected server error. Contact support if this persists.     |
+
+---
+
+### 4.2 Get Run Status
 
 ```text
-GET /grids/{gridId}/runs/{runId}
+GET /api/v1/run/status/:requestId
 ```
 
-Poll the `poll_url` until `status` is `completed` or `failed`.
+Returns the current status of a run identified by its `request_id`. Call this after receiving a `request_id` from `POST /grids/:gridId/run` — either in async mode or when sync mode times out.
+
+> **ℹ Note** — Poll every 2–5 seconds until `status` is `"completed"` or `"failed"`. Avoid polling more frequently as it may trigger rate-limiting in future versions.
+
+#### Path Parameters
+
+| Parameter   | Description                                                  |
+| ----------- | ------------------------------------------------------------ |
+| `requestId` | UUID returned as `request_id` from `POST /grids/:gridId/run` |
+
+#### Example Request
+
+```text
+GET /api/v1/run/status/550e8400-e29b-41d4-a716-446655440000
+X-API-KEY: sk-live-abc123xyz
+```
+
+#### Responses
+
+**200 OK — Still Running**
 
 ```json
 {
-  "run_id": "run_xyz789",
-  "status": "completed",
-  "outputs": {
-    "3f7a1c2e-9b4d-4e8f-a012-bc3d56ef7890": "Jane Doe",
-    "7c2b0f4a-1d3e-4a9c-b567-de8f90ab1234": "Acme Corp",
-    "a1b2c3d4-e5f6-7890-abcd-ef1234567890": "jane.doe@acmecorp.com",
-    "b2c3d4e5-f6a7-8901-bcde-f12345678901": "https://linkedin.com/in/janedoe"
-  },
-  "credits": {
-    "consumed": 12,
-    "remaining": 65788
-  },
-  "started_at": "2024-04-15T12:00:00Z",
-  "completed_at": "2024-04-15T12:00:04Z"
+  "mode":    "async",
+  "status":  "running",
+  "grid_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
 }
 ```
 
-**Run Status Values**
-
-| Status      | Description                                                |
-| ----------- | ---------------------------------------------------------- |
-| `queued`    | Run has been accepted and is waiting to be processed       |
-| `running`   | Run is currently being executed                            |
-| `completed` | Run finished successfully — outputs are available          |
-| `failed`    | Run encountered an error — check `error` field for details |
-
----
-
-**Webhook Delivery**
-
-If a `webhook_url` was provided in the request, BitScale will send an HTTP `POST` request to that URL upon run completion (whether `completed` or `failed`). The webhook payload is identical to the poll response.
-
-> ⚠️ **Requirements:** The `webhook_url` must be a publicly accessible `https://` endpoint. BitScale does not support `http://` or localhost URLs for webhook delivery.
-
-Your endpoint must respond with a `2xx` status code within **10 seconds** to acknowledge receipt. If delivery fails, BitScale will retry up to **3 times** with exponential backoff.
-
-**Webhook Payload Example**
+**200 OK — Completed**
 
 ```json
 {
-  "run_id": "run_xyz789",
-  "grid_id": "grid_001",
-  "status": "completed",
+  "mode":    "async",
+  "status":  "completed",
+  "grid_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "outputs": {
-    "3f7a1c2e-9b4d-4e8f-a012-bc3d56ef7890": "Jane Doe",
-    "7c2b0f4a-1d3e-4a9c-b567-de8f90ab1234": "Acme Corp",
-    "a1b2c3d4-e5f6-7890-abcd-ef1234567890": "jane.doe@acmecorp.com",
-    "b2c3d4e5-f6a7-8901-bcde-f12345678901": "https://linkedin.com/in/janedoe"
-  },
-  "credits": {
-    "consumed": 12,
-    "remaining": 65788
-  },
-  "started_at": "2024-04-15T12:00:00Z",
-  "completed_at": "2024-04-15T12:00:04Z"
-}
-```
-
-**Webhook Headers Sent by BitScale**
-
-| Header                 | Description                                                      |
-| ---------------------- | ---------------------------------------------------------------- |
-| `Content-Type`         | `application/json`                                               |
-| `X-BitScale-Run-Id`    | The `run_id` of the completed run                                |
-| `X-BitScale-Signature` | HMAC-SHA256 signature of the payload, for verifying authenticity |
-
----
-
-**Response Fields**
-
-| Field               | Type      | Description                                                                           |
-| ------------------- | --------- | ------------------------------------------------------------------------------------- |
-| `mode`              | `string`  | Execution mode used: `sync` or `async`                                                |
-| `status`            | `string`  | Current run status                                                                    |
-| `run_id`            | `string`  | _(async only)_ Unique identifier for the run                                          |
-| `poll_url`          | `string`  | _(async only)_ URL to poll for run status and results                                 |
-| `outputs`           | `object`  | Key-value pairs of column IDs and their values (present when `status` is `completed`) |
-| `credits`           | `object`  | Credit usage for this run (present when `status` is `completed`)                      |
-| `credits.consumed`  | `integer` | Number of credits deducted for this run                                               |
-| `credits.remaining` | `integer` | Credits remaining in the workspace after this run                                     |
-| `started_at`        | `string`  | _(async only)_ ISO 8601 timestamp when execution began                                |
-| `completed_at`      | `string`  | _(async only)_ ISO 8601 timestamp when execution finished                             |
-
----
-
-**Example cURL — Synchronous**
-
-```bash
-curl -X POST "https://api.bitscale.ai/api/v1/grids/grid_001/run" \
-  -H "api_key: your_api_key_here" \
-  -H "workspace-id: ws_abc123" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "mode": "sync",
-    "inputs": {
-      "3f7a1c2e-9b4d-4e8f-a012-bc3d56ef7890": "Jane Doe",
-      "7c2b0f4a-1d3e-4a9c-b567-de8f90ab1234": "Acme Corp"
-    },
-    "output_columns": ["a1b2c3d4-e5f6-7890-abcd-ef1234567890"]
-  }'
-```
-
-**Example cURL — Asynchronous**
-
-```bash
-# Step 1: Submit the run (with optional webhook)
-curl -X POST "https://api.bitscale.ai/api/v1/grids/grid_001/run" \
-  -H "api_key: your_api_key_here" \
-  -H "workspace-id: ws_abc123" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "mode": "async",
-    "inputs": {
-      "3f7a1c2e-9b4d-4e8f-a012-bc3d56ef7890": "Jane Doe",
-      "7c2b0f4a-1d3e-4a9c-b567-de8f90ab1234": "Acme Corp"
-    },
-    "webhook_url": "https://your-server.com/webhooks/bitscale"
-  }'
-
-# Step 2: Poll for results
-curl -X GET "https://api.bitscale.ai/api/v1/grids/grid_001/runs/run_xyz789" \
-  -H "api_key: your_api_key_here" \
-  -H "workspace-id: ws_abc123"
-```
-
----
-
-## Examples
-
-The following examples demonstrate common BitScale grid workflows. Each example starts with the grid details response (to identify column UUIDs) and shows both synchronous and asynchronous run options.
-
----
-
-### Example 1: Email Waterfall Grid
-
-This grid takes a person's name, company domain, and LinkedIn URL as inputs and returns their professional email address via a waterfall of enrichment sources.
-
-**Grid ID:** `grid_email_wf_01`
-
----
-
-#### Step 1 — Get grid details
-
-Fetch the grid to retrieve column UUIDs needed for the run call:
-
-```bash
-curl -X GET "https://api.bitscale.ai/api/v1/grids/grid_email_wf_01" \
-  -H "api_key: your_api_key_here" \
-  -H "workspace-id: ws_abc123"
-```
-
-**Response**
-
-```json
-{
-  "id": "grid_email_wf_01",
-  "name": "Email Waterfall",
-  "description": "Finds professional email via multi-source waterfall enrichment.",
-  "columns": [
-    {
-      "id": "11aa2b3c-4d5e-6f70-8901-abcdef123456",
-      "name": "Person Name",
-      "type": "input"
-    },
-    {
-      "id": "22bb3c4d-5e6f-7081-9012-bcdef1234567",
-      "name": "Company Domain",
-      "type": "input"
-    },
-    {
-      "id": "33cc4d5e-6f70-8192-0123-cdef12345678",
-      "name": "LinkedIn URL",
-      "type": "input"
-    },
-    {
-      "id": "dd5e6f54-7081-9203-1234-def123456789",
-      "name": "Email Waterfall",
-      "type": "action"
-    },
-    {
-      "id": "44dd5e6f-7081-9203-1234-def123456789",
-      "name": "Email",
-      "type": "formula"
+    "6ba7b810-9dad-11d1-80b4-00c04fd430c8": {
+      "value": "AI-powered data enrichment platform",
+      "name":  "Company Description"
     }
-  ]
-}
-```
-
----
-
-#### Step 2 — Run the grid
-
-**Synchronous**
-
-```bash
-curl -X POST "https://api.bitscale.ai/api/v1/grids/grid_email_wf_01/run" \
-  -H "api_key: your_api_key_here" \
-  -H "workspace-id: ws_abc123" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "mode": "sync",
-    "inputs": {
-      "11aa2b3c-4d5e-6f70-8901-abcdef123456": "Jane Doe",
-      "22bb3c4d-5e6f-7081-9012-bcdef1234567": "acmecorp.com",
-      "33cc4d5e-6f70-8192-0123-cdef12345678": "https://linkedin.com/in/janedoe"
-    },
-    "output_columns": ["44dd5e6f-7081-9203-1234-def123456789"]
-  }'
-```
-
-**Response**
-
-```json
-{
-  "mode": "sync",
-  "status": "completed",
-  "outputs": {
-    "44dd5e6f-7081-9203-1234-def123456789": "jane.doe@acmecorp.com"
-  },
-  "credits": {
-    "consumed": 2,
-    "remaining": 65792
   }
 }
 ```
 
+#### Response Fields
+
+| Field     | Type     | Description                                                                  |
+| --------- | -------- | ---------------------------------------------------------------------------- |
+| `mode`    | `string` | `"sync"` or `"async"` — matches the mode used when the run was started.      |
+| `status`  | `string` | `"running"`, `"completed"`, or `"failed"`.                                   |
+| `grid_id` | `string` | UUID of the grid that was run.                                               |
+| `outputs` | `object` | Present only when `status` is `"completed"`. Same shape as POST run outputs. |
+
+#### Response Status Codes
+
+| HTTP  | Code                | Description                                                                   |
+| ----- | ------------------- | ----------------------------------------------------------------------------- |
+| `200` | —                   | Status returned successfully. Check `status` field.                           |
+| `401` | `INVALID_API_KEY`   | `X-API-KEY` header is missing or invalid.                                     |
+| `404` | `REQUEST_NOT_FOUND` | No run request found for `requestId`, or it belongs to a different workspace. |
+| `500` | `RUN_FAILED`        | The run encountered an error. Message contains details.                       |
+
 ---
 
-**Asynchronous (with webhook)**
+### 4.3 Rotate API Key
 
-```bash
-curl -X POST "https://api.bitscale.ai/api/v1/grids/grid_email_wf_01/run" \
-  -H "api_key: your_api_key_here" \
-  -H "workspace-id: ws_abc123" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "mode": "async",
-    "inputs": {
-      "11aa2b3c-4d5e-6f70-8901-abcdef123456": "Jane Doe",
-      "22bb3c4d-5e6f-7081-9012-bcdef1234567": "acmecorp.com",
-      "33cc4d5e-6f70-8192-0123-cdef12345678": "https://linkedin.com/in/janedoe"
-    },
-    "output_columns": ["44dd5e6f-7081-9203-1234-def123456789"],
-    "webhook_url": "https://your-server.com/webhooks/bitscale"
-  }'
+```text
+POST /api/v1/api-key/rotate
 ```
 
-**Response**
+Generates a new workspace API key and immediately invalidates the current key used to make the request.
+
+> **⚠ Important** — This action is irreversible. The moment this endpoint responds successfully, the key used to call it stops working. Update all integrations with the new key immediately.
+
+#### Request
+
+No request body is required. The workspace is identified from the `X-API-KEY` header.
+
+```text
+POST /api/v1/api-key/rotate
+X-API-KEY: sk-live-abc123xyz
+```
+
+#### Response — 200 OK
 
 ```json
 {
-  "mode": "async",
-  "run_id": "run_em001",
-  "status": "queued",
-  "poll_url": "https://api.bitscale.ai/api/v1/grids/grid_email_wf_01/runs/run_em001"
+  "api_key": "sk-live-newkey9876xyz"
 }
 ```
 
-**Webhook payload (on completion)**
+#### Response Fields
 
-```json
-{
-  "run_id": "run_em001",
-  "grid_id": "grid_email_wf_01",
-  "status": "completed",
-  "outputs": {
-    "44dd5e6f-7081-9203-1234-def123456789": "jane.doe@acmecorp.com"
-  },
-  "credits": {
-    "consumed": 2,
-    "remaining": 65792
-  },
-  "started_at": "2026-03-05T10:00:00Z",
-  "completed_at": "2026-03-05T10:00:05Z"
-}
+| Field     | Description                                                                              |
+| --------- | ---------------------------------------------------------------------------------------- |
+| `api_key` | The newly generated workspace API key. Replace your old key with this value immediately. |
+
+#### Response Status Codes
+
+| HTTP  | Code              | Description                                    |
+| ----- | ----------------- | ---------------------------------------------- |
+| `200` | —                 | New API key generated. Old key is now invalid. |
+| `401` | `INVALID_API_KEY` | `X-API-KEY` header is missing or invalid.      |
+| `500` | `ROTATE_FAILED`   | Key rotation failed. Retry or contact support. |
+
+---
+
+## 5. Sync vs Async Modes
+
+When calling `POST /grids/:gridId/run`, you choose how to handle the response using the `mode` field.
+
+### Sync Mode _(default)_
+
+Set `mode: "sync"` or omit the field entirely.
+
+- Server waits up to **120 seconds** for the run to complete.
+- On success: outputs are returned inline in the response.
+- On timeout: a `request_id` is returned; poll `GET /run/status/:requestId`.
+- Best for: fast grids, interactive use cases, MCP tool integrations.
+
+### Async Mode
+
+Set `mode: "async"`.
+
+- Server returns a `request_id` **immediately** (no waiting).
+- Poll `GET /run/status/:requestId` every 2–5 seconds for results.
+- Suitable for long-running grids (\> 120 seconds).
+- Best for: pipelines, batch jobs, background processing.
+
+### Sync Flow
+
+```text
+Client                              BitScale API
+  │                                     │
+  │── POST /grids/:gridId/run ──────────▶│
+  │   { mode: 'sync', inputs: {...} }    │
+  │                                     │── Runs row enrichments
+  │                                     │   (waits up to 120s)
+  │                                     │
+  │◀── 200 OK { status: 'completed', ───│  (success within 120s)
+  │            outputs: {...} }          │
+  │                                     │
+  │◀── 200 OK { status: 'running',  ────│  (timeout after 120s)
+  │            request_id: '...',        │
+  │            poll_url: '...' }         │
+  │                                     │
+  │── GET /run/status/:requestId ───────▶│  (poll every 2-5s)
+  │◀── 200 OK { status: 'completed' } ──│
+```
+
+### Async Flow
+
+```text
+Client                              BitScale API
+  │                                     │
+  │── POST /grids/:gridId/run ──────────▶│
+  │   { mode: 'async', inputs: {...} }   │
+  │                                     │
+  │◀── 200 OK { status: 'running', ─────│  (immediate response)
+  │            request_id: '...',        │
+  │            poll_url: '...' }         │── Runs row enrichments
+  │                                     │   in background
+  │── GET /run/status/:requestId ───────▶│  (poll every 2-5s)
+  │◀── 200 OK { status: 'running' } ────│
+  │                                     │
+  │── GET /run/status/:requestId ───────▶│
+  │◀── 200 OK { status: 'completed', ───│
+  │            outputs: {...} }          │
 ```
 
 ---
 
-### Example 2: Phone Waterfall Grid
+## 6. Error Code Reference
 
-This grid takes a person's LinkedIn URL as input and returns their phone number via a waterfall of enrichment sources.
-
-**Grid ID:** `grid_phone_wf_01`
-
----
-
-#### Step 1 — Get grid details
-
-```bash
-curl -X GET "https://api.bitscale.ai/api/v1/grids/grid_phone_wf_01" \
-  -H "api_key: your_api_key_here" \
-  -H "workspace-id: ws_abc123"
-```
-
-**Response**
-
-```json
-{
-  "id": "grid_phone_wf_01",
-  "name": "Phone Waterfall",
-  "description": "Finds a person's phone number via multi-source waterfall enrichment.",
-  "columns": [
-    {
-      "id": "55ee6f70-8192-0314-2345-ef1234567890",
-      "name": "LinkedIn URL",
-      "type": "input"
-    },
-    {
-      "id": "ff708166-9203-1425-3456-f12345678901",
-      "name": "Phone Number",
-      "type": "formula"
-    },
-    {
-      "id": "66ff7081-9203-1425-3456-f12345678901",
-      "name": "Phone Number",
-      "type": "formula"
-    }
-  ]
-}
-```
+| Code                     | HTTP  | Description                                                                                |
+| ------------------------ | ----- | ------------------------------------------------------------------------------------------ |
+| `INVALID_API_KEY`        | `401` | The `X-API-KEY` header is missing, empty, or does not match any workspace.                 |
+| `MISSING_REQUIRED_FIELD` | `400` | A required field is absent — most commonly `inputs` was not provided or JSON is malformed. |
+| `INVALID_REQUEST`        | `400` | A field value is invalid — e.g. `mode` is neither `"sync"` nor `"async"`.                  |
+| `MISSING_SOURCE`         | `400` | The grid has no BitScale API source configured. Add one in grid settings.                  |
+| `INVALID_SOURCE`         | `400` | The `source_id` provided does not match any BitScale API source on this grid.              |
+| `MISSING_SOURCE_COLUMN`  | `400` | The grid has no source (DataSource) column — unexpected grid configuration error.          |
+| `INVALID_INPUTS`         | `400` | The `inputs` object could not be serialized. Ensure all values are JSON-serializable.      |
+| `GRID_NOT_FOUND`         | `404` | No grid exists for the given `gridId`, or it belongs to a different workspace.             |
+| `REQUEST_NOT_FOUND`      | `404` | No run request found for the given `requestId`, or it belongs to a different workspace.    |
+| `FEATURE_DISABLED`       | `403` | BitScale APIs is an Enterprise-only feature. Upgrade your workspace plan.                  |
+| `RUN_FAILED`             | `500` | The row run failed during execution. Check the error message for details.                  |
+| `ROTATE_FAILED`          | `500` | API key rotation failed unexpectedly. Retry or contact BitScale support.                   |
+| `INTERNAL_ERROR`         | `500` | An unexpected server error occurred. Contact support if this persists.                     |
 
 ---
 
-#### Step 2 — Run the grid
-
-**Synchronous**
-
-```bash
-curl -X POST "https://api.bitscale.ai/api/v1/grids/grid_phone_wf_01/run" \
-  -H "api_key: your_api_key_here" \
-  -H "workspace-id: ws_abc123" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "mode": "sync",
-    "inputs": {
-      "55ee6f70-8192-0314-2345-ef1234567890": "https://linkedin.com/in/janedoe"
-    },
-    "output_columns": ["66ff7081-9203-1425-3456-f12345678901"]
-  }'
-```
-
-**Response**
-
-```json
-{
-  "mode": "sync",
-  "status": "completed",
-  "outputs": {
-    "66ff7081-9203-1425-3456-f12345678901": "+14155550192"
-  },
-  "credits": {
-    "consumed": 15,
-    "remaining": 65787
-  }
-}
-```
-
----
-
-**Asynchronous (with webhook)**
-
-```bash
-curl -X POST "https://api.bitscale.ai/api/v1/grids/grid_phone_wf_01/run" \
-  -H "api_key: your_api_key_here" \
-  -H "workspace-id: ws_abc123" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "mode": "async",
-    "inputs": {
-      "55ee6f70-8192-0314-2345-ef1234567890": "https://linkedin.com/in/janedoe"
-    },
-    "output_columns": ["66ff7081-9203-1425-3456-f12345678901"],
-    "webhook_url": "https://your-server.com/webhooks/bitscale"
-  }'
-```
-
-**Response**
-
-```json
-{
-  "mode": "async",
-  "run_id": "run_ph001",
-  "status": "queued",
-  "poll_url": "https://api.bitscale.ai/api/v1/grids/grid_phone_wf_01/runs/run_ph001"
-}
-```
-
-**Webhook payload (on completion)**
-
-```json
-{
-  "run_id": "run_ph001",
-  "grid_id": "grid_phone_wf_01",
-  "status": "completed",
-  "outputs": {
-    "66ff7081-9203-1425-3456-f12345678901": "+14155550192"
-  },
-  "credits": {
-    "consumed": 15,
-    "remaining": 65787
-  },
-  "started_at": "2026-03-05T10:00:00Z",
-  "completed_at": "2026-03-05T10:00:03Z"
-}
-```
-
----
-
-## Changelog
-
-| Version | Date       | Notes                                                                                                                                                                       |
-| ------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.1.0   | March 2026 | Added Get Workspace Details endpoint; added `webhook_url` support for async grid runs; added `credits` object to run responses; introduced URL-based API versioning (`/v1`) |
-| 1.0.0   | March 2026 | Initial release                                                                                                                                                             |
-
----
-
-[_For enterprise support, contact your BitScale account manager or email team@bitscale.ai._](mailto:team@bitscale.ai)
+_© BitScale · api.bitscale.ai_
