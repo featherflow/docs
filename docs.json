@@ -208,6 +208,7 @@
           {
             "group": "Hubspot",
             "pages": [
+              "ingredients/hubspot-integration",
               "ingredients/import-hubspot-lists"
             ]
           }
