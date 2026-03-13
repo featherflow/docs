@@ -21,9 +21,12 @@ title: "Bitscale API Reference"
 3. [Rate Limits](#3-rate-limits)
 4. [Error Format](#4-error-format)
 5. [Endpoints](#5-endpoints)
-   - [5.1 POST /grids/:gridId/run — Run a Grid](#51-run-a-grid)
-   - [5.2 GET /run/status/:requestId — Get Run Status](#52-get-run-status)
-   - [5.3 POST /api-key/rotate — Rotate API Key](#53-rotate-api-key)
+   - [5.1 GET /workspace — Get Workspace Details](#51-get-workspace-details)
+   - [5.2 GET /grids — List Grids in Workspace](#52-list-grids-in-workspace)
+   - [5.3 GET /grids/:gridId — Get Grid Details](#53-get-grid-details)
+   - [5.4 POST /grids/:gridId/run — Run a Grid](#54-run-a-grid)
+   - [5.5 GET /run/status/:requestId — Get Run Status](#55-get-run-status)
+   - [5.6 POST /api-key/rotate — Rotate API Key](#56-rotate-api-key)
 6. [Sync vs Async Modes](#6-sync-vs-async-modes)
 7. [Error Code Reference](#7-error-code-reference)
 
@@ -31,15 +34,18 @@ title: "Bitscale API Reference"
 
 ## 1. Overview
 
-The BitScale External API lets you programmatically trigger grid runs, poll for results, and manage your workspace API key. It is designed for use with MCP integrations, CI/CD pipelines, and any external system that needs to run BitScale grids automatically.
+The BitScale External API lets you programmatically query workspace and grid metadata, trigger grid runs, poll for results, and manage your workspace API key. It is designed for use with MCP integrations, CI/CD pipelines, and any external system that needs to interact with BitScale grids automatically.
 
 ### Endpoints at a Glance
 
-| Method | Path                     | Description                          |
-| ------ | ------------------------ | ------------------------------------ |
-| `POST` | `/grids/:gridId/run`     | Trigger a grid run (sync or async)   |
-| `GET`  | `/run/status/:requestId` | Poll run status and retrieve outputs |
-| `POST` | `/api-key/rotate`        | Generate a new workspace API key     |
+| Method | Path                        | Description                                      |
+| ------ | --------------------------- | ------------------------------------------------ |
+| `GET`  | `/workspace`                | Get workspace details (plan, credits, members)   |
+| `GET`  | `/grids`                    | List all grids in the workspace (paginated)      |
+| `GET`  | `/grids/:gridId`            | Get full metadata for a specific grid            |
+| `POST` | `/grids/:gridId/run`        | Trigger a grid run (sync or async)               |
+| `GET`  | `/run/status/:requestId`    | Poll run status and retrieve outputs             |
+| `POST` | `/api-key/rotate`           | Generate a new workspace API key                 |
 
 ---
 
@@ -67,7 +73,7 @@ curl -X POST "https://api.bitscale.ai/api/v1/grids/GRID_ID/run" \
 1. Log into your BitScale workspace.
 2. Navigate to **Settings → Accounts → API Keys**.
 3. Copy the displayed workspace API key.
-4. To generate a new key, use [`POST /api/v1/api-key/rotate`](#53-rotate-api-key) or rotate it from the dashboard.
+4. To generate a new key, use [`POST /api/v1/api-key/rotate`](#56-rotate-api-key) or rotate it from the dashboard.
 
 > **⚠ Important** — Your API key identifies your entire workspace. Keep it secret and never expose it in client-side code or public repositories. If compromised, rotate it immediately.
 
@@ -81,15 +87,41 @@ curl -X POST "https://api.bitscale.ai/api/v1/grids/GRID_ID/run" \
 
 ## 3. Rate Limits
 
-The BitScale External API enforces a default rate limit of **5 requests per second** per workspace.
+The BitScale External API enforces a default rate limit of **5 requests per second** per workspace. Rate limiting is applied globally across all endpoints — including read-only endpoints like `GET /workspace` and `GET /grids`.
 
-| Limit        | Default | Scope          |
-| ------------ | ------- | -------------- |
-| Requests/sec | 5       | Per workspace  |
+| Limit        | Default | Scope         |
+| ------------ | ------- | ------------- |
+| Requests/sec | 5       | Per workspace |
 
 Exceeding this limit will result in a `429 Too Many Requests` response. If your integration requires a higher (or lower) limit, reach out to your account manager or contact support at [team@bitscale.ai](mailto:team@bitscale.ai) to have it adjusted.
 
 > **ℹ Note** — Rate limits apply across all endpoints within a workspace. Polling `GET /run/status/:requestId` counts toward your limit, so poll at a reasonable interval (every 2–5 seconds) rather than as fast as possible.
+
+### Rate Limit Response Headers
+
+Every API response includes the following headers so you can track your usage:
+
+| Header                  | Description                                                            |
+| ----------------------- | ---------------------------------------------------------------------- |
+| `X-RateLimit-Limit`     | Maximum number of requests allowed per second for your workspace.      |
+| `X-RateLimit-Remaining` | Number of requests remaining in the current 1-second window.           |
+| `Retry-After`           | Seconds to wait before retrying. Present only on `429` responses (`1`). |
+
+### Example — Rate Limit Exceeded
+
+```text
+HTTP/1.1 429 Too Many Requests
+X-RateLimit-Limit: 5
+X-RateLimit-Remaining: 0
+Retry-After: 1
+
+{
+  "error": {
+    "code":    "RATE_LIMIT_EXCEEDED",
+    "message": "Bitscale external API rate limit exceeded (5 requests/second per workspace)."
+  }
+}
+```
 
 ---
 
@@ -125,7 +157,337 @@ HTTP/1.1 401 Unauthorized
 
 ---
 
-### 5.1 Run a Grid
+### 5.1 Get Workspace Details
+
+```text
+GET /api/v1/workspace
+```
+
+Returns details about the workspace associated with the provided `X-API-KEY`, including plan information, credit balances, and member counts.
+
+#### Request
+
+No request body or path parameters required. The workspace is identified from the `X-API-KEY` header.
+
+```text
+GET /api/v1/workspace
+X-API-KEY: sk-live-abc123xyz
+```
+
+#### Response — 200 OK
+
+```json
+{
+  "id": "ws-a1b2c3d4",
+  "name": "Acme Corp Workspace",
+  "created_at": "2024-06-01T10:00:00Z",
+  "created_by": {
+    "id": "user-uuid-here",
+    "name": "Jane Smith",
+    "email": "jane@acme.com"
+  },
+  "plan": {
+    "name": "Enterprise",
+    "credits_included": 50000,
+    "billing_interval": "monthly",
+    "next_billing_date": "2026-04-01T00:00:00Z",
+    "price": 499.00,
+    "currency": "USD"
+  },
+  "credits": {
+    "total": 52000,
+    "used": 12400,
+    "remaining": 39600,
+    "plan_credits": 50000,
+    "rollover": 2000,
+    "topup": 0
+  },
+  "people_company_searches": {
+    "limit": 1000,
+    "used": 230,
+    "remaining": 770,
+    "next_renewal_date": "2026-04-11T00:00:00Z"
+  },
+  "members": {
+    "total": 8,
+    "owners": 1,
+    "admins": 2,
+    "editors": 5
+  }
+}
+```
+
+#### Response Fields
+
+| Field                               | Type      | Description                                                                 |
+| ----------------------------------- | --------- | --------------------------------------------------------------------------- |
+| `id`                                | `string`  | Unique workspace identifier.                                                |
+| `name`                              | `string`  | Display name of the workspace.                                              |
+| `created_at`                        | `string`  | ISO 8601 timestamp of workspace creation.                                   |
+| `created_by`                        | `object`  | Details of the user who created the workspace.                              |
+| `plan.name`                         | `string`  | Current plan name (e.g. `"Enterprise"`).                                    |
+| `plan.credits_included`             | `integer` | Credits included in the current billing cycle.                              |
+| `plan.billing_interval`             | `string`  | `"monthly"`, `"yearly"`, or `"quarterly"`.                                  |
+| `plan.next_billing_date`            | `string`  | ISO 8601 timestamp of the next billing date. `null` if not applicable.      |
+| `plan.price`                        | `number`  | Plan price. `null` if not applicable.                                       |
+| `plan.currency`                     | `string`  | Currency code (e.g. `"USD"`). `null` if not applicable.                     |
+| `credits.total`                     | `integer` | Total credits available (plan + rollover + topup).                          |
+| `credits.used`                      | `integer` | Credits consumed in the current period.                                     |
+| `credits.remaining`                 | `integer` | Credits still available.                                                    |
+| `credits.plan_credits`              | `integer` | Credits from the base plan.                                                 |
+| `credits.rollover`                  | `integer` | Rollover credits carried over from the previous period.                     |
+| `credits.topup`                     | `integer` | Credits added via top-up purchases.                                         |
+| `people_company_searches.limit`     | `integer` | Monthly limit for People/Company search enrichments.                        |
+| `people_company_searches.used`      | `integer` | Searches used in the current month.                                         |
+| `people_company_searches.remaining` | `integer` | Searches remaining this month.                                              |
+| `people_company_searches.next_renewal_date` | `string` | ISO 8601 date when the monthly search limit resets.               |
+| `members.total`                     | `integer` | Total number of workspace members.                                          |
+| `members.owners`                    | `integer` | Number of members with the Owner role.                                      |
+| `members.admins`                    | `integer` | Number of members with the Admin role.                                      |
+| `members.editors`                   | `integer` | Number of members with the Editor role.                                     |
+
+#### Response Status Codes
+
+| HTTP  | Code              | Description                                         |
+| ----- | ----------------- | --------------------------------------------------- |
+| `200` | —                 | Workspace details returned successfully.            |
+| `401` | `INVALID_API_KEY` | `X-API-KEY` header is missing or invalid.           |
+| `404` | `WORKSPACE_NOT_FOUND` | Workspace not found for the provided API key.   |
+| `429` | `RATE_LIMIT_EXCEEDED` | Too many requests. Default limit is 5 req/sec.  |
+
+---
+
+### 5.2 List Grids in Workspace
+
+```text
+GET /api/v1/grids
+```
+
+Returns a paginated list of grids in the workspace identified by the `X-API-KEY`, along with their column definitions (runnable columns only). Supports filtering by name.
+
+#### Query Parameters
+
+| Parameter | Type      | Required | Default | Description                                                                   |
+| --------- | --------- | -------- | ------- | ----------------------------------------------------------------------------- |
+| `search`  | `string`  | No       | —       | Filter grids by name (case-insensitive substring match).                      |
+| `page`    | `integer` | No       | `1`     | Page number (1-based).                                                        |
+| `limit`   | `integer` | No       | `20`    | Number of results per page. Maximum `100`.                                    |
+
+#### Example Request
+
+```text
+GET /api/v1/grids?search=leads&page=1&limit=20
+X-API-KEY: sk-live-abc123xyz
+```
+
+#### Response — 200 OK
+
+```json
+{
+  "grids": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "Lead Enrichment Grid",
+      "description": "Enriches inbound leads with firmographic data.",
+      "row_count": 1540,
+      "column_count": 8,
+      "created_at": "2025-11-01T09:00:00Z",
+      "updated_at": "2026-03-12T14:22:00Z",
+      "columns": [
+        {
+          "id": "col-key-abc",
+          "name": "Company Description",
+          "type": "enrichment",
+          "dependencies": []
+        },
+        {
+          "id": "col-key-def",
+          "name": "Funding Summary",
+          "type": "formula",
+          "dependencies": ["col-key-abc"]
+        }
+      ]
+    }
+  ],
+  "total": 42,
+  "page": 1,
+  "limit": 20,
+  "total_pages": 3
+}
+```
+
+#### Response Fields
+
+| Field         | Type      | Description                                                                 |
+| ------------- | --------- | --------------------------------------------------------------------------- |
+| `grids`       | `array`   | List of grid objects for the current page.                                  |
+| `total`       | `integer` | Total number of grids matching the query.                                   |
+| `page`        | `integer` | Current page number.                                                        |
+| `limit`       | `integer` | Number of results per page.                                                 |
+| `total_pages` | `integer` | Total number of pages.                                                      |
+
+#### Grid Object Fields
+
+| Field          | Type      | Description                                                                 |
+| -------------- | --------- | --------------------------------------------------------------------------- |
+| `id`           | `string`  | UUID of the grid.                                                           |
+| `name`         | `string`  | Display name of the grid.                                                   |
+| `description`  | `string`  | Grid description. May be empty.                                             |
+| `row_count`    | `integer` | Number of rows currently in the grid.                                       |
+| `column_count` | `integer` | Total number of columns.                                                    |
+| `created_at`   | `string`  | ISO 8601 creation timestamp.                                                |
+| `updated_at`   | `string`  | ISO 8601 last-updated timestamp.                                            |
+| `columns`      | `array`   | Runnable columns only (type: `enrichment`, `formula`, or `merge`). See below. |
+
+#### Column Object Fields (`columns` array)
+
+| Field          | Type       | Description                                                                         |
+| -------------- | ---------- | ----------------------------------------------------------------------------------- |
+| `id`           | `string`   | Column key used as the identifier when triggering runs.                             |
+| `name`         | `string`   | Human-readable display name of the column.                                          |
+| `type`         | `string`   | Column type: `"enrichment"`, `"formula"`, or `"merge"`.                             |
+| `dependencies` | `string[]` | Array of column key IDs that this column depends on. Empty array if no dependencies. |
+
+#### Response Status Codes
+
+| HTTP  | Code              | Description                                         |
+| ----- | ----------------- | --------------------------------------------------- |
+| `200` | —                 | Grid list returned successfully.                    |
+| `401` | `INVALID_API_KEY` | `X-API-KEY` header is missing or invalid.           |
+| `429` | `RATE_LIMIT_EXCEEDED` | Too many requests. Default limit is 5 req/sec.  |
+| `500` | `INTERNAL_ERROR`  | Unexpected server error.                            |
+
+---
+
+### 5.3 Get Grid Details
+
+```text
+GET /api/v1/grids/:gridId
+```
+
+Returns full metadata for a single grid, including all column definitions, data sources, and grid settings.
+
+#### Path Parameters
+
+| Parameter | Description                                                                     |
+| --------- | ------------------------------------------------------------------------------- |
+| `gridId`  | UUID of the grid. Found in the grid URL: `app.bitscale.ai/grid/{gridId}`        |
+
+#### Example Request
+
+```text
+GET /api/v1/grids/a1b2c3d4-e5f6-7890-abcd-ef1234567890
+X-API-KEY: sk-live-abc123xyz
+```
+
+#### Response — 200 OK
+
+```json
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "name": "Lead Enrichment Grid",
+  "description": "Enriches inbound leads with firmographic data.",
+  "row_count": 1540,
+  "created_at": "2025-11-01T09:00:00Z",
+  "updated_at": "2026-03-12T14:22:00Z",
+  "settings": {
+    "auto_run": false,
+    "auto_dedupe": true,
+    "visibility": "workspace",
+    "dedupe_column_id": "col-key-abc"
+  },
+  "columns": [
+    {
+      "id": "col-key-abc",
+      "name": "Company Name",
+      "type": "text"
+    },
+    {
+      "id": "col-key-def",
+      "name": "Company Description",
+      "type": "enrichment"
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-uuid-123",
+      "display_name": "BitScale API",
+      "type": "api",
+      "is_scheduled": false,
+      "status": "active",
+      "last_run_at": "2026-03-12T14:20:00Z",
+      "next_run_at": null,
+      "schedule": null
+    }
+  ]
+}
+```
+
+#### Response Fields
+
+| Field              | Type      | Description                                             |
+| ------------------ | --------- | ------------------------------------------------------- |
+| `id`               | `string`  | UUID of the grid.                                       |
+| `name`             | `string`  | Display name of the grid.                               |
+| `description`      | `string`  | Grid description. May be empty.                         |
+| `row_count`        | `integer` | Number of rows in the grid.                             |
+| `created_at`       | `string`  | ISO 8601 creation timestamp.                            |
+| `updated_at`       | `string`  | ISO 8601 last-updated timestamp.                        |
+| `settings`         | `object`  | Grid-level settings (see below).                        |
+| `columns`          | `array`   | All column definitions (see below).                     |
+| `sources`          | `array`   | Data sources attached to the grid (see below).          |
+
+#### Settings Object
+
+| Field             | Type      | Description                                                                           |
+| ----------------- | --------- | ------------------------------------------------------------------------------------- |
+| `auto_run`        | `boolean` | Whether new rows trigger automatic enrichment.                                        |
+| `auto_dedupe`     | `boolean` | Whether duplicate rows are automatically removed.                                     |
+| `visibility`      | `string`  | Grid visibility: `"workspace"` or `"private"`.                                        |
+| `dedupe_column_id`| `string`  | Column key used for deduplication. Present only when `auto_dedupe` is `true`.         |
+
+#### Column Object
+
+| Field  | Type     | Description                                                                              |
+| ------ | -------- | ---------------------------------------------------------------------------------------- |
+| `id`   | `string` | Column key identifier.                                                                   |
+| `name` | `string` | Human-readable display name.                                                             |
+| `type` | `string` | Column type: `"text"`, `"enrichment"`, `"formula"`, or `"merge"`.                        |
+
+#### Source Object
+
+| Field          | Type      | Description                                                                 |
+| -------------- | --------- | --------------------------------------------------------------------------- |
+| `id`           | `string`  | UUID of the data source.                                                    |
+| `display_name` | `string`  | Display name of the source.                                                 |
+| `type`         | `string`  | Source type (e.g. `"api"`, `"csv"`, etc.).                                  |
+| `is_scheduled` | `boolean` | Whether the source runs on a schedule.                                      |
+| `status`       | `string`  | Current source status (e.g. `"active"`, `"paused"`).                        |
+| `last_run_at`  | `string`  | ISO 8601 timestamp of last run. `null` if never run.                        |
+| `next_run_at`  | `string`  | ISO 8601 timestamp of next scheduled run. `null` if not scheduled.          |
+| `schedule`     | `object`  | Schedule details. Present only when `is_scheduled` is `true` (see below).  |
+
+#### Schedule Object (when `is_scheduled: true`)
+
+| Field           | Type     | Description                                              |
+| --------------- | -------- | -------------------------------------------------------- |
+| `cron_schedule` | `string` | Cron expression for the schedule.                        |
+| `next_run_at`   | `string` | ISO 8601 timestamp of the next scheduled run.            |
+
+#### Response Status Codes
+
+| HTTP  | Code              | Description                                                      |
+| ----- | ----------------- | ---------------------------------------------------------------- |
+| `200` | —                 | Grid details returned successfully.                              |
+| `401` | `INVALID_API_KEY` | `X-API-KEY` header is missing or invalid.                        |
+| `403` | `GRID_NOT_FOUND`  | Grid exists but does not belong to your workspace.               |
+| `404` | `GRID_NOT_FOUND`  | No grid found for the provided `gridId`.                         |
+| `429` | `RATE_LIMIT_EXCEEDED` | Too many requests. Default limit is 5 req/sec.               |
+| `500` | `INTERNAL_ERROR`  | Unexpected server error.                                         |
+
+---
+
+### 5.4 Run a Grid
 
 ```text
 POST /api/v1/grids/:gridId/run
@@ -133,7 +495,7 @@ POST /api/v1/grids/:gridId/run
 
 Appends a new row to the specified grid using the provided inputs and triggers all column enrichments. Supports two execution modes:
 
-- `sync (default)` — waits up to 120 seconds for completion and returns outputs directly. If still processing at the deadline, returns a `request_id` to poll.
+- **`sync` (default)** — waits up to 120 seconds for completion and returns outputs directly. If still processing at the deadline, returns a `request_id` to poll.
 - **`async`** — returns a `request_id` immediately. Poll `GET /run/status/:requestId` for results.
 
 > **💡 Get your curl instantly from the app** — Open any grid in [app.bitscale.ai](https://app.bitscale.ai), click on the **Data source** column, select the BitScale API source, and you'll find a ready-to-use curl command pre-filled with your grid ID, API key, and input fields. Use the output column toggles to include or exclude specific columns — the curl updates live to reflect your selection. Copy it directly into your terminal or integration.
@@ -217,7 +579,7 @@ Content-Type: application/json
 }
 ```
 
-**200 OK — Async Started / Sync Timeout** _`(poll request_id for results)`_
+**200 OK — Async Started / Sync Timeout** _(poll `request_id` for results)_
 
 ```json
 {
@@ -257,7 +619,7 @@ Each key in `outputs` is a column UUID. The value is an object with:
 
 ---
 
-### 5.2 Get Run Status
+### 5.5 Get Run Status
 
 ```text
 GET /api/v1/run/status/:requestId
@@ -319,17 +681,17 @@ X-API-KEY: sk-live-abc123xyz
 
 #### Response Status Codes
 
-| HTTP  | Code                | Description                                                                   |
-| ----- | ------------------- | ----------------------------------------------------------------------------- |
-| `200` | —                   | Status returned successfully. Check `status` field.                           |
-| `401` | `INVALID_API_KEY`   | `X-API-KEY` header is missing or invalid.                                     |
-| `404` | `REQUEST_NOT_FOUND` | No run request found for `requestId`, or it belongs to a different workspace. |
-| `429` | `RATE_LIMIT_EXCEEDED` | Too many requests. Default limit is 5 req/sec per workspace.                |
-| `500` | `RUN_FAILED`        | The run encountered an error. Message contains details.                       |
+| HTTP  | Code                  | Description                                                                   |
+| ----- | --------------------- | ----------------------------------------------------------------------------- |
+| `200` | —                     | Status returned successfully. Check `status` field.                           |
+| `401` | `INVALID_API_KEY`     | `X-API-KEY` header is missing or invalid.                                     |
+| `404` | `REQUEST_NOT_FOUND`   | No run request found for `requestId`, or it belongs to a different workspace. |
+| `429` | `RATE_LIMIT_EXCEEDED` | Too many requests. Default limit is 5 req/sec per workspace.                  |
+| `500` | `RUN_FAILED`          | The run encountered an error. Message contains details.                       |
 
 ---
 
-### 5.3 Rotate API Key
+### 5.6 Rotate API Key
 
 ```text
 POST /api/v1/api-key/rotate
@@ -449,6 +811,7 @@ Client                              BitScale API
 | `MISSING_SOURCE_COLUMN`  | `400` | The grid has no source (DataSource) column — unexpected grid configuration error.          |
 | `INVALID_INPUTS`         | `400` | The `inputs` object could not be serialized. Ensure all values are JSON-serializable.      |
 | `GRID_NOT_FOUND`         | `404` | No grid exists for the given `gridId`, or it belongs to a different workspace.             |
+| `WORKSPACE_NOT_FOUND`    | `404` | No workspace found for the provided API key.                                               |
 | `REQUEST_NOT_FOUND`      | `404` | No run request found for the given `requestId`, or it belongs to a different workspace.    |
 | `FEATURE_DISABLED`       | `403` | BitScale APIs is an Enterprise-only feature. Upgrade your workspace plan.                  |
 | `RATE_LIMIT_EXCEEDED`    | `429` | Too many requests. Default is 5 req/sec per workspace. Contact [team@bitscale.ai](mailto:team@bitscale.ai) or your account manager to adjust. |
