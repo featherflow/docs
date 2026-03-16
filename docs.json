@@ -111,7 +111,7 @@
       },
       {
         "tab": "List Building",
-        "groups": [
+        "pages": [
           {
             "group": "Basics",
             "pages": [
@@ -119,7 +119,8 @@
               "basics/find-companies",
               "basics/company-lookalikes"
             ]
-          }
+          },
+          "section-explainer"
         ]
       },
       {
