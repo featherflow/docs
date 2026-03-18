@@ -24,9 +24,10 @@ title: "Bitscale API Reference"
    - [5.1 GET /workspace — Get Workspace Details](#51-get-workspace-details)
    - [5.2 GET /grids — List Grids in Workspace](#52-list-grids-in-workspace)
    - [5.3 GET /grids/:gridId — Get Grid Details](#53-get-grid-details)
-   - [5.4 POST /grids/:gridId/run — Run a Grid](#54-run-a-grid)
-   - [5.5 GET /run/status/:requestId — Get Run Status](#55-get-run-status)
-   - [5.6 POST /api-key/rotate — Rotate API Key](#56-rotate-api-key)
+   - [5.4 GET /grids/:gridId/curl — Get Grid Curl Command](#54-get-grid-curl-command)
+   - [5.5 POST /grids/:gridId/run — Run a Grid](#55-run-a-grid)
+   - [5.6 GET /run/status/:requestId — Get Run Status](#56-get-run-status)
+   - [5.7 POST /api-key/rotate — Rotate API Key](#57-rotate-api-key)
 6. [Sync vs Async Modes](#6-sync-vs-async-modes)
 7. [Error Code Reference](#7-error-code-reference)
 
@@ -38,14 +39,15 @@ The BitScale External API lets you programmatically query workspace and grid met
 
 ### Endpoints at a Glance
 
-| Method | Path                        | Description                                      |
-| ------ | --------------------------- | ------------------------------------------------ |
-| `GET`  | `/workspace`                | Get workspace details (plan, credits, members)   |
-| `GET`  | `/grids`                    | List all grids in the workspace (paginated)      |
-| `GET`  | `/grids/:gridId`            | Get full metadata for a specific grid            |
-| `POST` | `/grids/:gridId/run`        | Trigger a grid run (sync or async)               |
-| `GET`  | `/run/status/:requestId`    | Poll run status and retrieve outputs             |
-| `POST` | `/api-key/rotate`           | Generate a new workspace API key                 |
+| Method | Path                        | Description                                                          |
+| ------ | --------------------------- | -------------------------------------------------------------------- |
+| `GET`  | `/workspace`                | Get workspace details (plan, credits, members)                       |
+| `GET`  | `/grids`                    | List all grids in the workspace (paginated)                          |
+| `GET`  | `/grids/:gridId`            | Get full metadata for a specific grid                                |
+| `GET`  | `/grids/:gridId/curl`       | Get a ready-to-use curl command and API contract for running a grid  |
+| `POST` | `/grids/:gridId/run`        | Trigger a grid run (sync or async)                                   |
+| `GET`  | `/run/status/:requestId`    | Poll run status and retrieve outputs                                 |
+| `POST` | `/api-key/rotate`           | Generate a new workspace API key                                     |
 
 ---
 
@@ -73,7 +75,7 @@ curl -X POST "https://api.bitscale.ai/api/v1/grids/GRID_ID/run" \
 1. Log into your BitScale workspace.
 2. Navigate to **Settings → Accounts → API Keys**.
 3. Copy the displayed workspace API key.
-4. To generate a new key, use [`POST /api/v1/api-key/rotate`](#56-rotate-api-key) or rotate it from the dashboard.
+4. To generate a new key, use [`POST /api/v1/api-key/rotate`](#57-rotate-api-key) or rotate it from the dashboard.
 
 > **⚠ Important** — Your API key identifies your entire workspace. Keep it secret and never expose it in client-side code or public repositories. If compromised, rotate it immediately.
 
@@ -487,7 +489,127 @@ X-API-KEY: sk-live-abc123xyz
 
 ---
 
-### 5.4 Run a Grid
+### 5.4 Get Grid Curl Command
+
+```text
+GET /api/v1/grids/:gridId/curl
+```
+
+Returns a ready-to-use curl command and a structured API contract for running a specific grid. This endpoint is designed for AI agents and integrations that need to understand what inputs a grid requires and how to call the run endpoint — without any trial and error.
+
+The response includes the derived required inputs (traced from the grid's column dependencies), the full run URL, request body shape, and a copy-paste-ready curl command.
+
+> **💡 Tip for AI agents** — Call this endpoint first to discover the exact input fields needed for a grid, then use `POST /grids/:gridId/run` with the returned `request_body.inputs` shape.
+
+#### Path Parameters
+
+| Parameter | Description                                                                     |
+| --------- | ------------------------------------------------------------------------------- |
+| `gridId`  | UUID of the grid. Found in the grid URL: `app.bitscale.ai/grid/{gridId}`        |
+
+#### Query Parameters
+
+| Parameter        | Type     | Required | Description                                                                                                                                                           |
+| ---------------- | -------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `output_columns` | `string` | No       | Comma-separated list of column key IDs to include in the run. When provided, required inputs are derived only from the dependencies of the specified columns. When omitted, inputs are derived from all runnable columns in the grid. |
+
+#### Example Request — All Columns
+
+```text
+GET /api/v1/grids/a1b2c3d4-e5f6-7890-abcd-ef1234567890/curl
+X-API-KEY: sk-live-abc123xyz
+```
+
+#### Example Request — Specific Output Columns
+
+```text
+GET /api/v1/grids/a1b2c3d4-e5f6-7890-abcd-ef1234567890/curl?output_columns=col-key-def,col-key-ghi
+X-API-KEY: sk-live-abc123xyz
+```
+
+#### Response — 200 OK
+
+```json
+{
+  "grid_id":   "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "grid_name": "Lead Enrichment Grid",
+  "run_url":   "https://api.bitscale.ai/api/v1/grids/a1b2c3d4-e5f6-7890-abcd-ef1234567890/run",
+  "method":    "POST",
+  "headers": {
+    "Content-Type": "application/json",
+    "X-API-KEY":    "YOUR_WORKSPACE_API_KEY"
+  },
+  "request_body": {
+    "mode": "sync",
+    "inputs": {
+      "company_name": "value",
+      "website":      "value"
+    },
+    "output_columns": [
+      "col-key-def",
+      "col-key-ghi"
+    ]
+  },
+  "output_columns": [
+    {
+      "id":   "col-key-def",
+      "name": "Company Description",
+      "type": "enrichment"
+    },
+    {
+      "id":   "col-key-ghi",
+      "name": "Funding Stage",
+      "type": "enrichment"
+    }
+  ],
+  "curl": "curl -X POST 'https://api.bitscale.ai/api/v1/grids/a1b2c3d4-e5f6-7890-abcd-ef1234567890/run' \\\n  -H 'X-API-KEY: YOUR_WORKSPACE_API_KEY' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"inputs\": {\n    \"company_name\": \"value\",\n    \"website\": \"value\"\n  },\n  \"mode\": \"sync\",\n  \"output_columns\": [\n    \"col-key-def\",\n    \"col-key-ghi\"\n  ]\n}'"
+}
+```
+
+#### Response Fields
+
+| Field            | Type     | Description                                                                                                              |
+| ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `grid_id`        | `string` | UUID of the grid.                                                                                                        |
+| `grid_name`      | `string` | Display name of the grid.                                                                                                |
+| `run_url`        | `string` | Full URL for the `POST /run` endpoint for this grid.                                                                     |
+| `method`         | `string` | HTTP method to use — always `"POST"`.                                                                                    |
+| `headers`        | `object` | Required request headers. Replace `YOUR_WORKSPACE_API_KEY` with your actual key.                                        |
+| `request_body`   | `object` | The full request body to send to the run endpoint. The `inputs` keys are derived from the grid's column dependencies.   |
+| `output_columns` | `array`  | Details of the output columns explicitly requested via `output_columns`. Omitted if no `output_columns` param was given. |
+| `curl`           | `string` | A ready-to-use shell curl command. Replace `YOUR_WORKSPACE_API_KEY` before executing.                                   |
+
+#### `request_body` Object
+
+| Field            | Type       | Description                                                                                         |
+| ---------------- | ---------- | --------------------------------------------------------------------------------------------------- |
+| `mode`           | `string`   | Always `"sync"` in the generated contract. Change to `"async"` for long-running grids if needed.   |
+| `inputs`         | `object`   | Key-value map of required input fields with placeholder `"value"` strings. Replace with real data.  |
+| `output_columns` | `string[]` | Column key IDs to return. Present only when `output_columns` was specified in the query param.      |
+
+#### `output_columns` Array Item
+
+| Field  | Type     | Description                             |
+| ------ | -------- | --------------------------------------- |
+| `id`   | `string` | Column key ID.                          |
+| `name` | `string` | Human-readable display name.            |
+| `type` | `string` | Column type: `"enrichment"`, `"formula"`, or `"merge"`. |
+
+#### Response Status Codes
+
+| HTTP  | Code                    | Description                                                      |
+| ----- | ----------------------- | ---------------------------------------------------------------- |
+| `200` | —                       | Curl command and API contract returned successfully.             |
+| `400` | `MISSING_SOURCE`        | Grid has no BitScale API source. Add one in grid settings first. |
+| `400` | `INVALID_OUTPUT_COLUMN` | One of the specified `output_columns` keys does not exist in the grid. |
+| `401` | `INVALID_API_KEY`       | `X-API-KEY` header is missing or invalid.                        |
+| `403` | `GRID_NOT_FOUND`        | Grid exists but does not belong to your workspace.               |
+| `404` | `GRID_NOT_FOUND`        | No grid found for the provided `gridId`.                         |
+| `429` | `RATE_LIMIT_EXCEEDED`   | Too many requests. Default limit is 5 req/sec.                   |
+
+---
+
+### 5.5 Run a Grid
 
 ```text
 POST /api/v1/grids/:gridId/run
@@ -498,7 +620,7 @@ Appends a new row to the specified grid using the provided inputs and triggers a
 - **`sync` (default)** — waits up to 120 seconds for completion and returns outputs directly. If still processing at the deadline, returns a `request_id` to poll.
 - **`async`** — returns a `request_id` immediately. Poll `GET /run/status/:requestId` for results.
 
-> **💡 Get your curl instantly from the app** — Open any grid in [app.bitscale.ai](https://app.bitscale.ai), click on the **Data source** column, select the BitScale API source, and you'll find a ready-to-use curl command pre-filled with your grid ID, API key, and input fields. Use the output column toggles to include or exclude specific columns — the curl updates live to reflect your selection. Copy it directly into your terminal or integration.
+> **💡 Get your curl instantly** — Use [`GET /grids/:gridId/curl`](#54-get-grid-curl-command) to retrieve a pre-built curl command and the exact input fields required for any grid. You can also open any grid in [app.bitscale.ai](https://app.bitscale.ai), click on the **Data source** column, select the BitScale API source, and find a ready-to-use curl command pre-filled with your grid ID, API key, and input fields. Use the output column toggles to include or exclude specific columns — the curl updates live to reflect your selection.
 
 #### Path Parameters
 
@@ -619,7 +741,7 @@ Each key in `outputs` is a column UUID. The value is an object with:
 
 ---
 
-### 5.5 Get Run Status
+### 5.6 Get Run Status
 
 ```text
 GET /api/v1/run/status/:requestId
@@ -691,7 +813,7 @@ X-API-KEY: sk-live-abc123xyz
 
 ---
 
-### 5.6 Rotate API Key
+### 5.7 Rotate API Key
 
 ```text
 POST /api/v1/api-key/rotate
@@ -810,6 +932,7 @@ Client                              BitScale API
 | `INVALID_SOURCE`         | `400` | The `source_id` provided does not match any BitScale API source on this grid.              |
 | `MISSING_SOURCE_COLUMN`  | `400` | The grid has no source (DataSource) column — unexpected grid configuration error.          |
 | `INVALID_INPUTS`         | `400` | The `inputs` object could not be serialized. Ensure all values are JSON-serializable.      |
+| `INVALID_OUTPUT_COLUMN`  | `400` | One of the `output_columns` keys specified in `GET /grids/:gridId/curl` does not exist in the grid. |
 | `GRID_NOT_FOUND`         | `404` | No grid exists for the given `gridId`, or it belongs to a different workspace.             |
 | `WORKSPACE_NOT_FOUND`    | `404` | No workspace found for the provided API key.                                               |
 | `REQUEST_NOT_FOUND`      | `404` | No run request found for the given `requestId`, or it belongs to a different workspace.    |
