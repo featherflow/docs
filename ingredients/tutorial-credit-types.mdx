@@ -5,9 +5,9 @@ description: "Bitscale uses two credit systems, Platform Credits for enrichments
 
 ### Overview
 
-<iframe width="728" height="410" src="https://www.youtube.com/embed/1U-8iZBApEU?si=kY63rNLUKUCsdXM9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="728" height="410" src="https://www.youtube.com/embed/1U-8iZBApEU?si=kY63rNLUKUCsdXM9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-Bitscale operates on two types of credits — **Platform Credits** and **Search Credits** — each serving a distinct purpose. Understanding how these credits work helps you manage your usage efficiently, optimize your workflows, and plan your outbound campaigns without interruption.
+Bitscale operates on two types of credits **Platform Credits** and **Search Credits** each serving a distinct purpose. Understanding how these credits work helps you manage your usage efficiently, optimize your workflows, and plan your outbound campaigns without interruption.
 
 ---
 
@@ -27,12 +27,12 @@ They are consumed whenever you:
 
 **Usage Examples:**
 
-| Action                  | Platform Credits Used                 |
-| :---------------------- | :------------------------------------ |
-| Find Emails / Phones    | 1 credit per successful result        |
-| Run AI Enrichment       | 1–2 credits per run (varies by model) |
-| BitAgent Website Scrape | 1 credit per query                    |
-| External Integrations   | 1 credit per API execution            |
+| Action | Platform Credits Used |
+| :-- | :-- |
+| Find Emails / Phones | 1-12 credit per successful result (depending on providers chosen) |
+| Run AI Enrichment | 1–2 credits per run (varies by model) |
+| BitAgent Website Scrape | 1 credit per query |
+| External Integrations via API | No Credits |
 
 > 💡 **Tip:** Platform credits are consumed across all enrichments, workflows, and integrations — they are the main operational currency of Bitscale.
 
@@ -57,22 +57,22 @@ These are consumed when you use:
 
 **Usage Examples:**
 
-| Action                             | Credit Type     | Notes                            |
-| :--------------------------------- | :-------------- | :------------------------------- |
-| Find Companies (internal database) | Search Credit   | 1 per record                     |
-| Find People (internal database)    | Search Credit   | 1 per record                     |
-| Enrich Company or External Source  | Platform Credit | Not counted under search credits |
+| Action | Credit Type | Notes |
+| :-- | :-- | :-- |
+| Find Companies (internal database) | Search Credit | 1 per record |
+| Find People (internal database) | Search Credit | 1 per record |
+| Enrich Company or External Source | Platform Credit | Not counted under search credits |
 
 ---
 
 ### **3. Difference Between the Two**
 
-| Category    | Platform Credits                          | Search Credits               |
-| :---------- | :---------------------------------------- | :--------------------------- |
-| Applies To  | Enrichments, intent signals, integrations | Internal database queries    |
-| Reset Cycle | Manual / Subscription Renewal             | Monthly Auto Reset           |
-| Common Use  | Emails, phones, AI enrichments, BitAgent  | Find Companies / Find People |
-| Conversion  | Coming soon (planned 10:1 ratio)          | N/A                          |
+| Category | Platform Credits | Search Credits |
+| :-- | :-- | :-- |
+| Applies To | Enrichments, intent signals, integrations | Internal database queries |
+| Reset Cycle | Manual / Subscription Renewal | Monthly Auto Reset |
+| Common Use | Emails, phones, AI enrichments, BitAgent | Find Companies / Find People |
+| Conversion | 1 platform credit = 10 search credits | N/A |
 
 ---
 
