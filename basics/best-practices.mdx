@@ -1,0 +1,176 @@
+---
+title: 'Best Practices for Reliable Workflows'
+---
+
+<div style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
+ <iframe
+   src="https://www.youtube.com/embed/vVl2skzRruA?si=I-2rLmH1Q1Sehl3v"
+   title="YouTube video player"
+   style={{
+     position: "absolute",
+     inset: 0,
+     width: "100%",
+     height: "100%",
+     border: 0,
+   }}
+   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+   referrerPolicy="strict-origin-when-cross-origin"
+   allowFullScreen
+ />
+</div>
+
+<Card title="Build workflows once, then reuse them safely across your team" color="#5a0c0c" href="https://app.bitscale.ai" >
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## 1) Treat a workbook as a reusable template
+
+As your usage grows, you will often end up with one workbook that acts like your master workflow.
+
+Best practice:
+1. Keep one clean workbook as the template
+2. Duplicate it for day-to-day runs
+3. Rename the copy so it carries context
+
+A simple naming pattern:
+- `{date} - {owner} - {purpose}`
+
+Example:
+- `13 Mar - AJ - Beijing accounts`
+
+This makes it obvious to others:
+- who created it
+- when it was run
+- what it was used for
+
+## 2) Star your template grids and workbooks
+
+Keep your original template safe.
+
+1. Star the template workbook or grid
+2. Make it a team habit that starred items are never edited directly
+3. Always duplicate first, then change the duplicate
+
+This prevents someone from accidentally modifying the “source of truth” workflow.
+
+## 3) Use Find People for quick manual prospecting
+
+If you are doing quick prospecting and need data immediately, you do not always need to build a full grid workflow first.
+
+Use **Find people** to:
+- enter a person’s details
+- access their email
+- access their phone number
+
+This is useful when you are in a hurry and want contact data right away.
+
+## 4) Keep one data type per grid
+
+Bitscale supports multiple sources per grid (CSV, internal sources, CRM, and more).
+
+Even so, a strong workflow hygiene rule is:
+- keep company-level data in company grids
+- keep person-level data in person grids
+
+If you need to connect the two, use:
+- export leads into a contact grid, or
+- VLOOKUP across grids
+
+This keeps your workflows clean and easier to debug.
+
+## 5) Find People with more coverage
+
+When you use **Find people from company**, there is a limit of 25 contacts fetched per account.
+
+If you want more coverage:
+- create multiple “Find people from company” columns
+- split them by persona or location
+
+Example setup:
+- `GTM folks - US`
+- `GTM folks - India`
+
+When you build persona filters, use **Suggested titles** to automatically add relevant roles without manually typing every variation.
+
+## 6) Keep grids clean
+
+A common mistake is trying to store dozens of contacts inside a single company row. This may lead to confusion when the data volume increases.
+
+Instead:
+1. Use the **Export leads** option
+2. Create a new target grid (contact grid)
+3. Choose which company-level fields to send along
+   - example: company name, LinkedIn URL
+4. Run the export
+
+Now every contact becomes its own row, and you still keep company context alongside it.
+
+## 7) Use VLOOKUP to cross-reference grids
+
+If two grids are not directly connected, but they share a common value (like company name), you can pull columns from one grid into another.
+
+1. Add column
+2. Go to **Data toolkit -> VLOOKUP**
+4. Choose the grid to match against
+5. Pick the matching column (the common value)
+6. Select the columns you want to fetch (example: LinkedIn URL)
+7. Run for a test batch first
+
+This is a simple way to reuse data you already enriched somewhere else.
+
+## 8) Always validate emails and phone numbers
+
+If your goal is outbound, validation is one of the easiest ways to reduce bounce rates.
+
+1. Go to **Tweak**
+2. Open **Validate**
+3. Switch on a validator provider
+
+If you have your own validation provider, connect it using your API key and use that.
+
+After validation, you can focus outreach only on:
+- valid emails
+- valid phone numbers
+
+## 9) Save columns as templates for faster workflows
+
+If you find yourself recreating the same enrichment setup across grids, save it as a template.
+
+1. Open the column
+2. Go to **Tweak**
+3. Click **Save as template**
+4. Name it clearly (example: `US-based ICP filter`)
+5. Save
+
+Now it shows up inside the enrichment list, and you can apply it to any grid without rebuilding it.
+
+This works for all kinds of columns:
+- HTTP API calls
+- research steps
+- AI prompts
+- email or phone waterfalls
+- find people filters
+
+## 10) Use the right AI tool for the job
+
+### Use research agents for discovery
+If you are generating content from scratch and want the system to discover context from the web, research agents are helpful.
+
+### Avoid research agents when you already have strict inputs
+If you already have specific inputs you want the copy to stick to (example: a fixed set of offers), do not ask a research agent to choose for you.
+
+In those cases, the best approach is to use a content-focused model that follows your inputs closely.
+
+- Example: Use Claude Sonnet for outbound content generation when you want it to stay tightly aligned to your provided context
+
+<Card title="Keep grids clean, validate contacts, and templatize what works" color="#5a0c0c" href="https://app.bitscale.ai" >
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## Need help?
+
+If you hit an issue or want feedback on your current setup, use the in-app support button and reach out to the team.

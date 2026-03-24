@@ -26,7 +26,8 @@
               "basics/run-grids-on-bitscale",
               "basics/find-companies",
               "basics/bitagent",
-              "basics/import-sales-nav-leads"
+              "basics/import-sales-nav-leads",
+              "basics/best-practices"
             ]
           },
           {
@@ -111,7 +112,13 @@
       },
       {
         "tab": "List Building",
-        "pages": ["section-explainer",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "section-explainer"
+            ]
+          },
           {
             "group": "Basics",
             "pages": [
@@ -120,19 +127,22 @@
               "basics/company-lookalikes"
             ]
           }
-          
         ]
       },
       {
         "tab": "Enrichments",
         "groups": [
           {
-            "group": "Basics",
-            "pages": []
+            "group": "Overview",
+            "pages": [
+              "enrich/section-info"
+            ]
           },
           {
             "group": "Advanced",
-            "pages": []
+            "pages": [
+              "enrich/linkedin-activity-analysis"
+            ]
           }
         ]
       },

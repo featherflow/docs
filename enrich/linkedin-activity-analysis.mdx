@@ -1,0 +1,130 @@
+---
+title: "Linkedin Posts and Activity Analysis"
+---
+
+<div style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
+  <iframe
+    src="https://www.youtube.com/embed/5bfZPtw_ODA?si=gcm_-4eSsbOhS6GS"
+    title="YouTube video player"
+    style={{
+ position: "absolute",
+ inset: 0,
+ width: "100%",
+ height: "100%",
+ border: 0,
+}}
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerPolicy="strict-origin-when-cross-origin"
+    allowFullScreen
+  />
+</div>
+
+<Card title="Use recent LinkedIn activity to personalize outreach and prioritize leads" color="#5a0c0c" href="https://app.bitscale.ai">
+  <Badge color="orange" size="lg" shape="pill" stroke="true">Try Bitscale Now!</Badge>
+</Card>
+
+## What this workflow does
+
+This workflow helps you pull a person’s recent LinkedIn activity, then analyze it inside the grid.
+
+You can use it to:
+
+- fetch the most recent LinkedIn posts from a profile
+- see exactly when someone was last active
+- extract topics they talk about
+
+## Step 1: Add the Recent Posts enrichment
+
+1. Open your grid (with at least a **Name** and **LinkedIn URL** column)
+2. Go to **Enrichments**
+3. Search for **Recent posts**
+4. Map it to the column that contains the LinkedIn URL
+5. Save the enrichment
+
+You can run this:
+
+- for a single cell (quick testing)
+- or for the full grid if you have a large list
+
+## Step 2: Run the enrichment and inspect the results
+
+After running, Bitscale returns the most recent posts for that profile.
+
+For each post, you can get fields like:
+
+- post text
+- post link
+- whether it is a repost or an original post
+- posted at (timestamp)
+- posted ago (relative time like “2 hours ago”)
+- social counts (engagement metrics)
+
+## Step 3: Turn any result field into a column
+
+When you open the enrichment result, you can make any field visible in the grid.
+
+1. Hover over the field you want
+2. Click **Add as column**
+3. Bitscale creates a new column and fills it automatically
+
+Common columns to add:
+
+- **Post text** (so you can read it easily)
+- **Posted ago** (quick freshness signal)
+- **Posted at** (exact date and time)
+
+Note: `posted ago` is relative to when you ran the enrichment.\
+If you want the exact date, use `posted at`.
+
+## Step 4: Analyze activity using an AI column
+
+Once you have the raw post data, you can analyze it with an AI column.
+
+### Example 1: Has this person posted in the last 30 days?
+
+1. Add an AI model column
+   - you can use OpenAI, Gemini, or your own model
+2. Write a simple prompt
+3. Pass columns into the prompt using `@`
+   - this lets you reference values from the grid directly
+
+Example intent:
+
+- give the model the posted date
+- ask if the activity happened in the last 30 days
+
+If you want a clean, structured answer, set an output format like:
+
+- `posted_in_last_30_days`: true/false
+
+You can use **Use AI** to auto-suggest the output structure based on your prompt.
+
+When you run it, you get a simple boolean signal you can filter on.
+
+### Example 2: What topics does this person talk about?
+
+1. Pass the **recent posts text** column as input (using `@`)
+2. Ask the model to list the main topics discussed across posts
+3. Run it
+
+Now you have topic tags you can use for:
+
+- personalization
+- segmentation
+- routing the lead to the right rep
+- deciding the best outreach angle
+
+## Common use cases
+
+- prioritize leads who have been active recently
+- personalize outbound using what the person just posted about
+- build simple “activity signals” you can filter and route
+- generate talk tracks based on recurring post themes
+
+<Card title="Turn LinkedIn posts into structured signals" color="#5a0c0c" href="https://app.bitscale.ai">
+  <Badge color="orange" size="lg" shape="pill" stroke="true">Try Bitscale Now!</Badge>
+</Card>
+
+## Need help?
+
+If you want help setting up the enrichment, building the prompts, or creating structured outputs, reach out on the support channel.
