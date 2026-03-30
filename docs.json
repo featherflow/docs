@@ -71,7 +71,6 @@
               "playbook/sdr-playbook",
               "playbook/company-firmography",
               "playbook/instantly-magic",
-              "playbook/enrich-hubspot",
               "playbook/inbound-outbound",
               "playbook/salesforce-2-way",
               "playbook/hiring-signals",
@@ -82,7 +81,6 @@
           {
             "group": "Ingredients",
             "pages": [
-              "ingredients/integrations-customAPI",
               "ingredients/integrations-webhook-export",
               "ingredients/integrations-outplay",
               "ingredients/integrations-attio",
@@ -100,7 +98,6 @@
               "ingredients/source-google-maps",
               "ingredients/source-post-interactors",
               "ingredients/source-linkedin-jobs",
-              "ingredients/source-lookalikes",
               "ingredients/find-people",
               "ingredients/find-people-from-company",
               "ingredients/list-building-1",
@@ -122,8 +119,8 @@
           {
             "group": "Basics",
             "pages": [
-              "basics/import-sales-nav-leads",
-              "basics/find-companies",
+              "list/import-sales-nav-leads",
+              "list/find-companies",
               "basics/company-lookalikes"
             ]
           }
