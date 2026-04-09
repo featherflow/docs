@@ -35,7 +35,9 @@
             "pages": [
               "ingredients/round-robin",
               "ingredients/using-webhooks",
-              "ingredients/http-api"
+              "ingredients/http-api",
+              "ingredients/bitscale-to-google-sheets",
+              "ingredients/vlookup"
             ]
           },
           {
