@@ -1,0 +1,113 @@
+---
+title: 'Sync Bitscale Grid Data to Google Sheets'
+---
+
+Last Updated At: April 2026
+
+<div style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
+ <iframe
+   src="https://www.youtube.com/embed/gLe2_Zavwa4?si=GMHdxoqLgf-TwE-W"
+   title="YouTube video player"
+   style={{
+     position: "absolute",
+     inset: 0,
+     width: "100%",
+     height: "100%",
+     border: 0,
+   }}
+   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+   referrerPolicy="strict-origin-when-cross-origin"
+   allowFullScreen
+ />
+</div>
+
+<Card title="Send enriched leads from Bitscale straight into Google Sheets" color="#5a0c0c" href="https://app.bitscale.ai" >
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## What this integration is for
+
+Many SDR teams still prefer working inside Google Sheets to manage leads.
+
+Bitscale’s native Google Sheets integration lets you keep that workflow, while still using Bitscale to:
+- find accounts and people
+- enrich data with AI
+- automate steps in a grid
+- push the output into a Sheet automatically
+
+## Step 1: Connect Google Sheets in Integrations
+
+1. Go to **Integrations**
+2. Click **Add integration -> Google Sheets**
+4. Sign in with Google
+5. Allow the requested permissions
+6. (Optional) Rename the integration so it is easy to recognize later
+
+Once this is done, your Google workspace is connected.
+
+## Step 2: Create (or open) the grid you want to export
+
+1. Click **New grid**
+2. Use **Find company** with some filters to create a demo grid
+
+You can do this with any grid, not just company search results.
+
+## Step 3: Add the Google Sheets enrichment
+
+1. Go to **Enrichments**
+2. Search for **Google Sheets**
+3. Select **Add or update row**
+
+This is the step that pushes rows into a Google Sheet.
+
+## Step 4: Select the sheet
+
+1. Choose the Google Sheets integration account
+2. Select the spreadsheet you want to write to
+   - if you just created a new spreadsheet, reload and select it
+3. Select the specific sheet tab (if the spreadsheet has multiple sheets)
+
+## Step 5: Choose the action
+
+Pick what you want Bitscale to do:
+- **Add row** (append new rows)
+- **Update row** (update existing rows)
+
+## Step 6: Map fields from your grid to Google Sheets columns
+
+1. Click into **Map fields**
+2. If your grid does not yet have the columns you need, add them first (example: Company Name, LinkedIn URL)
+3. Map the grid columns to the sheet fields
+
+You can also use **AI mapping** to auto-map fields.
+
+Example:
+- `Name` → `Company name`
+- `LinkedIn` → `LinkedIn URL`
+
+## Step 7: Run it
+
+Save the enrichment, then run it:
+- for all rows, or
+- for a smaller batch if you want to test first
+
+When it runs, Bitscale pushes your grid rows into Google Sheets.
+
+## Common ways teams use this
+
+- keep a shared SDR sheet always updated with enriched leads
+- export a filtered list into Sheets for manual calling workflows
+- push outbound-ready rows (validated email + phone) into a handoff sheet
+- send different segments to different sheets based on workflow logic
+
+<Card title="Keep your SDR workflow in Sheets, let Bitscale do enrichments" color="#5a0c0c" href="https://app.bitscale.ai" >
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## Need help?
+
+If you have questions about permissions, mapping fields, or updating rows vs adding rows, reach out to support and the team will help you set it up.

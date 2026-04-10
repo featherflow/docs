@@ -1,0 +1,129 @@
+---
+title: 'Vlookup: Reuse Enriched Data'
+---
+
+Last Updated At: Apr 2026
+
+<div style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
+ <iframe
+   src="https://www.youtube.com/embed/OwO9Ls84NZc?si=vlrGnMGuHSfVcmxE"
+   title="YouTube video player"
+   style={{
+     position: "absolute",
+     inset: 0,
+     width: "100%",
+     height: "100%",
+     border: 0,
+   }}
+   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+   referrerPolicy="strict-origin-when-cross-origin"
+   allowFullScreen
+ />
+</div>
+
+<Card title="Stop re-enriching the same leads and reuse data you already pulled" color="#5a0c0c" href="https://app.bitscale.ai" >
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## What Vlookup solves in Bitscale
+
+When you build complex workflows, you often run into this problem:
+
+- you enriched a lead or company in the past
+- the same lead shows up again in a new grid or workbook
+- you do not want to spend credits re-enriching it
+
+If your CRM already stores those enriched fields, you can fetch from the CRM.
+
+But if Bitscale is where your enriched data lives, you can reuse it with **Vlookup**.
+
+Vlookup lets you search another grid for a matching record and pull specific columns back into your current grid.
+
+It works similarly to Excel Vlookup.
+
+## Where to find Vlookup
+
+1. Open your grid
+2. Go to **Enrichments**
+3. Open **Data toolkit**
+4. Select **Vlookup**
+
+## How to set up a Vlookup
+
+### Step 1: Choose the key column in your current grid
+The key column is what you want to look up.
+
+Example: key column = **Person name**
+
+This means: for each value in `Person name`, check if that person exists in another grid.
+
+### Step 2: Choose the grid to look up from
+Select the destination grid where the data already exists.
+
+Example:
+- destination grid: a grid containing Bitscale team members
+
+### Step 3: Map the matching column in the destination grid
+Pick the column in the destination grid that should match your key.
+
+Example:
+- match `Person name` (current grid)
+- with `Name` (destination grid)
+
+### Step 4: Select the match condition
+You can choose how matching works:
+
+- **Exact** : only matches when the value is exactly the same
+- **Contains** : matches when the destination value contains the key as a substring
+
+Example use:
+- use **Contains** if your key values are partial names
+- use **Exact** if your key values are consistent and standardized
+
+### Step 5: Choose which fields to fetch
+Click **Fetch** to view all columns in the destination grid.
+
+Select only what you want to pull back.
+
+### Step 6: Save and run
+Save the column, then run it:
+- for a single cell (quick test)
+- for multiple rows
+- or for all rows
+
+The matching record’s values will appear in the Vlookup result.
+
+## Add returned fields as columns
+
+After you run the lookup, you can open the result and use **Add as column** to create columns for the returned fields.
+
+This is helpful when you want to run the lookup across a full list of names and store the pulled values directly in the grid.
+
+## Common ways teams use Vlookup
+
+### Avoid re-enrichment
+If a lead was enriched in a previous grid, pull the result instead of rerunning the enrichment.
+
+### Build exclusion lists
+Maintain one grid of:
+- people you should not contact
+- companies you should not contact
+
+Then in every outbound workflow:
+1. run a Vlookup against the exclusion grid
+2. if a match is found, skip processing that lead
+
+### Create a CRM-like reference layer inside Bitscale
+If Bitscale is where your clean data lives, Vlookup lets you treat old grids like a lightweight database you can reference anytime.
+
+<Card title="Build an exclusion grid and use Vlookup to automatically skip bad-fit or blocked leads" color="#5a0c0c" href="https://app.bitscale.ai" >
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## Need help?
+
+If you want help setting up matching logic, exclusion workflows, or using Vlookup to reduce credit usage, reach out on the support channel.
