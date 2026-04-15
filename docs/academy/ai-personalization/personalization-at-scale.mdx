@@ -1,0 +1,190 @@
+---
+title: "AP-6: Personalization at Scale"
+description: "Building personalization for 10 contacts is a design exercise. Building it for 500 contacts per week is an operations problem. Learn the QA systems and batch workflows that maintain quality at volume."
+---
+
+<Info>
+  **AP-6 · AI Personalization · 125 XP · ~20 min**
+</Info>
+
+The systems you've built across AP-1 through AP-5 work beautifully for small batches. At 500 contacts per week, new problems emerge: AI failures, inconsistent quality, personalization that's technically correct but tone-deaf, and QA bottlenecks that kill the time savings you're trying to create.
+
+This module covers the operational infrastructure for personalization at scale.
+
+---
+
+## The Failure Modes at Scale
+
+As volume increases, these problems emerge:
+
+| Problem | Frequency at Scale | Impact |
+|---|---|---|
+| AI generates generic output despite context | 5–15% of rows | Sounds automated; hurts reply rates |
+| Word count violations | 10–20% of rows | Emails too long; lower reads |
+| Hallucinated context | 2–5% of rows | References things that aren't true; embarrassing |
+| Missing personalization signals | 15–30% of rows | Drops to Level 1 without flagging |
+| Constraint violations | 5–10% of rows | Wrong structure, wrong CTA, banned phrases |
+
+At 500 contacts/week, a 10% failure rate means 50 broken emails going to prospects. You need a QA layer.
+
+---
+
+## Building an Automated QA Layer
+
+### QA Check 1: Word count
+
+```
+Count the words in this email body: {{email_body}}
+
+Return: {"word_count": N, "within_limit": true/false, "limit": 90}
+```
+
+### QA Check 2: Constraint compliance
+
+```
+Review this email against these constraints:
+Email: {{email_body}}
+
+Check each constraint:
+1. No banned phrases: "hope this finds you well", "quick question", "just checking in", "I wanted to reach out", "touch base"
+2. First person singular only (no "we" unless referring to the company product in a specific sentence)
+3. Single CTA only (one ask, not multiple)
+4. No exclamation marks
+5. No bullet points
+
+Return: {"passes": true/false, "violations": ["list of any violations found"]}
+```
+
+### QA Check 3: Personalization depth
+
+```
+Evaluate the personalization depth of this email:
+Email: {{email_body}}
+
+Context provided to generate it:
+- Signal used: {{signal_description}}
+- Role challenge: {{primary_challenge}}
+- Individual hook: {{individual_observation}}
+
+Assess:
+1. Does the email reference a specific signal? (yes/no — if yes, quote the specific reference)
+2. Is the reference specific or generic? (specific = references the actual signal; generic = "companies like yours")
+3. Personalization level: 1/2/3/4 (using AP-1 spectrum)
+
+Return as JSON.
+```
+
+### QA Check 4: Hallucination detection
+
+```
+Review this email for factual claims that may be inaccurate:
+Email: {{email_body}}
+
+Source data used:
+- Company: {{company_name}}
+- Signal: {{signal_description}}
+- Contact title: {{job_title}}
+
+Flag any claims in the email that:
+- Cannot be verified from the provided source data
+- Make specific numerical claims not present in source data
+- Reference events, people, or facts not in the source data
+
+Return: {"hallucinations_detected": true/false, "flagged_claims": ["list any flagged phrases"]}
+```
+
+### Master QA score:
+
+```
+Given these QA check results:
+- word_count_pass: {{word_count_pass}}
+- constraint_pass: {{constraint_pass}}
+- personalization_level: {{personalization_level}}
+- hallucinations_detected: {{hallucinations}}
+
+Assign overall QA status:
+- approved: all checks pass, personalization level 3+
+- approved_with_notes: passes compliance, but personalization level 1-2 (note to reviewer)
+- needs_revision: any constraint violation OR hallucination detected
+- reject: multiple failures or hallucination + wrong personalization
+
+Return ONLY: approved, approved_with_notes, needs_revision, or reject
+```
+
+---
+
+## Batch Review Process
+
+Even with automated QA, spot-check 10% of approved emails manually. Build a review queue:
+
+1. Filter `qa_status = approved_with_notes` → all get human review
+2. Filter `qa_status = approved` → random sample 10% for spot-check
+3. Filter `qa_status = needs_revision` → AI auto-retry with the same prompt (often fixes constraint violations)
+4. Filter `qa_status = reject` → manual rewrite or discard
+
+This process keeps review time under 20 minutes per 500-contact batch.
+
+---
+
+## Auto-Retry for Failed Emails
+
+For `needs_revision` rows, build a retry prompt:
+
+```
+This email failed QA for the following reasons: {{qa_violations}}
+
+Original email: {{email_body}}
+
+Rewrite the email to fix these specific issues while keeping the personalization signals:
+- Signal used: {{signal_description}}
+- Role challenge: {{primary_challenge}}
+
+Apply the same constraints as the original prompt.
+
+Return ONLY the revised email body.
+```
+
+Run auto-retry once. If the retry also fails QA, flag for manual review — don't loop indefinitely.
+
+---
+
+## Scale Operations Checklist
+
+For any outreach batch over 100 contacts:
+
+- [ ] All 4 QA checks running as columns
+- [ ] Master QA status column populated
+- [ ] `needs_revision` rows: auto-retry column
+- [ ] Review queue filtered: all `approved_with_notes` reviewed
+- [ ] Spot-check: 10% of `approved` reviewed manually
+- [ ] Final send list: only `approved` rows exported
+- [ ] Send rate: no more than 50 new contacts/sending domain/day
+
+---
+
+<Tip>
+  **Quick Check:** What are the four automated QA checks? What QA status triggers auto-retry? What percentage of approved emails should be spot-checked manually?
+</Tip>
+
+---
+
+## AP-6 Challenge: Build the QA Infrastructure (+125 XP)
+
+Take a batch of 50 AI-generated emails (from any previous challenge) and run them through the full QA system.
+
+**Requirements:**
+- All 4 QA check columns implemented
+- Master QA status column
+- Auto-retry column for all `needs_revision` rows
+- Final send list (only approved rows)
+- QA audit summary: what % passed on first attempt? What were the most common failure modes?
+
+<Card title="Submit AP-6 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-ap6">
+  Share your grid + QA audit summary. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: AP-7 — AI Personalization Capstone →" icon="arrow-right" href="/academy/ai-personalization/capstone">
+  Build and run a fully personalized outbound campaign with QA infrastructure. Earn the AI Personalization Specialist certification.
+</Card>
