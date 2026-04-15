@@ -1,0 +1,198 @@
+---
+title: "DE-4: Company Intelligence"
+description: "Contact data tells you who to reach. Company intelligence tells you why to reach them now — and what to say. Learn to enrich at the company level for deeper context."
+---
+
+<Info>
+  **DE-4 · Data & Enrichment · 125 XP · ~20 min**
+</Info>
+
+Most outbound enrichment stops at the contact level: name, title, email. That's table stakes. The teams running 8%+ reply rates are working at the company level too — understanding funding stage, growth trajectory, tech stack, recent news, and competitive context before the first email goes out.
+
+Company intelligence is the context layer that makes personalization feel genuine rather than mechanical.
+
+---
+
+## The Company Intelligence Stack
+
+There are five layers of company intelligence worth enriching. Not every workflow needs all five — but knowing what's available helps you decide what to invest in.
+
+| Layer | Data Points | Sources | Value |
+|---|---|---|---|
+| **Firmographics** | Industry, size, revenue, location, founding year | Apollo, ZoomInfo, Clearbit | Targeting and ICP matching |
+| **Funding & growth** | Total raised, last round, round size, investors | Crunchbase, Harmonic, LinkedIn | Timing signals |
+| **Tech stack** | Tools they use (CRM, email, analytics, infrastructure) | BuiltWith, HG Insights, Clearbit | ICP fit and personalization |
+| **Recent activity** | Hiring, press releases, product launches, executive changes | LinkedIn, news APIs, job boards | Trigger signals |
+| **Competitive context** | Which competitors they use, G2 reviews, evaluation signals | G2, Bombora, buyer intent platforms | Competitive positioning |
+
+---
+
+## Building Company Intelligence Columns in Bitscale
+
+### Firmographic enrichment
+This is your baseline. Run a company enrichment API against the domain:
+
+**Input:** `{{company_domain}}`
+**Output columns:**
+- `company_industry` — primary industry category
+- `company_size_range` — employee count bucket (1–10, 11–50, 51–200, 201–1000, 1001+)
+- `company_hq_country` — headquarters location
+- `company_founded_year` — founding year
+- `company_revenue_range` — estimated annual revenue bucket
+
+**Classification column (after enrichment):**
+```
+Given:
+- Industry: {{company_industry}}
+- Size: {{company_size_range}}
+- Revenue: {{company_revenue_range}}
+- Founded: {{company_founded_year}}
+
+Classify this company's ICP fit for a B2B SaaS outbound tool targeting mid-market companies:
+- strong_fit: SaaS/tech company, 51-500 employees, Series A or later
+- moderate_fit: tech-adjacent industry, or right size but different vertical
+- weak_fit: outside target ICP (too large, too small, wrong industry)
+
+Return ONLY: strong_fit, moderate_fit, or weak_fit
+```
+
+---
+
+### Funding & growth enrichment
+
+```
+Company: {{company_name}}
+Domain: {{company_domain}}
+
+Based on publicly available information, provide:
+1. Funding stage (bootstrapped/pre-seed/seed/series-a/series-b/series-c/growth/public/unknown)
+2. Last funding round date (approximate, or "unknown")
+3. Total funding raised (approximate, or "unknown")
+4. Headcount growth signal: growing/stable/shrinking/unknown (based on recent hiring patterns)
+
+Return as JSON: {"funding_stage": "...", "last_round_date": "...", "total_raised": "...", "headcount_trend": "..."}
+```
+
+**Timing column based on funding:**
+```
+Given:
+- Funding stage: {{funding_stage}}
+- Last round date: {{last_round_date}}
+
+Is this company likely in a budget-active phase right now?
+- yes: Series A/B/C announced within 6 months, or company is growth stage
+- maybe: Seed stage (limited budget), or funding round was 12+ months ago
+- no: bootstrapped with no clear growth signal, or public with procurement cycles
+- unknown: insufficient data
+
+Return ONLY: yes, maybe, no, or unknown
+```
+
+---
+
+### Tech stack enrichment
+
+Tech stack data is gold for personalization and ICP qualification. A company running Salesforce + Outreach + LinkedIn Sales Navigator is clearly investing in outbound infrastructure — they're a very different prospect from a company running HubSpot Starter.
+
+```
+Company domain: {{company_domain}}
+
+Based on publicly available technographic data, list the key tools this company uses in these categories:
+- CRM: (e.g., Salesforce, HubSpot, Pipedrive, or unknown)
+- Sales engagement: (e.g., Outreach, Salesloft, Apollo, or unknown)
+- Marketing automation: (e.g., Marketo, HubSpot, Pardot, or unknown)
+- Data/enrichment: (e.g., ZoomInfo, Apollo, Clearbit, or unknown)
+- Analytics: (e.g., Mixpanel, Amplitude, Heap, or unknown)
+
+Return as JSON with each category as a key. Use "unknown" if data is not available.
+```
+
+**ICP qualification using tech stack:**
+```
+Given tech stack:
+- CRM: {{crm_tool}}
+- Sales engagement: {{sales_tool}}
+- Data/enrichment: {{data_tool}}
+
+Does this company have a mature outbound motion that could benefit from GTM automation?
+- mature: Has dedicated sales engagement + enrichment tool
+- developing: Has CRM but limited sales engagement tooling
+- early: Basic tools only or unknown
+- no_fit: Uses tools that indicate inbound-only or non-sales motion
+
+Return ONLY: mature, developing, early, or no_fit
+```
+
+---
+
+### Recent activity enrichment
+
+This is where timing signals live. A company that just posted 5 SDR jobs is likely buying outbound tooling. A company that just raised a Series B is spending.
+
+```
+Company: {{company_name}}
+Domain: {{company_domain}}
+
+Search for recent activity (last 90 days) in these categories:
+1. Hiring signals: Are they hiring for sales/marketing/growth roles? How many?
+2. Funding: Any recent funding announcements?
+3. Product news: New product launches, partnerships, or major announcements?
+4. Executive changes: New CRO, VP Sales, CMO, or Head of Growth?
+5. Press: Any notable coverage or news?
+
+Summarize in 2-3 sentences. Focus on signals relevant to outbound/sales infrastructure buying decisions. If nothing notable, return "no significant recent activity found."
+```
+
+---
+
+## Company Intelligence → Personalization
+
+The real value of company intelligence is at the copy layer. Here's how to connect enriched company context to the SVC framework from OA-3:
+
+```
+Use the following company intelligence to write a personalized Signal-Value-Close cold email:
+
+Prospect: {{first_name}} {{last_name}}, {{job_title}} at {{company_name}}
+Signal: {{recent_activity_summary}}
+Tech stack maturity: {{tech_stack_maturity}}
+Funding stage: {{funding_stage}}
+Company size: {{company_size_range}}
+
+Instructions:
+- The SIGNAL sentence should reference the specific recent activity
+- The VALUE sentence should connect their current stage/context to the outcome Bitscale delivers
+- The CLOSE should be a specific 15-minute ask, personalized to their role
+- Max 80 words total
+
+Return ONLY the email body.
+```
+
+---
+
+<Tip>
+  **Quick Check:** Name the five layers of company intelligence. What does tech stack maturity tell you about a prospect? How does funding stage affect timing signals?
+</Tip>
+
+---
+
+## DE-4 Challenge: Enrich a Company Intelligence Layer (+125 XP)
+
+Take 30 companies (can be from your existing grids) and build the full company intelligence layer.
+
+**Requirements:**
+- Firmographic enrichment (industry, size, revenue, HQ)
+- Funding stage + timing classification
+- Tech stack enrichment (5 categories)
+- Recent activity summary
+- ICP fit classification combining all signals
+- One AI-personalized email per company using the company intelligence prompt above
+
+<Card title="Submit DE-4 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-de4">
+  Share your grid link. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: DE-5 — Contact Scoring →" icon="arrow-right" href="/academy/data-enrichment/contact-scoring">
+  With rich company + contact data, DE-5 teaches you to build scoring models that prioritize your highest-value prospects.
+</Card>
