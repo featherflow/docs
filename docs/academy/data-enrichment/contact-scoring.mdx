@@ -1,0 +1,193 @@
+---
+title: "DE-5: Contact Scoring"
+description: "Not every prospect deserves the same attention. Learn to build scoring models in Bitscale that rank your contacts by fit, timing, and signal strength — so your highest-value outreach goes to the right people."
+---
+
+<Info>
+  **DE-5 · Data & Enrichment · 125 XP · ~20 min**
+</Info>
+
+When your list has 5,000 contacts, you can't manually prioritize. Scoring automates the prioritization decision by weighting the factors that actually predict conversion — ICP fit, signal timing, persona match, and intent.
+
+A good scoring model doesn't replace judgment. It surfaces the top 10% so your judgment is applied where it matters most.
+
+---
+
+## The Two Scoring Dimensions
+
+Contact scoring has two axes. You need both.
+
+**Fit Score** — Does this contact match your ideal customer profile?
+- Are they in the right industry?
+- Right company size?
+- Right persona (title, seniority)?
+- Right tech stack?
+
+**Timing Score** — Is this contact likely to be in a buying window now?
+- Recent funding signal?
+- Hiring signal?
+- Executive change?
+- Product launch?
+
+A contact can be high-fit but low-timing (perfect ICP, no current trigger). They belong in nurture. A contact can be high-timing but low-fit (great signal, wrong ICP). Skip them — timing without fit is noise.
+
+The highest-priority contacts are high-fit AND high-timing.
+
+---
+
+## Building a Scoring Model in Bitscale
+
+### Step 1: Fit Score
+
+```
+Score this contact's ICP fit for a B2B outbound automation platform (target: VP/Director/Manager of Sales, SDR team leads, at SaaS companies with 50-500 employees).
+
+Contact data:
+- Job title: {{job_title}}
+- Seniority level: {{seniority}}
+- Company industry: {{company_industry}}
+- Company size: {{company_size_range}}
+- Tech stack maturity: {{tech_stack_maturity}}
+
+Scoring rules:
+- Title match (VP Sales, Sales Director, Head of Sales, CRO, RevOps): +30 points
+- Adjacent title (VP Marketing, Head of Growth, Sales Manager): +15 points
+- Non-relevant title: 0 points
+- Company in SaaS/tech industry: +25 points
+- Adjacent industry (fintech, martech, HR tech): +15 points
+- Non-relevant industry: 0 points
+- Company size 51-500: +25 points
+- Company size 501-2000: +15 points
+- Outside range: 0 points
+- Mature tech stack: +20 points
+- Developing stack: +10 points
+- Early/unknown: 0 points
+
+Return ONLY the total fit score (0-100).
+```
+
+### Step 2: Timing Score
+
+```
+Score this contact's timing signal strength.
+
+Signals detected:
+- Recent funding: {{funding_timing}} (yes/maybe/no/unknown)
+- Hiring signal: {{hiring_signal}} (yes/no/unknown)
+- Executive hire: {{exec_hire}} (yes/no/unknown)
+- Recent product launch: {{product_launch}} (yes/no/unknown)
+
+Scoring rules:
+- Funding yes (within 6 months): +40 points
+- Funding maybe: +20 points
+- Hiring signal yes (sales/growth roles): +30 points
+- Executive hire yes: +30 points
+- Product launch yes: +20 points
+- No signals: 0 points
+
+Maximum: 100 (cap if sum exceeds 100)
+
+Return ONLY the total timing score (0-100).
+```
+
+### Step 3: Composite Priority Score
+
+```
+Given:
+- Fit score: {{fit_score}}
+- Timing score: {{timing_score}}
+
+Calculate composite priority score:
+- If timing_score >= 40: composite = (fit_score * 0.5) + (timing_score * 0.5)
+- If timing_score < 40: composite = (fit_score * 0.7) + (timing_score * 0.3)
+
+(Higher timing weight when timing signals are present; default to fit-dominant when no timing signal)
+
+Return ONLY the composite score rounded to nearest integer.
+```
+
+### Step 4: Priority Tier
+
+```
+Given composite_score: {{composite_score}}
+
+Assign tier:
+- tier_1: score >= 70 → Priority outreach within 24 hours
+- tier_2: score 50-69 → Standard sequence, high-quality copy
+- tier_3: score 30-49 → Nurture sequence
+- tier_4: score < 30 → Deprioritize
+
+Return ONLY: tier_1, tier_2, tier_3, or tier_4
+```
+
+---
+
+## Sequence Routing by Score
+
+Once you have a tier for each contact, route to the appropriate sequence:
+
+| Tier | Score | Outreach Type | Sequence |
+|---|---|---|---|
+| Tier 1 | ≥70 | Highly personalized, multichannel | 7-touch (OA-5 framework) |
+| Tier 2 | 50-69 | Moderately personalized, email + LinkedIn | 5-touch |
+| Tier 3 | 30-49 | Templated with basic personalization | Email nurture (monthly) |
+| Tier 4 | <30 | No active outreach | Hold/discard |
+
+In Bitscale, add a `sequence_assignment` column that reads from `priority_tier`:
+
+```
+Given priority_tier: {{priority_tier}}
+
+Return the sequence name:
+- tier_1 → "high_priority_multichannel"
+- tier_2 → "standard_email_linkedin"
+- tier_3 → "nurture_sequence"
+- tier_4 → "no_sequence"
+```
+
+---
+
+## Scoring Model Calibration
+
+A scoring model that never gets updated becomes stale. After your first 200 sends, run a calibration check:
+
+1. **Pull reply rates by tier** — Tier 1 should have significantly higher reply rates than Tier 3
+2. **Look at positive reply rates by fit score** — High fit-score contacts should generate more qualified conversations
+3. **Check if timing score is actually predictive** — Are high-timing contacts converting to meetings more than low-timing?
+
+If the tiers don't segment performance differently, your scoring weights need adjustment. The goal is a model where each tier has meaningfully different response rates.
+
+<Info>
+  **Calibration benchmark:** A well-calibrated model should show at least 2x the reply rate for Tier 1 vs. Tier 3. If the difference is less than 1.5x, your scoring criteria aren't discriminating enough between fit levels.
+</Info>
+
+---
+
+<Tip>
+  **Quick Check:** What are the two scoring dimensions? When should you weight fit score more heavily than timing score? What does a calibration check measure?
+</Tip>
+
+---
+
+## DE-5 Challenge: Build a Scoring Model (+125 XP)
+
+Take a list of 50+ contacts (enriched with company intelligence from DE-4 if possible) and build the full scoring model.
+
+**Requirements:**
+- Fit score column
+- Timing score column
+- Composite score column
+- Priority tier column
+- Sequence assignment column
+- Distribution summary: how many contacts in each tier?
+- Brief explanation of how you'd validate the model after sending
+
+<Card title="Submit DE-5 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-de5">
+  Share your grid + tier distribution summary. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: DE-6 — Technographic Data →" icon="arrow-right" href="/academy/data-enrichment/technographic-data">
+  Tech stack is one of the most powerful ICP signals available. DE-6 digs into how to source, interpret, and activate technographic data in your workflows.
+</Card>
