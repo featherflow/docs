@@ -1,0 +1,168 @@
+---
+title: "DE-7: Intent Data"
+description: "Intent data tells you who's actively researching solutions like yours. It's the closest thing B2B outbound has to 'raised hand' signals. Learn how to source, interpret, and act on intent."
+---
+
+<Info>
+  **DE-7 · Data & Enrichment · 125 XP · ~22 min**
+</Info>
+
+Cold outreach to a company that's actively researching solutions like yours is not cold. It's timely. Intent data is the signal layer that converts cold outreach into warm outreach by telling you who's in the market — before they contact you.
+
+The challenge is that intent data is noisy, often delayed, and frequently misinterpreted. This module covers how to use it correctly.
+
+---
+
+## What Intent Data Actually Is
+
+Intent data comes from tracking online behavior at the company level — what websites employees are visiting, what content they're consuming, what topics they're researching. There are two types:
+
+| Type | Source | Example | Reliability |
+|---|---|---|---|
+| **First-party intent** | Your own website/app | Someone from Acme Corp downloaded your pricing guide | Highest — they engaged with you directly |
+| **Third-party intent** | Aggregated behavioral data | Company is reading content about "sales automation" across the web | Variable — depends on source quality and topic specificity |
+
+First-party intent is always more valuable than third-party. If someone from a target account visited your pricing page, that's a signal to act on today. If Bombora shows "surging intent" for your category, it's a signal to prioritize — not necessarily to act immediately.
+
+---
+
+## First-Party Intent Signals
+
+These are the intent signals you can generate and capture yourself:
+
+| Signal | Action | Urgency |
+|---|---|---|
+| Website pricing page visit | Immediate outreach | Same day |
+| Product demo signup | Immediate outreach + personalized demo prep | Same day |
+| Content download (high-value) | Outreach within 48 hours | 1–2 days |
+| Free trial signup without conversion | Outreach within 24 hours | Immediate |
+| Repeat visits to product pages | Nurture sequence or direct outreach | 2–5 days |
+| Webinar registration from target account | Add to sequence with webinar reference | Before event |
+
+In Bitscale, you can build a workflow that takes a first-party intent event (from your CRM or marketing automation) as input and generates a personalized outreach email:
+
+```
+Generate a warm outreach email based on first-party intent:
+
+Prospect: {{first_name}} {{last_name}}, {{job_title}} at {{company_name}}
+Intent signal: {{intent_event}} (e.g., "visited pricing page twice in 3 days", "downloaded automation guide")
+Timestamp: {{signal_date}}
+
+Instructions:
+- Reference the specific action they took (make it helpful, not stalker-ish)
+- Connect the action to a problem you can solve
+- Offer something useful: a case study, a 15-min personalized demo, a relevant resource
+- Keep it under 80 words
+- Tone: warm and timely, not transactional
+
+Return ONLY the email body.
+```
+
+---
+
+## Third-Party Intent: Sources and Limitations
+
+Third-party intent data aggregates online behavior signals across thousands of publisher sites. When a company's employees are reading articles about "GTM automation" or "outbound sales tools," intent platforms register a "surge" in that topic.
+
+**Major intent data providers:**
+
+| Provider | Best For | Limitation |
+|---|---|---|
+| **Bombora** | Enterprise B2B, deep topic coverage | Weekly aggregation, latency of 5–10 days |
+| **6sense** | Account-level intent + predictive scoring | Expensive; models can over-fit |
+| **G2 Buyer Intent** | In-market signal for software categories | Only captures in-category research |
+| **LinkedIn** | Job title-level targeting of active researchers | Not traditional intent data, but behavioral |
+| **TechTarget** | IT/enterprise buyers specifically | Narrow coverage outside IT |
+
+**The key limitation:** Third-party intent signals tell you a company's employees are reading about a topic — not that the company is actively evaluating solutions. A procurement team doing competitive analysis for an existing vendor shows identical signals to a company that's actively buying.
+
+Use third-party intent as a prioritization filter, not a qualification signal.
+
+---
+
+## Activating Intent in Bitscale
+
+### Third-party intent routing
+
+When you receive intent data (as a CSV export or API feed from your intent provider), bring it into Bitscale and add routing logic:
+
+```
+Given intent data for this company:
+- Company: {{company_name}}
+- Intent topics: {{intent_topics}} (list of topics with surge scores)
+- Surge score: {{surge_score}} (provider's ranking, typically 1-100)
+- Topic relevance: {{topic_relevance}} (how closely related to your product)
+
+Determine action:
+- immediate_outreach: surge score > 70 AND topic directly matches your product
+- prioritize: surge score 40-70 OR topic is adjacent
+- monitor: surge score 20-40 — add to watchlist
+- ignore: score < 20 OR topic is too generic
+
+Return ONLY: immediate_outreach, prioritize, monitor, or ignore
+```
+
+### Combining intent with fit score
+
+Intent data is most powerful when layered with fit scoring from DE-5:
+
+```
+Given:
+- Fit score: {{fit_score}} (from DE-5)
+- Intent signal: {{intent_action}} (immediate_outreach/prioritize/monitor/ignore)
+
+Final priority:
+- tier_1_urgent: fit_score >= 60 AND intent = immediate_outreach
+- tier_1_standard: fit_score >= 60 AND intent = prioritize
+- tier_2: fit_score 40-59 AND intent = immediate_outreach or prioritize
+- tier_3: fit_score < 40 OR intent = monitor
+- no_action: fit_score < 30 OR intent = ignore
+
+Return ONLY: tier_1_urgent, tier_1_standard, tier_2, tier_3, or no_action
+```
+
+---
+
+## Intent-Triggered Workflows
+
+The most powerful intent activation is automated: when an intent signal fires, it automatically adds the company to a Bitscale grid, enriches the contact, generates copy, and routes to the sequencer.
+
+**Workflow architecture:**
+1. Intent platform (Bombora/6sense) → webhook or daily export
+2. Bitscale receives new intent events → triggers enrichment workflow
+3. Find decision-maker contacts at the company → waterfall enrichment
+4. Score for fit × timing
+5. Generate personalized intent-triggered email
+6. Auto-export to sequencer for Tier 1 contacts
+7. Add Tier 2 to a review queue for manual approval
+
+This is the kind of always-on GTM motion that compounds over time. Set it up once, and it runs indefinitely.
+
+---
+
+<Tip>
+  **Quick Check:** What's the difference between first-party and third-party intent? Why is third-party intent a prioritization filter, not a qualification signal? How does layering intent with fit score change prioritization?
+</Tip>
+
+---
+
+## DE-7 Challenge: Build an Intent-Triggered Workflow (+125 XP)
+
+Design and build an intent-triggered enrichment workflow in Bitscale.
+
+**Requirements:**
+- Use either a real intent export (from any provider) or a simulated dataset of 30 companies with intent topics and scores
+- Intent routing column (immediate_outreach / prioritize / monitor / ignore)
+- Combined fit × intent priority column
+- Intent-triggered email template column (uses first-party OR third-party signal as context)
+- A one-paragraph explanation of how you'd automate this end-to-end
+
+<Card title="Submit DE-7 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-de7">
+  Share your grid + automation description. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: DE-8 — Data & Enrichment Capstone →" icon="arrow-right" href="/academy/data-enrichment/capstone">
+  You've completed all DE modules. DE-8 is the capstone — build a complete data pipeline and earn the Enrichment Specialist certification.
+</Card>
