@@ -1,137 +1,98 @@
 ---
-title: "Reading Your Data"
-description: "Confidence scores, freshness windows, catch-all domains, and cascade enrichment. Know when to trust a result and when to verify."
+title: "F-4: Reading Your Data"
+description: "Enrichment data is only useful if you know how to interpret it. Learn to spot patterns, quality-check output, and turn raw signals into decisions."
 ---
 
 <Info>
-  **F-4 · GTM Foundation · 100 XP · ~12 min**
-
-  Complete the data audit challenge at the bottom to earn 100 XP.
+  **F-4 · GTM Foundation · 100 XP · ~20 min**
 </Info>
 
-# Reading Your Data
-
-You ran your first enrichment. You got results. Now the question nobody tells you to ask: **how much of this can you actually trust?**
-
-Not all enrichment data is equal. A company headcount at 90% confidence is different from one at 40% confidence. An email address on a catch-all domain is different from one that's verified deliverable. A funding date from last week is different from one that's 18 months old.
-
-This module teaches you to read the signals behind the values, not just the values themselves.
-
-<Note>
-  🎬 **Video coming soon.**
-</Note>
+Your grid ran. You have hundreds of rows of enrichment data. Now what? Most people stare at the spreadsheet, sort by one column, and call it a day. This module teaches you how to actually read enrichment output — what the patterns mean, how to catch bad data, and how to translate what you're seeing into a prioritized action list.
 
 ---
 
-## Confidence Scores: What They Actually Mean
+## The Three Questions to Ask Every Grid
 
-Most Bitscale enrichments return a confidence score alongside the data. Here's how to read it:
+When you open a freshly enriched grid, run through these three questions before touching a single row:
 
-| Confidence | What It Means | Action |
-|-----------|---------------|--------|
-| 90–100% | Multiple sources agree. High confidence. | Use it. |
-| 70–89% | Probable match. One primary source. | Use it — verify if high-stakes. |
-| 50–69% | Possible match. Conflicting signals. | Flag for manual review. |
-| Below 50% | Unreliable. The provider is guessing. | Discard or run a second provider. |
+**1. What's the data quality like?**
+Check for null rates. If more than 20% of a column is empty, either the data source doesn't cover that segment well, or your input data (domains, company names) is too messy to enrich reliably.
 
-<Warning>
-  **The 94% trap:** A 94% confidence score doesn't mean the data is 94% accurate. It means the algorithm is 94% confident in *its guess*. The guess can still be completely wrong. For email addresses especially, always run a separate validation step — confidence score ≠ deliverability.
-</Warning>
+**2. What do the top-scoring rows have in common?**
+Pull the top 20% by ICP score. Look across the columns. Are there patterns beyond what your scoring criteria already capture? New signals emerge here.
+
+**3. What's anomalous?**
+Look for rows that score unexpectedly high or low. High scores on companies you know are bad fits mean your criteria are too loose. Low scores on companies you know are strong fits mean you're missing a criterion.
 
 ---
 
-## Freshness: When Was This Data Last Seen?
+## Data Quality Signals to Watch
 
-Some enrichment providers show a `last_seen` or `updated_at` timestamp. When they don't, use these rules:
-
-| Data Type | Safe Freshness Window | Notes |
-|-----------|----------------------|-------|
-| Funding data | Up to 12 months | Older than that — re-check manually |
-| Headcount | Up to 6 months | Accurate to ±20% within this window |
-| Job titles | Up to 6 months | ~15% error rate at 6+ months |
-| Email addresses | Up to 3 months | Format-valid ≠ deliverable after this |
-
-**Practical rule:** For active outreach, use data under 6 months old. For list building and research, up to 12 months is usable. For anything older — re-enrich before sending.
+| Warning Sign | What it Means | How to Fix |
+|---|---|---|
+| >30% nulls in employee count | Data source doesn't cover this segment | Switch enrichment provider for this column |
+| Industry always returns "Technology" | Too broad — needs sub-classification | Add an AI column to re-classify from description |
+| Tech stack detection rate <50% | Low coverage for your target segment | Add a secondary detection column (BuiltWith + Wappalyzer) |
+| Funding stage mostly null | Private companies — no public funding data | Use headcount growth as proxy signal instead |
+| Headcount showing 0 for known large companies | LinkedIn data lag | Cross-reference with Clearbit employee count |
 
 ---
 
-## The Catch-All Domain Problem
+## Interpreting Enrichment Patterns
 
-A catch-all domain is one where *every* email address returns as "valid" during verification — regardless of whether the mailbox actually exists. This is the #1 undetected deliverability trap.
+### Firmographic Clusters
 
-**How it works:**
-- Normal domain: `john.smith@acme.com` → Verification checks if this specific mailbox exists → Returns TRUE or FALSE
-- Catch-all domain: The server accepts *any* email to this domain as valid, including completely made-up addresses → Verification always returns TRUE
+When you sort by industry and employee count together, clusters emerge. A cluster tells you that a specific segment is heavily represented in your dataset — which is either:
+- **Good**: your sourcing is already working for this segment
+- **Bad**: you're over-indexed on one segment and missing others
 
-**Why it matters:** If you send to catch-all addresses and half the mailboxes don't exist, your bounce rate spikes. High bounce rate → damaged sender reputation → everything you send starts landing in spam.
+### Signal Co-occurrence
 
-**How to handle catch-all domains in Bitscale:**
-1. Add an email verification column to your grid
-2. For rows flagged as catch-all, either skip them entirely or use a tool with better catch-all detection (MillionVerifier handles this better than most)
-3. Add a filter: `Export only IF email_verified = TRUE AND catch_all = FALSE`
+When two signals appear together, the combination is usually stronger than either alone. Common powerful combinations:
+- Hiring SDRs **and** recently funded → very high intent
+- Tech stack includes CRM **and** includes outreach tool → already has infrastructure, likely needs optimization
+- Headcount growth >20% **and** no outbound tool detected → classic expansion-stage greenfield
 
----
+Build a formula column that detects these combinations. The co-occurrence score often beats the individual signal score.
 
-## Cascade Enrichment: Don't Stop at One Provider
+### Negative Signals Hidden in the Data
 
-When a single provider returns empty or low-confidence data, don't accept it as a dead end. Run a cascade.
-
-**The pattern:**
-
-```
-Column A: Email (Apollo)       → Primary provider
-Column B: Email (Hunter.io)    → Fallback if Column A is empty
-Column C: Email (Best)         → AI column: use A if not empty, else B
-Column D: Email (Verified)     → Verification on Column C result
-```
-
-Enterprise Bitscale users get 85%+ email coverage using cascade enrichment vs. 60–65% with a single provider.
-
-**AI column logic for cascade (paste this directly):**
-
-```
-If {{email_apollo}} is not empty and not null, return {{email_apollo}}.
-If {{email_hunter}} is not empty and not null, return {{email_hunter}}.
-Otherwise return "not_found".
-```
-
-Set this AI column to "Logic only" mode — no LLM call needed, it's just conditional logic.
+Data also tells you who to stop pursuing. Look for:
+- Companies with 0 headcount growth for 6+ months (stagnant — budget freeze likely)
+- Funding rounds older than 24 months with no new round (running out of runway or bootstrapped)
+- Tech stack with a direct competitor installed (already solved the problem)
 
 ---
 
-## Your Data Quality Checklist
+## Building a Data Interpretation Habit
 
-Before exporting any grid for outreach, run through this:
+After every grid run, spend 10 minutes doing this:
 
-- [ ] Confidence scores reviewed — anything below 70% flagged or removed
-- [ ] Freshness checked — no data older than 6 months in active use
-- [ ] Catch-all domains identified and handled
-- [ ] Email verification column run (separate from enrichment)
-- [ ] Empty contact rows reviewed — worth manual lookup or remove?
-- [ ] Headcount filter applied — company size still matches your ICP?
+1. Sort by ICP score descending, read the top 10 manually
+2. Sort by ICP score ascending, read the bottom 10 — any surprises?
+3. Check null rates for all enrichment columns
+4. Add a "Notes" column to any row where the data seems off
+
+This habit surfaces problems early and helps you tune your scoring model over time.
+
+---
 
 <Tip>
-  **Rule of thumb:** A clean list of 200 rows beats an unverified list of 1,000 rows every time. Your deliverability, reply rates, and SDR time all improve when the list is smaller and better.
+  **Quick Check:** Open your F-3 grid. What's the null rate on your tech stack columns? What's the most common industry in the top quartile? What's one combination signal you could add to your scoring that you didn't have before?
 </Tip>
 
 ---
 
-## 🎯 Challenge · 100 XP
+## F-4 Challenge: Audit and Annotate Your Grid (+100 XP)
 
-Run a data quality audit on the grid you built in F-3.
+Take your F-3 grid. Document: (1) the null rates for each enrichment column, (2) three patterns you observed in the top 25% of rows, (3) one change you'd make to the scoring criteria based on what you saw.
 
-1. Add a **confidence score review** — identify any rows where confidence is below 70%
-2. Add an **email verification column** and run it
-3. Flag any **catch-all domains** (your email verification tool should do this)
-4. In your submission, report:
-   - How many rows passed quality checks
-   - How many were flagged or removed
-   - What percentage of emails came back verified and deliverable
-
-[Submit your F-4 audit →](https://bitscale.fillout.com/academy-challenge-f4)
+<Card title="Submit F-4 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-f4">
+  Submit your grid audit with observations and improvements. **+100 XP on approval.**
+</Card>
 
 ---
 
-<Card title="Up next: F-5 · Bitscale Workflow Model" icon="arrow-right" href="/academy/foundation/bitscale-workflow-model">
-  One more Foundation module. Then you're ready for the Knowledge Check and 200 bonus XP.
+<Card title="Next: F-5 The Bitscale Workflow Model →" icon="arrow-right" href="/academy/foundation/bitscale-workflow-model">
+  How Bitscale workflows actually run under the hood — and how to design them to be fast, reliable, and scalable.
 </Card>
