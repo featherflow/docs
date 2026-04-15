@@ -1,154 +1,114 @@
 ---
-title: "Bitscale Workflow Model"
-description: "Understand how Bitscale thinks about data flow — Sources, Grids, Columns, Exports — and how run conditions and scheduling make workflows autonomous."
+title: "F-5: The Bitscale Workflow Model"
+description: "How Bitscale workflows actually execute — triggers, columns, dependencies, and how to design for speed and reliability at scale."
 ---
 
 <Info>
-  **F-5 · GTM Foundation · 100 XP · ~12 min**
-
-  Complete the workflow challenge at the bottom to earn 100 XP.
+  **F-5 · GTM Foundation · 100 XP · ~20 min**
 </Info>
 
-# Bitscale Workflow Model
-
-Here's the insight that separates power users from everyone else: **a Grid is not a spreadsheet. It's a pipeline.**
-
-A spreadsheet holds data. A Bitscale Grid *processes* data. Every time a new row arrives, columns fire. Every time you update a run condition, the behaviour of the entire workflow changes. Understanding this model unlocks everything that comes after Foundation.
-
-<Note>
-  🎬 **Video coming soon.**
-</Note>
+You've built a grid. You've read the data. Now you need to understand what's actually happening when Bitscale runs — so you can design workflows that scale without breaking, debug problems when they occur, and know exactly what's happening to your data at every step.
 
 ---
 
-## Sources: How Data Enters a Grid
+## How Bitscale Executes a Grid
 
-There are four ways data gets into a Grid:
+When you click **Run**, Bitscale doesn't process rows top to bottom. It executes in layers:
 
-| Source Type | How It Works | Best For |
-|-------------|-------------|---------|
-| **CSV Upload** | Manual import from a file | One-off lists, test batches |
-| **Live Sync** | Connected to a CRM, tool, or API that pushes rows automatically | Ongoing workflows |
-| **Webhook** | External trigger sends a new row to your Grid | Product signals, form submissions, intent events |
-| **Manual Entry** | Type rows directly | Quick tests, very small batches |
+**Layer 1 — Input resolution**: Raw input columns are validated and normalized. Bad domains get flagged. Empty rows are skipped.
 
-The moment a row enters a Grid, all active column enrichments fire on it automatically. This is what makes Live Sync sources powerful — the pipeline runs continuously without anyone pressing a button.
+**Layer 2 — Enrichment execution**: All enrichment columns run in parallel across rows. Row 1's enrichment and row 500's enrichment run at the same time.
+
+**Layer 3 — Dependent columns**: Columns that depend on enrichment output (AI columns, formula columns) run after their dependencies complete.
+
+**Layer 4 — Output routing**: Any configured outputs (CRM sync, Slack notification, export) fire after the grid is complete.
+
+Understanding this layer model is critical for debugging. If a formula column is empty, it's because its dependency column is empty — not because the formula is wrong.
 
 ---
 
-## Columns: Where the Work Happens
+## Column Dependency Mapping
 
-Columns are the engine of every Grid. There are three types:
-
-| Type | What It Does | Example |
-|------|-------------|---------|
-| **Static (Text)** | Holds data entered manually or from import | Company Name, Domain |
-| **Enrichment** | Calls an external API and returns a value | Headcount, Funding Data, Contact Finder |
-| **AI** | Sends data to an LLM and returns generated content | Email opener, ICP score, research summary |
-
-Each column has a **run condition** that controls when it fires. This is the most underused feature in Bitscale — and the one that separates efficient workflows from expensive ones.
-
-### Run Conditions
-
-**Always:** Fires every time a row is added or updated. Good for fast, cheap enrichments you always need.
-
-**On condition:** Fires only when another column meets a specific threshold. Example: only run Contact Finder if `SDR Hiring Signal > 0`. This saves credits and keeps the workflow clean.
-
-**Manual only:** Never fires automatically. You trigger it row-by-row or in batches. Good for expensive or sensitive enrichments you want to review before running.
-
-**Example: A cost-efficient workflow using run conditions**
+Every column in a Bitscale grid has a dependency chain. Before building a complex grid, map it out:
 
 ```
-Column: Headcount         → Always         (cheap, always useful)
-Column: SDR Hiring Signal → Always         (cheap, key filter)
-Column: Contact Finder    → On condition: SDR Hiring > 0
-Column: AI Email Opener   → On condition: Contact is not empty
-Column: ICP Score         → On condition: All above are populated
+Input: Company Domain
+  └── Enrichment: Employee Count (Clearbit)
+  └── Enrichment: Industry (Clearbit)
+  └── Enrichment: Tech Stack — CRM (BuiltWith)
+        └── Formula: ICP Score (depends on above 3)
+              └── AI: Personalized First Line (depends on ICP Score + all enrichment)
+                    └── Output: Export to Instantly (depends on First Line)
 ```
 
-Result: You only spend credits on expensive columns for rows that have already passed your ICP filters. On a 200-row grid, this can save 60–70% of your monthly credit usage.
+If BuiltWith fails for a row, the ICP Score will be incomplete. If ICP Score is incomplete, the First Line prompt runs with less context. Build your grids so that missing data degrades gracefully rather than causing complete failures.
 
 ---
 
-## Exports: Where Enriched Data Goes
+## Designing for Scale: Five Rules
 
-When your columns are populated, data leaves via an Export.
+**Rule 1 — Validate inputs early.**
+Before enrichment runs, add a formula column that checks whether the domain is valid (not null, has a TLD, not a personal email domain). Filter out bad rows before they waste API calls.
 
-| Export Type | How It Works |
-|-------------|-------------|
-| CSV download | Manual export on demand |
-| CRM push | Sync to HubSpot, Salesforce, Attio automatically |
-| Sequencer push | Send contacts directly to Outreach, Apollo, Smartlead, Instantly |
-| Webhook | POST to any endpoint — Slack, custom APIs, Zapier |
-| Scheduled auto-export | Triggers on a time interval without manual action |
+**Rule 2 — Cache enrichment results.**
+If you run the same company through the grid twice, it shouldn't make a new API call. Enable caching on enrichment columns to avoid duplicate costs and rate-limit issues.
 
-You can add conditions to exports: `Only export rows where ICP Score > 7 AND Email is verified`. This means only your best-matched, reachable contacts ever leave Bitscale.
+**Rule 3 — Use conditional AI columns.**
+Don't run an AI column on every row. Add a condition: only run the first-line generation if ICP score >= 5. This cuts AI costs by 60–80% and keeps quality high.
 
----
+**Rule 4 — Separate enrichment grids from activation grids.**
+Keep your "find and score" grid separate from your "personalize and send" grid. This modularity means you can rerun enrichment without triggering outreach, and vice versa.
 
-## Scheduling: Making It Autonomous
-
-Grids can run on a schedule. This turns a one-off workflow into a continuous GTM motion.
-
-**Example: Automated weekly SDR-hiring intent scan**
-
-1. **Source:** LinkedIn Sales Navigator saved search (your ICP filters)
-2. **Grid:** Auto-imports new results every Monday at 6am
-3. **Columns:** Headcount → Hiring Signal → Contact Finder → AI Opener → ICP Score
-4. **Export:** Auto-push to Outreach sequence if `ICP Score > 7 AND Contact found`
-
-Every Monday, your SDRs start the week with 15–20 fresh, enriched, scored prospects already sitting in their sequence tool. Nobody pressed a button.
-
-**That's what GTM Automation looks like when it's fully operational.**
+**Rule 5 — Log everything.**
+Add a **Run Timestamp** column and a **Status** column to every grid. When something breaks at 2am, you want to know exactly which rows failed and when.
 
 ---
 
-## The Full Mental Model
+## Triggers: How Grids Start Running
 
-```
-[Source: LinkedIn / CSV / CRM / Webhook]
-                ↓
-[Grid: Your processing environment]
-                ↓
-[Column 1: Company Name]     Static
-[Column 2: Domain]           Static
-[Column 3: Headcount]        Enrichment → Always
-[Column 4: Hiring Signal]    Enrichment → Always
-[Column 5: Contact Finder]   Enrichment → On condition: Hiring > 0
-[Column 6: AI Opener]        AI         → On condition: Contact found
-[Column 7: ICP Score]        AI         → On condition: All above populated
-                ↓
-[Export → Outreach / HubSpot / CSV]
-[Condition: ICP Score > 7 AND Email verified]
-```
+Grids don't have to be run manually. Bitscale supports several trigger types:
 
-Every workflow you'll ever build follows this pattern. The complexity lives in what's inside the columns and which conditions you set. The architecture stays the same.
+| Trigger Type | Use Case | Example |
+|---|---|---|
+| **Manual** | One-time or ad hoc runs | List for a conference |
+| **Scheduled** | Regular cadence | New ICP leads every Monday morning |
+| **Webhook** | Event-driven from external system | New deal created in CRM → enrich contact |
+| **API** | Programmatic trigger from your codebase | Form fill → instant enrichment |
+
+Most mature GTM systems combine all four. The Monday enrichment schedule fills the top of the funnel. The CRM webhook handles individual inbounds. The API trigger handles product-led signals.
 
 ---
 
-## 🧠 Quick Check
+## Debugging Checklist
+
+When a grid run produces unexpected results:
+
+1. Check input quality — null domains? Duplicate rows?
+2. Check enrichment coverage — which columns have high null rates?
+3. Check dependency order — is the formula column running before its dependencies?
+4. Check condition filters — are AI columns skipping rows they shouldn't?
+5. Check rate limits — did the run hit an API rate limit and stop mid-grid?
+
+Most issues are caused by #1 (bad input) or #5 (rate limits). Fix your input data first. If rate limits are the issue, break the grid into smaller batches.
+
+---
 
 <Tip>
-  1. What's the difference between a Live Sync source and a CSV Upload source?
-  2. If Contact Finder costs 5 credits per row and you have 200 rows, how would you use run conditions to avoid spending all 1,000 credits on companies that don't match your ICP?
-  3. What would a fully automated weekly ICP scan look like for your company?
+  **Quick Check:** Draw the dependency chain for your F-3 grid from memory. Can you identify which column, if it failed, would have the most downstream impact? That column is your single point of failure — it deserves the most validation logic.
 </Tip>
 
 ---
 
-## 🎯 Challenge · 100 XP
+## F-5 Challenge: Design a Workflow Diagram (+100 XP)
 
-Build a workflow with at least one run condition and one scheduled trigger.
+Take your F-3 grid and draw its full dependency chain. Map every column, its type (input/enrichment/AI/formula), and its dependencies. Identify one single point of failure and describe how you'd add a fallback.
 
-1. Take your F-3 grid (or build a new one)
-2. Set up at least **one run condition** on a column (e.g., "only run Contact Finder if Headcount > 50")
-3. Configure a **scheduled export** — even if it's just set up, not running live yet
-4. Screenshot your workflow configuration showing the run condition
-
-[Submit your F-5 workflow →](https://bitscale.fillout.com/academy-challenge-f5)
+<Card title="Submit F-5 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-f5">
+  Submit your workflow dependency diagram and failure point analysis. **+100 XP on approval.**
+</Card>
 
 ---
 
-<Card title="Up next: Foundation Knowledge Check" icon="check-circle" href="/academy/foundation/knowledge-check">
-  You've completed all 5 Foundation modules. Time to prove it — pass the Knowledge Check to earn +200 bonus XP and unlock Foundation Certification.
+<Card title="Next: Foundation Knowledge Check →" icon="arrow-right" href="/academy/foundation/knowledge-check">
+  Lock in everything from the Foundation track before moving to Outbound Automation.
 </Card>
