@@ -1,0 +1,173 @@
+---
+title: "GA-1: GTM System Design"
+description: "Before you build anything, you need a design. Learn the frameworks for architecting a complete, integrated GTM system — from data sources through pipeline generation."
+---
+
+<Info>
+  **GA-1 · GTM Architect · 150 XP · ~25 min**
+</Info>
+
+Most GTM teams build by accretion: they add tools, workflows, and processes reactively, whenever a problem becomes acute. The result is a fragmented system with overlapping tools, broken handoffs, inconsistent data, and nobody who fully understands how it all fits together.
+
+GTM system design is the discipline of building the architecture intentionally before problems force you to react.
+
+---
+
+## The GTM System Stack
+
+A well-designed GTM system has five layers, each feeding the next:
+
+```
+Layer 1: DATA FOUNDATION
+    Sources → Enrichment → Cleaning → Master contact/company records
+
+Layer 2: SIGNAL LAYER
+    Signal detection → Scoring → Prioritization → Trigger queue
+
+Layer 3: EXECUTION LAYER
+    Personalized copy → Multichannel sequence → Delivery → Tracking
+
+Layer 4: INTELLIGENCE LAYER
+    Reply analysis → Conversion tracking → Attribution → Learning loop
+
+Layer 5: OPERATIONS LAYER
+    QA systems → Workflow automation → Alerting → Reporting
+```
+
+Each layer has inputs (what it receives from the layer above) and outputs (what it sends to the layer below). When a layer fails, every layer below it is degraded.
+
+---
+
+## Design Principles
+
+**1. Data quality is load-bearing**
+Every layer depends on the data layer. A corrupted contact record generates bad copy, reaches the wrong person, and produces misleading attribution data. Design the data layer to be more robust than you think you need.
+
+**2. Signals should trigger, not inform**
+The worst outbound teams use signals as context for manually-scheduled campaigns. The best use signals as triggers: when signal fires, workflow runs. This is the difference between reactive and proactive GTM.
+
+**3. Every workflow needs a failure state**
+What happens when an API call fails? When an enrichment returns null? When a signal fires for a company that's already in your CRM as a customer? Design the failure paths explicitly.
+
+**4. Measure what leads to revenue, not what's easy to measure**
+Open rates are easy to measure. Pipeline generated is hard to attribute. Optimize for pipeline attribution from day one — it's painful to retrofit later.
+
+**5. Build for the person who comes after you**
+Document every workflow. Every column prompt in Bitscale should have a comment explaining what it does and why. A GTM system that only one person understands is a liability.
+
+---
+
+## The GTM Design Document
+
+Before building any significant workflow, write a one-page design document. This forces clarity before complexity.
+
+**GTM Design Document Template:**
+
+```
+1. OBJECTIVE
+What business outcome does this workflow produce?
+(e.g., "Generate 20 qualified meetings/month from Series B SaaS companies")
+
+2. ICP DEFINITION
+Who are we targeting? (Industry, size, persona, stage)
+Why these people? What problem do they have that we solve?
+
+3. DATA SOURCES
+Where does the initial list come from?
+What enrichment sources are used?
+What signals trigger this workflow?
+
+4. WORKFLOW STAGES
+Stage 1: [What happens, inputs, outputs]
+Stage 2: [What happens, inputs, outputs]
+...
+
+5. COPY & PERSONALIZATION STRATEGY
+Framework used (SVC, PAS, etc.)
+Personalization layers (company / role / individual)
+Vertical variants needed
+
+6. ROUTING & FALLBACK
+Tier 1 → [what happens]
+Tier 2 → [what happens]
+Tier 3 → [what happens]
+Failure states → [what happens]
+
+7. MEASUREMENT
+Primary metric (meetings booked, positive replies)
+Secondary metrics (reply rate, open rate, deliverability)
+How is attribution tracked?
+
+8. OPERATIONS
+Who runs this workflow?
+How often is it reviewed?
+What triggers a rebuild vs. an optimization?
+```
+
+---
+
+## System Design Patterns
+
+**Pattern 1: Signal-triggered enrichment**
+A signal fires → company gets enriched → contacts identified → copy generated → routed to sequencer. Fully automated. Built in SI-6.
+
+**Pattern 2: Account-based targeting**
+A named account list drives enrichment and outreach. Signals are used for timing, not for targeting. Common for enterprise AE motions.
+
+**Pattern 3: High-velocity SMB**
+Large list, lightweight enrichment, template-based personalization with strong ICP signal. Volume over depth. Built for SDR teams.
+
+**Pattern 4: Inbound response automation**
+A prospect fills out a form or starts a trial → immediate enrichment + personalized response → sales rep notified with full context. Converts inbound faster.
+
+**Pattern 5: Champion tracking**
+Monitors known champions for job changes → triggers outreach at new company + churn alert at old company. Built in SI-2.
+
+---
+
+## Building a System Design in Bitscale
+
+Create a "System Design" reference grid — one row per workflow you've built or plan to build. This becomes your GTM operations documentation.
+
+**Columns:**
+- `workflow_name`
+- `objective`
+- `icp_definition`
+- `data_sources`
+- `signal_trigger` (or "batch/scheduled" if no signal trigger)
+- `copy_framework`
+- `personalization_depth`
+- `primary_metric`
+- `attribution_method`
+- `owner`
+- `last_reviewed`
+- `status` (active / paused / deprecated)
+
+---
+
+<Tip>
+  **Quick Check:** What are the five layers of the GTM system stack? What is "signals should trigger, not inform"? What does a GTM design document contain?
+</Tip>
+
+---
+
+## GA-1 Challenge: Write a GTM Design Document (+150 XP)
+
+Design a complete GTM workflow for a specific use case using the design document template.
+
+**Requirements:**
+- Complete all 8 sections of the design document
+- The design must be for a real or realistic scenario (not abstract)
+- Include at least one signal trigger
+- Specify failure states for at least 2 workflow stages
+- Peer-reviewable: could someone else build this from your doc?
+
+<Card title="Submit GA-1 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-ga1">
+  Submit your GTM design document. **+150 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: GA-2 — Multi-Channel Architecture →" icon="arrow-right" href="/academy/gtm-architect/multi-channel-architecture">
+  GA-2 covers how to design coordinated multi-channel GTM motions that operate as one system, not three separate tools.
+</Card>
