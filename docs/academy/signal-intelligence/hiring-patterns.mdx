@@ -1,0 +1,145 @@
+---
+title: "SI-4: Hiring Pattern Analysis"
+description: "Job postings are a window into a company's priorities before any public announcement. Learn to read hiring patterns as buying signals."
+---
+
+<Info>
+  **SI-4 · Signal Intelligence · 125 XP · ~18 min**
+</Info>
+
+Companies announce priorities through their job postings before any press release. When a company posts 6 SDR roles and a Head of Sales Development simultaneously, they're building an outbound motion. When they list "experience with ZoomInfo required," they're telling you their current stack. When they post a RevOps director role, they're professionalizing their sales infrastructure.
+
+Hiring patterns are one of the most underused signal types in B2B outbound.
+
+---
+
+## How to Read Hiring Patterns
+
+There are three levels of insight from job posting analysis:
+
+**Level 1: Volume signals**
+- Number of open roles in a function tells you investment level
+- 5+ sales roles = building a serious outbound motion
+- Sales/marketing roles growing faster than engineering = commercial-phase company
+
+**Level 2: Role signals**
+- Which specific roles are being hired indicates which part of the stack they're building
+- "Sales Development Rep" = outbound motion being formalized
+- "Revenue Operations Manager" = tech stack and process standardization in progress
+- "Growth Marketing Manager" = expanding demand gen beyond outbound
+
+**Level 3: Requirements signals**
+- Required tools in job descriptions reveal current stack
+- "Must have Salesforce/Outreach/ZoomInfo experience" = mature outbound stack in place
+- "Help us build our first sales process" = starting from scratch
+- "Experience with [Competitor]" = displacement opportunity
+
+---
+
+## Building Hiring Pattern Analysis in Bitscale
+
+### Step 1: Job posting extraction
+
+For a target company, pull all open job postings and extract key signals:
+
+```
+Analyze these job postings for company {{company_name}}:
+
+Job postings: {{job_postings_text}}
+
+Extract:
+1. Total open roles count
+2. Sales/marketing/growth roles specifically
+3. Key tool requirements mentioned (list all tools named)
+4. Seniority level of roles being hired (mostly junior, mostly senior, mixed)
+5. Any language suggesting they're building vs. scaling a motion ("first SDR" vs. "join our growing SDR team")
+6. GTM maturity signal: early_building / scaling / mature / unknown
+
+Return as JSON.
+```
+
+### Step 2: Hiring velocity calculation
+
+```
+Given job posting data over time for {{company_name}}:
+
+Current open roles in sales/growth/marketing: {{current_open_count}}
+Open roles 30 days ago: {{previous_open_count}} (if available, otherwise skip)
+Company total employees: {{total_employees}}
+
+Calculate:
+1. Sales/growth hiring intensity: open_roles / total_employees * 100 (%)
+2. Hiring signal: high (>5% of employees being hired in sales/growth), medium (2-5%), low (<2%), unknown
+3. Trend: growing / stable / shrinking (if historical data available)
+
+Return as JSON.
+```
+
+### Step 3: Tool requirement extraction → competitive intelligence
+
+```
+From these job postings: {{job_postings_text}}
+
+Extract all sales/marketing technology tools mentioned as requirements or preferred skills.
+
+Categorize each tool:
+- crm: (Salesforce, HubSpot, Pipedrive, etc.)
+- sales_engagement: (Outreach, Salesloft, Apollo, etc.)
+- data_enrichment: (ZoomInfo, Apollo, Clearbit, etc.)
+- marketing_automation: (Marketo, HubSpot, Pardot, etc.)
+- analytics: (Mixpanel, Amplitude, Looker, etc.)
+- other: everything else
+
+Return as JSON with category keys and tool name arrays.
+```
+
+---
+
+## Hiring Patterns as ICP Qualification
+
+Combine hiring analysis with your ICP scoring:
+
+```
+Hiring analysis for {{company_name}}:
+- GTM maturity: {{gtm_maturity}}
+- Hiring intensity: {{hiring_intensity}}
+- Key roles being hired: {{key_roles}}
+- Tools required: {{required_tools}}
+
+Does this hiring pattern indicate they're a good prospect for a GTM automation platform?
+- ideal: Building or scaling outbound, mentions relevant tools, has SDR/sales ops hiring
+- good: Some sales hiring but less clear outbound focus
+- early: Pre-outbound motion (too early for us but worth monitoring)
+- wrong_fit: Inbound-only, enterprise with long cycles, or no sales/growth hiring
+
+Return ONLY: ideal, good, early, or wrong_fit
+```
+
+---
+
+<Tip>
+  **Quick Check:** What are the three levels of insight from job posting analysis? What does a "RevOps Manager" role signal? How does a tool requirement in a job description help with competitive intelligence?
+</Tip>
+
+---
+
+## SI-4 Challenge: Hiring Pattern Analysis for 20 Companies (+125 XP)
+
+Pull job posting data for 20 companies in your ICP and run the full hiring pattern analysis.
+
+**Requirements:**
+- Job posting extraction column (role counts, tool requirements, GTM maturity)
+- Hiring velocity column (intensity %, signal level)
+- Tool requirement extraction (competitive intelligence)
+- ICP qualification column based on hiring pattern
+- A brief: which 5 companies are "ideal" prospects based purely on hiring signals?
+
+<Card title="Submit SI-4 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-si4">
+  Share your grid + top 5 brief. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: SI-5 — News & Event Triggers →" icon="arrow-right" href="/academy/signal-intelligence/news-triggers">
+  Company news and industry events create natural conversation openers. SI-5 covers how to monitor and activate news-based triggers.
+</Card>
