@@ -1,0 +1,191 @@
+---
+title: "SI-6: Building Signal Workflows"
+description: "Individual signal detection is useful. A unified signal workflow that detects, scores, enriches, and routes automatically is a competitive advantage. Learn to build it in Bitscale."
+---
+
+<Info>
+  **SI-6 · Signal Intelligence · 125 XP · ~22 min**
+</Info>
+
+You've learned to detect and interpret five types of signals: job changes, funding events, hiring patterns, news, and intent. Now the question is how to run all of them simultaneously without manual monitoring overhead.
+
+The answer is a unified signal workflow — a Bitscale system that watches for signals across all sources, scores them in real time, enriches the relevant contacts, generates outreach, and routes to your sequencer automatically.
+
+---
+
+## Signal Workflow Architecture
+
+A production signal workflow has four stages:
+
+```
+Stage 1: DETECTION
+    Multiple signal sources → unified event feed
+    (LinkedIn, Crunchbase, job boards, news APIs, your CRM)
+
+Stage 2: SCORING & FILTERING
+    Signal quality scoring (SI-1 framework)
+    ICP fit check (DE-5 scoring)
+    Deduplication (same company, multiple signals)
+
+Stage 3: ENRICHMENT
+    Find decision-maker contacts at signaled company
+    Enrich with company intelligence (DE-4)
+    Generate personalized copy using signal as context
+
+Stage 4: ROUTING
+    Tier 1 (high signal + high fit) → auto-export to sequencer
+    Tier 2 → review queue for manual approval
+    Tier 3 → add to nurture list
+    Below threshold → log and ignore
+```
+
+---
+
+## Building the Unified Signal Grid
+
+In Bitscale, create a master "Signal Feed" grid. This is the central input for all signals. Each row is a detected signal event.
+
+**Signal Feed columns:**
+- `signal_date` — when the signal was detected
+- `company_name` — target company
+- `company_domain` — for enrichment
+- `signal_type` — job_change / funding / hiring / news / intent / first_party
+- `signal_description` — what happened
+- `signal_source` — where you found it
+- `signal_quality_score` — from SI-1 scoring
+- `icp_fit_score` — from DE-5 scoring
+- `priority_composite` — combined signal × fit score
+- `routing_decision` — immediate / this_week / nurture / ignore
+- `enrichment_status` — pending / complete / failed
+- `outreach_generated` — true/false
+
+### Signal deduplication
+
+```
+You are reviewing a new signal for {{company_name}}.
+
+New signal:
+- Type: {{signal_type}}
+- Description: {{signal_description}}
+- Date: {{signal_date}}
+
+Recent signals for the same company in the past 30 days:
+{{recent_signals_list}}
+
+Is this a duplicate or extension of an existing signal, or a new distinct signal?
+- duplicate: Same event, already in queue
+- extension: Same signal type, builds on existing (e.g., more hiring news)
+- new_signal: Distinct new trigger
+
+Return: {"classification": "...", "action": "skip_duplicate / merge_with_existing / add_as_new"}
+```
+
+---
+
+## Contact Finding from Signal
+
+When a signal fires for a company, you need to find the right person to reach:
+
+```
+A signal has fired for {{company_name}}: {{signal_description}}
+
+Based on the signal type ({{signal_type}}), who is the most relevant person to reach at this company?
+
+Signal-to-persona mapping:
+- funding: VP Sales, CRO, or CEO (depending on company size)
+- job_change: The new hire themselves (if decision-maker) or their future manager
+- hiring: Head of Sales Development, VP Sales, or RevOps
+- news (product): VP Marketing or Head of Growth
+- news (partnership): CRO or VP of Business Development
+- intent: Whoever matches your primary buyer persona
+
+Company size: {{company_size}}
+Known contacts at company: {{known_contacts}}
+
+Return the recommended target persona (title) and why.
+```
+
+---
+
+## Signal Workflow Automation
+
+The most powerful setup is a trigger-based workflow that runs continuously:
+
+**Option A: Scheduled batch (simplest)**
+- Run signal detection workflow daily at 8am
+- New rows added to Signal Feed grid automatically
+- Scoring, enrichment, and copy generation run automatically
+- Outputs reviewed each morning before sequencer export
+
+**Option B: Near-real-time (advanced)**
+- Webhook triggers from signal sources (Crunchbase, your CRM)
+- Immediate enrichment on signal receipt
+- Slack notification for Tier 1 signals requiring same-day action
+- Auto-export to sequencer for pre-approved signal types
+
+### Slack notification prompt for Tier 1 signals:
+
+```
+A high-priority signal has been detected:
+
+Company: {{company_name}}
+Signal: {{signal_description}}
+Fit score: {{icp_fit_score}}
+Signal quality: {{signal_quality_score}}
+Composite priority: {{priority_composite}}
+
+Recommended contact: {{recommended_persona}} at {{company_name}}
+Enriched contact found: {{contact_name}}, {{contact_title}} ({{contact_email}})
+
+Generated email (review and approve):
+---
+{{generated_email}}
+---
+
+Action required within: {{outreach_window}}
+```
+
+---
+
+## Signal Workflow Performance Tracking
+
+Track these metrics for your signal workflow:
+
+| Metric | What to Track | Target |
+|---|---|---|
+| Signals detected per week | Volume of incoming signals | Depends on ICP size |
+| Signal-to-outreach rate | % of signals that lead to actual outreach | > 40% (rest should be nurture/ignore) |
+| Signal-to-reply rate | % of signal-triggered emails that get a reply | > 8% (vs. 3-5% for non-signal outreach) |
+| Signal decay tracking | % of signals acted on within optimal window | > 70% |
+| Tier distribution | % of signals reaching each tier | Tier 1 should be 10–20% of detected signals |
+
+---
+
+<Tip>
+  **Quick Check:** What are the four stages of a signal workflow? What is signal deduplication and why does it matter? What metrics track signal workflow performance?
+</Tip>
+
+---
+
+## SI-6 Challenge: Build a Unified Signal Workflow (+125 XP)
+
+Build a unified Signal Feed grid in Bitscale that combines at least 3 signal types.
+
+**Requirements:**
+- Signal Feed grid with all 11 columns defined
+- At least 30 signals loaded across 3+ signal types
+- Signal quality scoring + ICP fit scoring + composite priority
+- Deduplication check column
+- Contact recommendation column
+- Generated email for all Tier 1 signals
+- Performance tracking template (empty but set up for incoming data)
+
+<Card title="Submit SI-6 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-si6">
+  Share your Signal Feed grid. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: SI-7 — Signal Intelligence Capstone →" icon="arrow-right" href="/academy/signal-intelligence/capstone">
+  Build and run a live signal workflow for 2 weeks. Submit the results and earn the Signal Intelligence Specialist certification.
+</Card>
