@@ -1,0 +1,164 @@
+---
+title: "AP-4: LinkedIn Research Automation"
+description: "LinkedIn is the richest source of individual-level context for B2B personalization. Learn to extract, process, and activate LinkedIn data at scale without manual research."
+---
+
+<Info>
+  **AP-4 · AI Personalization · 100 XP · ~18 min**
+</Info>
+
+LinkedIn contains everything you need for genuine personalization: career history, current challenges (through posts), company changes, content preferences, and professional identity. The problem is extracting it at scale without spending 15 minutes per contact on manual research.
+
+This module covers the tools and workflows that automate LinkedIn research while preserving the depth that makes personalization genuine.
+
+---
+
+## What to Extract from LinkedIn
+
+Not everything on a LinkedIn profile is useful for personalization. Here's what matters:
+
+| Data Point | Source | Personalization Use |
+|---|---|---|
+| **Current title and company** | Profile | Basic context (already have this) |
+| **Career trajectory** | Experience section | "You've moved from IC to VP in 4 years" |
+| **Career pivot context** | Experience section | "You came to sales ops from engineering — rare background" |
+| **Educational background** | Education section | Rarely useful unless specific (MBA, specific bootcamp) |
+| **Recent posts (last 30 days)** | Activity feed | Strongest individual signal |
+| **Post engagement topics** | Liked/commented posts | What they pay attention to |
+| **LinkedIn summary / About** | Profile | Self-described priorities and beliefs |
+| **Skills and endorsements** | Skills section | Tool expertise, specializations |
+| **Recommendations given/received** | Recommendations | Character signals, professional relationships |
+
+The highest-value signals are: **recent post content** (what they're thinking about now) and **career trajectory** (what shaped their professional lens).
+
+---
+
+## LinkedIn Data Extraction Tools
+
+| Tool | Method | Best For |
+|---|---|---|
+| **Proxycurl API** | Official LinkedIn data API | Profile data, current role, work history |
+| **PhantomBuster** | Automation (check ToS) | Activity scraping, post content |
+| **Evaboot** | Sales Navigator export | Bulk profile extraction |
+| **LinkedIn Sales Navigator** | Native | List-level profile access, alerts |
+| **Clay** | LinkedIn enrichment integration | Profile + recent activity in one enrichment |
+| **Manual + AI** | Copy profile → paste into Bitscale | High-value accounts, full depth |
+
+---
+
+## Building LinkedIn Research Columns in Bitscale
+
+### Career trajectory analysis:
+```
+Analyze this career history and extract the key trajectory signal:
+
+Name: {{first_name}} {{last_name}}
+Work history (most recent first):
+{{work_history}}
+
+What is the most interesting or relevant aspect of their career trajectory for outreach?
+Focus on:
+- Career pivots (IC to leadership, function changes)
+- Speed of advancement
+- Industry moves
+- Founder background
+- Notable company pedigree (known companies = credibility)
+
+Return: a 1-sentence observation that would be natural to reference in an outreach email. If nothing notable, return "standard progression".
+```
+
+### Recent content analysis:
+```
+Analyze these recent LinkedIn posts/comments and identify the dominant professional themes:
+
+Posts: {{recent_activity_text}}
+
+Identify:
+1. Primary topic they post about most (e.g., "sales development best practices", "RevOps data quality")
+2. Their apparent point of view (what do they seem to believe strongly?)
+3. Any specific problems or frustrations they've expressed
+4. Outreach hook: a one-sentence reference to their content that would feel genuine
+
+Return as JSON.
+```
+
+### Profile summary extraction:
+```
+Extract the key professional positioning from this LinkedIn About section:
+
+About text: {{linkedin_about}}
+
+Identify:
+1. How they describe their professional identity
+2. What they say they're focused on now
+3. Any specific methodologies, frameworks, or beliefs they mention
+4. One quote or phrase that captures their professional voice (for tone-matching in copy)
+
+Return as JSON.
+```
+
+---
+
+## From Research to Personalization Hook
+
+Once you've extracted LinkedIn signals, you need to convert them into email hooks:
+
+```
+Given the following LinkedIn research on {{first_name}} {{last_name}}:
+
+Career observation: {{career_trajectory_observation}}
+Content theme: {{primary_content_topic}}
+Point of view: {{apparent_pov}}
+Profile summary signal: {{profile_summary_signal}}
+
+Write 3 potential personalization hooks — each a single opening sentence for a cold email.
+
+Requirements for each hook:
+- References a specific observation from the research (not generic)
+- Leads naturally into a business conversation
+- Reads as human, not automated
+- No compliments or flattery
+- Under 25 words
+
+Return 3 numbered hooks.
+```
+
+Then select the best hook programmatically:
+```
+Rate these 3 personalization hooks for naturalness and specificity (1-10 each):
+Hook 1: {{hook_1}}
+Hook 2: {{hook_2}}
+Hook 3: {{hook_3}}
+
+Select the best one. Return: {"best_hook": "hook_1/hook_2/hook_3", "selected_text": "...", "reason": "brief explanation"}
+```
+
+---
+
+<Tip>
+  **Quick Check:** What are the two highest-value LinkedIn data points for personalization? Which extraction tool is best for bulk profile extraction? What makes a personalization hook feel genuine vs. manufactured?
+</Tip>
+
+---
+
+## AP-4 Challenge: LinkedIn Research Automation (+100 XP)
+
+Automate LinkedIn research for 20 contacts using any combination of tools.
+
+**Requirements:**
+- Career trajectory column for all 20 contacts
+- Recent content theme column (with evidence)
+- 3 personalization hook options per contact
+- Best hook selection column
+- Final email using the selected hook as opener
+- A short reflection: what LinkedIn signal type produced the best hooks?
+
+<Card title="Submit AP-4 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-ap4">
+  Share your grid + reflection paragraph. **+100 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: AP-5 — Industry & Vertical Messaging →" icon="arrow-right" href="/academy/ai-personalization/vertical-messaging">
+  Personalization isn't just individual — it's also vertical. AP-5 covers how to build industry-specific messaging frameworks that scale.
+</Card>
