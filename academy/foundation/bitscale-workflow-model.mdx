@@ -1,0 +1,89 @@
+---
+title: "F-5: The Bitscale Workflow Model"
+description: "How grids, columns, actions, and sources work together — the mental model behind every Bitscale workflow."
+---
+
+<Note>
+  **Foundation Track · Module 5 of 5.** After completing this module,
+  take the knowledge check to earn your Foundation Badge.
+</Note>
+
+## Watch First (12 min)
+
+<Info>
+  Video walkthrough coming soon. The written content below covers the same concepts.
+</Info>
+
+## The Core Model
+
+Every workflow in Bitscale — no matter how complex — is built from the same
+four building blocks:
+
+<Steps>
+  <Step title="Sources">
+    Where your data comes from. This includes Find Companies, Find People,
+    LinkedIn job searches, CSV imports, CRM syncs, and webhooks.
+    Sources populate the rows of your grid.
+  </Step>
+  <Step title="Grids">
+    The container. Each row is a company or contact. Each column is
+    either an identifier, enriched data, or the output of an action.
+    Think of a grid as a living spreadsheet — it updates as workflows run.
+  </Step>
+  <Step title="Columns (Actions)">
+    Where work happens. Each column is either static data or an action
+    that runs against each row — enrichment, AI research, email generation,
+    validation. Columns can depend on other columns (the output of one
+    becomes the input of the next).
+  </Step>
+  <Step title="Exports & Integrations">
+    Where data goes after it's been processed. CRM sync (Salesforce,
+    HubSpot, Zoho), outbound tool push (Instantly, Smartlead, Lemlist),
+    Google Sheets, webhooks, or CSV download.
+  </Step>
+</Steps>
+
+## The Flow
+
+```
+Source → Grid (rows) → Columns run left-to-right → Export
+```
+
+The key insight: **columns run in sequence.** If Column C depends on data
+from Column B, Column B must finish first. Bitscale handles this
+dependency chain automatically when you wire columns together.
+
+## Run Conditions
+
+Not every action should run on every row. Run conditions let you define
+logic like "only run the email generation column if the company passed
+ICP qualification." This saves credits and makes your workflows precise.
+
+You'll use run conditions heavily once you move into specialist tracks.
+
+## Scheduling
+
+Grids can run on a schedule — hourly, daily, or weekly. This is what
+turns a one-time workflow into a continuously running GTM system.
+A scheduled grid that pulls new companies from a signal, enriches them,
+and pushes them to your CRM is the foundation of an always-on pipeline.
+
+## Your Challenge
+
+<Card title="Before taking the knowledge check" icon="flag-checkered">
+  In your grid from F-3, add a run condition to your enrichment column:
+  "only run if Company Name is not empty." This ensures you don't waste
+  credits on blank rows. Then look at the Scheduling settings and note
+  what interval would make sense for your ICP workflow.
+</Card>
+
+---
+
+<CardGroup cols={2}>
+  <Card title="← F-4: Reading Your Data" icon="arrow-left" href="/academy/foundation/reading-your-data">
+    Previous module
+  </Card>
+  <Card title="Take the Knowledge Check →" icon="arrow-right" href="/academy/foundation/knowledge-check">
+    Earn your Foundation Badge
+  </Card>
+</CardGroup>
