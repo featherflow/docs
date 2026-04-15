@@ -1,0 +1,158 @@
+---
+title: "GA-3: RevOps Integration"
+description: "Bitscale generates intelligence. Your CRM, sequencer, and analytics stack act on it. GA-3 covers the integration architecture that keeps data consistent and flowing across the full RevOps stack."
+---
+
+<Info>
+  **GA-3 · GTM Architect · 150 XP · ~22 min**
+</Info>
+
+A GTM system that lives entirely in Bitscale grids isn't a production system — it's a prototype. Production means the data flows: from Bitscale into your CRM, from your CRM into your sequencer, from your sequencer back into Bitscale for analysis, and from analytics back into the CRM for attribution.
+
+RevOps integration is the plumbing that makes all of this run without manual intervention.
+
+---
+
+## The RevOps Integration Map
+
+Every tool in your stack should have a defined role:
+
+| Tool | Primary Role | Integration Direction |
+|---|---|---|
+| **Bitscale** | Enrichment, intelligence, copy generation | → CRM (enriched records) → Sequencer (approved contacts) |
+| **CRM (Salesforce/HubSpot)** | Record of truth for all contacts/accounts | ← Bitscale (enrichment) → Sequencer (sync) → Analytics |
+| **Sequencer (Outreach/Apollo)** | Sequence execution, reply tracking | ← CRM (contacts) → CRM (activity log) |
+| **Analytics (Looker/Tableau)** | Pipeline and attribution reporting | ← CRM (activity + deal data) |
+| **Slack** | Alerting and notification | ← All systems (Tier 1 signals, replies, key events) |
+
+---
+
+## CRM as System of Record
+
+The CRM is the system of record — meaning every enriched record, every signal, every outreach activity should eventually live in the CRM. This enables:
+- Attribution across the full funnel
+- Historical view of every contact and account
+- Handoff context when prospects convert to opportunities
+
+**CRM sync design for Bitscale:**
+
+When exporting from Bitscale to CRM, map these fields:
+- Contact fields: first_name, last_name, email, phone, job_title, linkedin_url
+- Account fields: company_name, domain, industry, size, funding_stage, tech_stack
+- Activity fields: signal_detected, signal_date, outreach_start_date, sequence_name
+- Scoring fields: fit_score, timing_score, priority_tier
+
+**Update vs. create logic:**
+```
+Given this contact record from Bitscale:
+- Email: {{email}}
+- Name: {{first_name}} {{last_name}}
+- Company: {{company_name}}
+
+And this CRM lookup result: {{crm_lookup_result}}
+
+Determine action:
+- create_new: contact not found in CRM → create new record
+- update_existing: contact found with stale data → update specific fields
+- flag_duplicate: found multiple CRM records for this email → manual review
+- no_action: contact found with current data → no update needed
+
+Return as JSON: {"action": "...", "crm_id": "if found", "fields_to_update": ["list if updating"]}
+```
+
+---
+
+## Sequencer Integration
+
+The sequencer receives contacts from your CRM (or directly from Bitscale for simpler setups). The integration requirements:
+
+**From Bitscale → Sequencer:**
+- Contact's email, name, company
+- Sequence assignment (which sequence to enroll in)
+- Personalized copy (email body for each touch)
+- Channel routing decision
+- Any custom variables the sequence uses
+
+**From Sequencer → Bitscale (for analysis):**
+- Open events (date/time)
+- Click events
+- Reply received (date, reply text)
+- Bounce notifications
+- Unsubscribes
+
+This feedback loop is what enables the campaign analysis work from OA-6. Without it, you're flying blind.
+
+---
+
+## Building Webhook/API Integration Columns
+
+Bitscale can call external APIs as enrichment columns. Here's how to design CRM sync columns:
+
+**HubSpot contact lookup:**
+```
+Input: {{email}}
+API: GET https://api.hubspot.com/contacts/v1/contact/email/{{email}}/profile
+Output: contact exists (yes/no), contact ID if exists, last modified date
+```
+
+**CRM activity logging:**
+After an email is sent, log the activity:
+```
+Input: contact_id={{crm_contact_id}}, sequence={{sequence_name}}, send_date={{send_date}}
+Action: POST to CRM activity endpoint
+Output: activity_id (confirmation the log was created)
+```
+
+---
+
+## The Daily RevOps Sync
+
+Design a daily sync workflow that:
+1. Pulls new signal events from signal sources
+2. Enriches new companies and contacts
+3. Scores and routes to appropriate tiers
+4. Syncs Tier 1 contacts to CRM and flags for sequencer enrollment
+5. Pulls previous day's sequencer activity into Bitscale analysis grid
+6. Posts a daily briefing to Slack: new Tier 1 contacts, replies received, meetings booked
+
+```
+Generate a daily GTM briefing summary from this data:
+
+Date: {{date}}
+New signals detected: {{new_signals_count}}
+New Tier 1 contacts: {{tier1_count}}
+Emails sent yesterday: {{sent_count}}
+Replies received: {{replies_count}} ({{positive_replies}} positive)
+Meetings booked: {{meetings_booked}}
+
+Write a 4-sentence briefing for the sales team Slack channel. Tone: direct, practical, no fluff. Include what needs attention today.
+```
+
+---
+
+<Tip>
+  **Quick Check:** What is the CRM's role in the RevOps stack? What data flows from sequencer back to Bitscale? What does the daily RevOps sync accomplish?
+</Tip>
+
+---
+
+## GA-3 Challenge: Design a RevOps Integration Map (+150 XP)
+
+Map the full integration architecture for a hypothetical RevOps stack (can use tools you actually use or a realistic hypothetical).
+
+**Requirements:**
+- Integration map document: all tools, their roles, data flow directions
+- CRM sync logic column (create/update/flag/no-action)
+- Daily sync workflow design (6-step process documented)
+- Daily Slack briefing prompt tested with sample data
+- Gap analysis: where are the integration gaps in a typical mid-market SaaS RevOps stack?
+
+<Card title="Submit GA-3 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-ga3">
+  Submit your integration map + sync logic grid + gap analysis. **+150 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: GA-4 — Workflow Automation & Triggers →" icon="arrow-right" href="/academy/gtm-architect/workflow-automation">
+  GA-4 covers always-on trigger-based automation — the architecture that makes your GTM system work while you sleep.
+</Card>
