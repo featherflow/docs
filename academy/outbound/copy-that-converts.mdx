@@ -1,19 +1,182 @@
 ---
 title: "OA-3: Copy That Converts"
-description: "AI personalization columns, first-line generation, and subject line frameworks that actually get opened."
+description: "Most cold outreach fails before it's ever read. Learn the frameworks, formulas, and AI workflows that produce emails people actually reply to."
 ---
 
-<Note>
-  **Outbound Automation Track · Module 3 of 7.** Full content coming soon.
-</Note>
-
 <Info>
-  This module is being finalized. Check back within a few days —
-  or [join the founding cohort](https://bitscale.fillout.com/academy-founding)
-  to get early access and a personal walkthrough.
+  **OA-3 · Outbound Automation · 125 XP · ~22 min**
 </Info>
 
-<CardGroup cols={2}>
-  <Card title="← OA-2: Building Sequences" icon="arrow-left" href="/academy/outbound/building-sequences">Previous</Card>
-  <Card title="Next: Email Validation →" icon="arrow-right" href="/academy/outbound/email-validation">OA-4</Card>
-</CardGroup>
+Most outbound fails at the copy layer. The infrastructure is right. The list is decent. But the emails sound like they were written by a committee, reviewed by legal, and sent by someone who's never had a real sales conversation.
+
+This module fixes that. You'll learn the three frameworks that work consistently in B2B outbound, how to use AI to generate first drafts you'd actually want to send, and how to QA copy before it goes out.
+
+---
+
+## Why Most Cold Copy Fails
+
+There are five failure modes that kill response rates before the email even gets opened:
+
+| Failure Mode | Example | Why It Fails |
+|---|---|---|
+| **Feature dump** | "Our platform has 47 integrations and 200+ data points" | Nobody cares about your features — they care about their problems |
+| **Vague value** | "We help companies grow faster" | Means nothing — every SaaS says this |
+| **Fake personalization** | "I noticed you're in the SaaS industry" | Anyone can see that — shows zero research |
+| **Long first email** | 300+ word cold email | Buried the ask; nobody reads it |
+| **Weak or missing CTA** | "Let me know if you're interested" | No specific ask = no reply |
+
+The antidote is specificity and brevity. A great cold email is 3–5 sentences, reference something real about the prospect, connects their reality to a specific outcome, and ends with a single, frictionless ask.
+
+---
+
+## The Three Copy Frameworks
+
+### 1. Problem-Agitate-Solve (PAS)
+
+The oldest copywriting framework still works in cold email because it's structurally identical to how buyers make decisions.
+
+```
+[PROBLEM] One sentence identifying a specific pain they're likely experiencing.
+[AGITATE] One sentence on why the problem is worse than they think, or what it's costing them.
+[SOLVE] One sentence on how you solve it — outcome-focused, not feature-focused.
+[CTA] Single frictionless ask.
+```
+
+**Example:**
+> Most SDR teams at Series B SaaS companies are spending 3+ hours per rep per day on manual research. That time compounds — 10 reps × 3 hours = 30 hours/week of revenue capacity that never gets to a phone. We automate the research layer so reps spend that time on conversations, not spreadsheets. Worth 15 minutes to show you what this looks like for [Company]?
+
+---
+
+### 2. Signal-Value-Close (SVC)
+
+This is the framework from OA-2, but applied at the copy level. It's best when you have a strong trigger signal.
+
+```
+[SIGNAL] One sentence naming the specific trigger you noticed (job posting, funding, hiring, product launch).
+[VALUE] One sentence connecting that signal to an outcome you can deliver.
+[CLOSE] One specific, low-commitment ask.
+```
+
+**Example:**
+> Saw [Company] posted 4 SDR roles last week — that's usually when outbound infrastructure becomes the bottleneck before it becomes the constraint. We help teams like yours build the enrichment and sequencing layer before headcount arrives, so new reps are productive on day one. Open to a quick look at what that could mean for your Q3 ramp?
+
+---
+
+### 3. Case Study Bait
+
+When you have a relevant win, lead with it. This framework works well for AEs and founders.
+
+```
+[HOOK] One sentence — a result you got for a company similar to theirs.
+[RELEVANCE] One sentence — why this is relevant to them specifically.
+[CTA] Offer to show the playbook.
+```
+
+**Example:**
+> We helped a 12-person SaaS team in [vertical] go from 2% cold reply rate to 8.4% in 6 weeks by rebuilding their enrichment and copy workflow. You're in a similar segment — want me to send the breakdown of what we changed?
+
+---
+
+## AI-Assisted Copy Workflow in Bitscale
+
+You don't write cold emails manually anymore. You use AI to generate first drafts at scale, then QA and edit at the batch level.
+
+Here's the Bitscale workflow:
+
+**Step 1: Enrich the row with the signal context**
+- Job title, company size, funding stage, recent news, LinkedIn headline
+- These become variables fed into your prompt
+
+**Step 2: Write the AI column prompt**
+```
+You are a B2B copywriter writing a cold outreach email on behalf of {{sender_name}} at Bitscale.
+
+Prospect context:
+- Name: {{first_name}} {{last_name}}
+- Title: {{job_title}}
+- Company: {{company_name}}
+- Industry: {{industry}}
+- Company size: {{employee_count}} employees
+- Recent signal: {{recent_signal}}
+
+Framework: Signal-Value-Close
+Tone: Conversational, direct, no fluff
+Length: Max 5 sentences
+CTA: Ask for a specific 15-minute call, reference their role
+
+Return ONLY the email body. No subject line. No sign-off.
+```
+
+**Step 3: QA at the batch level**
+Don't read every email. Instead, sort by length (flag anything over 100 words), scan the "Signal" column for generic or empty values, and spot-check 10% of rows.
+
+**Step 4: Generate subject lines as a separate column**
+```
+Write 3 subject line options for this email. Max 6 words each. No clickbait.
+Subject line style: conversational, curiosity-driven, not salesy.
+
+Email: {{email_body_column}}
+```
+
+Run the subject line column after the body is QA'd. Pick the best one per row (or A/B test using your sequencer).
+
+---
+
+## Subject Line Patterns That Work
+
+| Pattern | Example | Why It Works |
+|---|---|---|
+| **Question** | "How are you handling {pain point}?" | Triggers curiosity and self-assessment |
+| **Personalized reference** | "Your [Company] hiring surge" | Shows you did research |
+| **Outcome** | "8x pipeline in 90 days — here's how" | Lead with the result |
+| **Contrast** | "Less research, more calls" | Simple, clear, benefit-driven |
+| **Name drop** | "Following up on [Mutual]'s intro" | Social proof / warm signal |
+
+<Warning>
+  Avoid subject lines with: "Quick question", "Just checking in", "Following up", "Thought you'd be interested". These are overused and signal automation to experienced buyers.
+</Warning>
+
+---
+
+## Copy QA Checklist
+
+Before you activate a sequence, run every email through this check:
+
+- [ ] **Under 100 words?** If not, cut — you're burying the ask
+- [ ] **Specific signal or reference?** Not just "I saw your company" — what specifically?
+- [ ] **Outcome-focused value prop?** Not features — what does the prospect get?
+- [ ] **Single CTA?** One ask only — never two
+- [ ] **First-person singular?** "I" not "we" — sounds more human
+- [ ] **No jargon?** Read it out loud — would you say this to someone at a conference?
+- [ ] **Readable on mobile?** Short paragraphs, no bullet walls in the email body
+
+---
+
+<Tip>
+  **Quick Check:** Before moving on, answer these without looking: What are the three copy frameworks? What's the #1 failure mode in cold email copy? What does the AI prompt in Bitscale need in order to generate personalized copy?
+</Tip>
+
+---
+
+## OA-3 Challenge: Write 10 Copy-Ready Emails (+125 XP)
+
+Build a Bitscale grid with 10 rows. Each row should have: a prospect (can be fictional), a signal, and an AI-generated email using the SVC framework.
+
+**Requirements:**
+- All 10 emails under 100 words
+- All 10 use Signal-Value-Close
+- Subject line column with 2 options per row
+- At least 3 different signals used across the batch (funding, hiring, product launch, etc.)
+- QA column: flag any row that fails the checklist
+
+Export the grid as CSV and submit via the form below.
+
+<Card title="Submit OA-3 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-oa3">
+  Upload your CSV + share your grid link. We'll review and post top submissions in the community. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: OA-4 — Email Validation →" icon="arrow-right" href="/academy/outbound/email-validation">
+  Your copy is only as good as the addresses it reaches. In OA-4 you'll build the validation layer that keeps your sender score clean.
+</Card>
