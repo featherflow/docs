@@ -1,0 +1,132 @@
+---
+title: "DE-1: Data Sources & Signals"
+description: "Not all data sources are created equal. Learn where B2B data comes from, which sources are reliable, and how to evaluate a signal before you build a workflow around it."
+---
+
+<Info>
+  **DE-1 · Data & Enrichment · 100 XP · ~18 min**
+</Info>
+
+Data has a supply chain. Every contact record, company attribute, and intent signal you use in Bitscale came from somewhere — and the quality of that data determines the quality of every decision you make downstream.
+
+Most teams have no idea where their data comes from or when it was last verified. This module fixes that.
+
+---
+
+## The B2B Data Ecosystem
+
+B2B data flows through a four-layer ecosystem. Understanding the layers helps you evaluate any data source:
+
+| Layer | Who | What They Do | Examples |
+|---|---|---|---|
+| **Primary sources** | The actual companies and people | Generate original data (LinkedIn profiles, SEC filings, job boards, press releases) | LinkedIn, Crunchbase, job boards, company websites |
+| **Aggregators** | Data compilers | Scrape and compile primary sources into databases | Apollo, ZoomInfo, Clearbit |
+| **Enrichment APIs** | Real-time lookups | Query aggregators or primary sources on demand | Hunter, People Data Labs, Proxycurl |
+| **Intelligence layers** | Signal detection | Analyze patterns across data to surface signals | Bombora, 6sense, G2 Buyer Intent |
+
+When you use Apollo to find contacts, you're using an aggregator that drew from primary sources — some recently updated, some stale. When you use Clearbit to enrich a domain, you're hitting an enrichment API that queries multiple aggregators.
+
+---
+
+## Signal Types and Reliability
+
+Not all signals are equally actionable. Here's how to think about signal quality:
+
+### Tier 1: Intent Signals (Act Immediately)
+- **Job posting for a role that implies your solution** — hiring 10 SDRs = probably need outbound tooling
+- **Recent funding** (announced within 30 days) — new budget, new initiatives
+- **Executive hire** — new VP of Sales has 90 days to make an impact
+- **Product launch** — new go-to-market motion often triggers adjacent tool evaluation
+
+Tier 1 signals are time-sensitive. Build workflows that fire within 24–48 hours of detection.
+
+### Tier 2: Contextual Signals (Use as Targeting Filter)
+- **Company size range** — indicates likely budget and org complexity
+- **Tech stack** — Salesforce + Outreach + LinkedIn Sales Nav = serious outbound operation
+- **Growth rate** — headcount growing >20% YoY = scaling problems
+- **Funding stage** — Series B typically starts professionalizing sales infrastructure
+
+Tier 2 signals are stable. Use them as filters when building source grids.
+
+### Tier 3: Demographic Data (Table Stakes)
+- Name, title, company, email, phone
+- Useful for routing and personalization, not for targeting decisions
+- Most aggregated data is Tier 3
+
+The most powerful outbound programs combine Tier 1 + Tier 2 for targeting, then use Tier 3 for personalization and delivery.
+
+---
+
+## Evaluating a Data Source
+
+Before you pay for a data provider or build a workflow around a data source, run it through these four questions:
+
+1. **Freshness**: How often is this data updated? LinkedIn profiles update in near-real-time; some aggregators update quarterly. Stale data means wrong titles, wrong emails, wrong companies.
+
+2. **Coverage**: What percentage of your ICP can this source reach? ZoomInfo has deep US enterprise coverage but patchy SMB and international data.
+
+3. **Accuracy**: What's the bounce rate or error rate? Some sources claim 95%+ accuracy; benchmark against your actual bounce rates.
+
+4. **Signal latency**: For intent signals, how long after the event does the signal appear in the platform? Bombora aggregates weekly; some real-time sources update daily.
+
+<Info>
+  **A practical test:** Take 100 records from any new data source. Validate the emails (OA-4 process), verify 10 titles on LinkedIn manually, and check 5 company sizes against LinkedIn company pages. If accuracy is below 80%, the source isn't worth building on.
+</Info>
+
+---
+
+## Building a Data Source Matrix in Bitscale
+
+Every GTM team should maintain a data source matrix — a Bitscale grid documenting which sources they use for which data points, with accuracy benchmarks.
+
+**Columns to include:**
+- `data_source` — name of the provider
+- `data_type` — what it provides (email, phone, company data, intent signal)
+- `icp_coverage` — % of your ICP this source can reach (estimate)
+- `freshness` — update frequency
+- `accuracy_benchmark` — your actual measured accuracy
+- `cost_per_record` — total cost divided by records used (not just credits purchased)
+- `primary_use_case` — where in your workflow this source plugs in
+
+This grid becomes a reference artifact you update quarterly. It forces you to kill data sources that aren't performing.
+
+---
+
+## The Source Stack for B2B Outbound
+
+For a well-functioning outbound operation, you typically need four types of source integrations:
+
+1. **Contact database** — for raw list building (Apollo, ZoomInfo, Sales Nav)
+2. **Email enrichment** — to find or verify emails (Hunter, Snov.io, Prospeo)
+3. **Company intelligence** — for context beyond what your contact DB provides (Clearbit, Harmonic)
+4. **Signal layer** — to trigger time-sensitive workflows (LinkedIn alerts, job board monitoring, funding APIs like Crunchbase)
+
+You don't need all four immediately. Priority order: contact database → email enrichment → signal layer → company intelligence.
+
+---
+
+<Tip>
+  **Quick Check:** What's the difference between a Tier 1 and Tier 2 signal? Name four questions to ask when evaluating a new data source. Why would you maintain a data source matrix?
+</Tip>
+
+---
+
+## DE-1 Challenge: Audit Your Data Sources (+100 XP)
+
+Build a data source matrix in Bitscale for at least 4 data sources (can include any you have access to, or evaluate based on public documentation).
+
+**Requirements:**
+- At least 4 sources documented
+- All 7 columns filled in (data_source, data_type, icp_coverage, freshness, accuracy_benchmark, cost_per_record, primary_use_case)
+- A short paragraph recommending which source you'd prioritize for your ICP, with reasoning
+- Accuracy benchmark based on an actual test (100 records, validate emails + spot-check titles)
+
+<Card title="Submit DE-1 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-de1">
+  Share your data source matrix grid + written recommendation. **+100 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: DE-2 — Waterfall Enrichment →" icon="arrow-right" href="/academy/data-enrichment/waterfall-enrichment">
+  No single source covers your entire ICP. DE-2 teaches the waterfall methodology that maximizes coverage without wasting API credits.
+</Card>
