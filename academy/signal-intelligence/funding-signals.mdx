@@ -1,0 +1,146 @@
+---
+title: "SI-3: Funding & Growth Signals"
+description: "A company that just raised $15M has new budget, new initiatives, and a compressed timeline to show results. Funding signals are among the most time-sensitive in B2B outbound."
+---
+
+<Info>
+  **SI-3 · Signal Intelligence · 125 XP · ~18 min**
+</Info>
+
+Every funding round announcement is a green light. The company just validated their model enough to attract investment. They're entering a growth phase. They have budget. They have urgency. They're hiring.
+
+For B2B sellers, a funding event at an ICP-fit company is one of the clearest buying signals available.
+
+---
+
+## Funding Stages and Relevance
+
+| Stage | Typical Size | What It Signals | Outbound Relevance |
+|---|---|---|---|
+| **Pre-seed** | < $1M | Idea stage, tiny team | Usually too early unless you have a startup-focused product |
+| **Seed** | $1M–$5M | Building MVP, hiring founding team | Monitor; outreach if they're hiring sales |
+| **Series A** | $5M–$20M | Proven product, building go-to-market | **High** — first serious GTM investment |
+| **Series B** | $15M–$50M | Scaling what works, professionalizing | **Very high** — investing in infrastructure and efficiency |
+| **Series C+** | $50M+ | Expanding market, enterprise motion | High — large budget, complex procurement |
+| **Growth/PE** | $100M+ | Late-stage optimization | Medium — longer cycles, more stakeholders |
+
+Series A and B are the sweet spot for most B2B outbound tools. Companies have proven traction but are still building the infrastructure to scale.
+
+---
+
+## Signal Anatomy: What to Extract from a Funding Announcement
+
+Every funding announcement contains more than just the dollar amount. Here's what to extract:
+
+**Company signals:**
+- Total raised (context for budget scale)
+- Lead investor (tier of investor signals company quality)
+- Board changes (new investors often bring in operators as advisors)
+
+**Growth signals:**
+- Stated use of funds: "expand sales team" vs. "product development" vs. "international expansion"
+- Headcount plans mentioned in the press release
+- New markets or products mentioned
+
+**Timing signals:**
+- How long since the last round (burn rate indicator)
+- How many rounds total (stage of company journey)
+
+```
+Analyze this funding announcement for outbound signals:
+
+Company: {{company_name}}
+Announcement: {{press_release_or_news_snippet}}
+
+Extract:
+1. Round size
+2. Funding stage (seed/series-a/series-b/series-c/growth)
+3. Stated use of funds (especially: team expansion, sales/marketing investment)
+4. Key investor names
+5. Any GTM or product expansion signals
+6. Outbound relevance: high/medium/low (based on whether stated use of funds involves sales/growth)
+7. Optimal outreach window: how many days from announcement?
+
+Return as JSON.
+```
+
+---
+
+## Detecting Funding Events
+
+Sources for funding signal detection:
+
+| Source | Update Frequency | Coverage |
+|---|---|---|
+| **Crunchbase** | Near real-time | Excellent for US, good globally |
+| **PitchBook** | Real-time | Best for institutional rounds, expensive |
+| **TechCrunch** | Daily | High-profile rounds, editorial coverage |
+| **LinkedIn company updates** | Variable | Self-reported, often earlier than official sources |
+| **SEC EDGAR** | Filing-based | US companies only, some delay |
+| **Google Alerts** | Variable | Good for news coverage of rounds |
+
+For automated detection, Crunchbase API is the standard. Set up webhook triggers for new funding events matching your ICP criteria (industry + stage + geography).
+
+---
+
+## Growth Signals Beyond Funding
+
+Funding is the most obvious growth signal but not the only one. These are equally actionable:
+
+| Signal | Source | Outreach Angle |
+|---|---|---|
+| **Rapid headcount growth** (>30% in 12mo) | LinkedIn company page | "You're scaling fast — how are you building the GTM infrastructure to support it?" |
+| **New market entry** | Press release, LinkedIn | "Saw you're expanding to [market] — outbound infrastructure is usually the first bottleneck in a new geo" |
+| **Strategic partnership announcement** | PR, LinkedIn | "The [Partner] announcement must be driving a lot of new inbound — how are you turning that into outbound pipeline?" |
+| **New product launch** | Product Hunt, company blog | "New product = new ICP = new outbound motion. Here's how teams handle this." |
+| **IPO filing** | SEC EDGAR | High-urgency, enterprise motion — needs senior outreach |
+
+---
+
+## Funding-Triggered Email Template
+
+```
+Write a funding-triggered cold email:
+
+Prospect: {{first_name}} {{last_name}}, {{job_title}} at {{company_name}}
+Funding event: {{funding_stage}} round of {{round_size}}
+Stated use of funds: {{use_of_funds}}
+Days since announcement: {{days_since}}
+
+Requirements:
+- Reference the specific funding event (not generic congratulations)
+- Connect their growth phase to a specific problem we solve (outbound infrastructure doesn't scale automatically with headcount)
+- Keep it under 80 words
+- CTA: Specific ask — "show you what this looks like for a team at your stage"
+- Tone: Collegial, not salesy
+
+Return ONLY the email body.
+```
+
+---
+
+<Tip>
+  **Quick Check:** Which funding stages are typically the highest-relevance for outbound tools? What signals beyond dollar amount should you extract from a funding announcement? Name three growth signals that don't involve funding.
+</Tip>
+
+---
+
+## SI-3 Challenge: Build a Funding Signal Workflow (+125 XP)
+
+Monitor for 10 funding events in your ICP over 1 week (use Crunchbase, TechCrunch, or LinkedIn).
+
+**Requirements:**
+- Signal extraction column (round size, stage, use of funds, relevance, outreach window)
+- Growth signal column (other signals beyond funding detected for the same companies)
+- Funding-triggered personalized email for each company
+- A short brief: which 3 funding announcements represent the highest-quality opportunities, and why?
+
+<Card title="Submit SI-3 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-si3">
+  Share your grid + brief. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: SI-4 — Hiring Pattern Analysis →" icon="arrow-right" href="/academy/signal-intelligence/hiring-patterns">
+  Hiring patterns reveal company priorities before they announce them publicly. SI-4 teaches you to read job postings like a map of future buying decisions.
+</Card>
