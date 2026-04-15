@@ -1,0 +1,149 @@
+---
+title: "OA-7: Outbound Capstone"
+description: "Build a complete, production-ready outbound system from scratch. This is not a quiz — it's a real deliverable. Pass it and you're Outbound Specialist certified."
+---
+
+<Info>
+  **OA-7 · Outbound Automation · 300 XP · ~3–4 hours**
+</Info>
+
+Everything in OA-1 through OA-6 was preparation. This is the exam — and the exam is a working system, not a multiple-choice quiz.
+
+You will define a target market, build the infrastructure, write the copy, build the sequence in Bitscale, and document the full system. What you submit will be reviewed by the Bitscale team. Strong submissions get featured in the community. All passing submissions earn the Outbound Specialist certification.
+
+---
+
+## What You're Building
+
+A complete outbound system for a specific target market. It must include:
+
+1. **ICP Definition** — who you're targeting, why, and what signals you're using
+2. **Email infrastructure setup** — domain configuration, warmup protocol, mailbox setup
+3. **Source + enrichment grid** — 50+ contacts with full enrichment (email, company data, signal)
+4. **Validation layer** — full 4-layer validation with routing decisions
+5. **Copy system** — 3 email touch columns (SVC, follow-up, nudge) + voicemail script
+6. **QA results** — run the copy QA checklist on all 50+ contacts
+7. **Analysis setup** — reply sentiment, objection extraction, and A/B test plan
+8. **System documentation** — a one-page brief explaining the system
+
+---
+
+## Step-by-Step Build Instructions
+
+### Step 1: Define Your ICP (30 min)
+
+Write a one-paragraph ICP definition including:
+- Industry and sub-vertical
+- Company size range
+- Persona (job title, seniority level)
+- The specific pain point you're solving
+- The trigger signal you're using to find prospects now
+
+Use the ICP worksheet from F-2 as your template.
+
+### Step 2: Build Your Source Grid (45 min)
+
+Create a Bitscale grid with 50+ rows. Source your contacts from any combination of:
+- LinkedIn Sales Navigator export
+- Apollo.io
+- Manual research
+- Public datasets
+
+Required columns in your source grid: first_name, last_name, company_name, job_title, email (raw), linkedin_url, company_size, industry, recent_signal.
+
+### Step 3: Build the Validation Layer (30 min)
+
+Add validation columns from OA-4:
+- domain_filter (personal/role-based/business)
+- catch_all_check (true/false)
+- mailbox_status (valid/invalid/catch-all/risky)
+- routing_decision (send/send_carefully/skip/manual_review)
+
+Document the count in each bucket. Include in your system doc.
+
+### Step 4: Write the Copy System (45 min)
+
+Build three AI copy columns using Bitscale:
+- `email_touch_1`: Signal-Value-Close, max 100 words
+- `email_touch_2`: Follow-up, adds a new value point (case study or insight)
+- `email_touch_3`: The nudge — ultra-short, friendly, single CTA
+- `voicemail_script`: 25-second voicemail based on OA-5 framework
+
+QA all four columns using the OA-3 checklist. Flag any row that fails and either fix or exclude.
+
+### Step 5: Build the Analysis Layer (20 min)
+
+Add placeholder columns ready for campaign data:
+- `reply_sentiment` (prompt ready, awaiting data)
+- `objection_tag` (prompt ready, awaiting data)
+- `ab_test_variant` (A or B — split your 50 contacts 50/50 for a subject line test)
+- `subject_line_a` and `subject_line_b` columns
+
+Document your A/B test hypothesis: what are you testing, what do you predict, and what metric determines the winner?
+
+### Step 6: Write the System Doc (30 min)
+
+One page, covering:
+- ICP summary (from Step 1)
+- Infrastructure setup (domain, warmup status)
+- Source methodology (where you got contacts, how many, filters applied)
+- Validation results (bucket counts)
+- Copy approach (which framework, why, example email)
+- A/B test plan (hypothesis, variant descriptions, success metric)
+- What you'd do after the first 2 weeks of sends
+
+---
+
+## Submission Checklist
+
+Before submitting, verify:
+
+- [ ] 50+ contacts in source grid
+- [ ] Validation layer complete with bucket counts
+- [ ] 3 email touch columns + voicemail script
+- [ ] QA run — flagged rows excluded or fixed
+- [ ] A/B test setup (subject_line_a, subject_line_b, ab_test_variant)
+- [ ] System documentation (one page minimum)
+- [ ] Grid is shareable (check Bitscale share settings)
+- [ ] CSV export attached to submission
+
+---
+
+## Evaluation Criteria
+
+Submissions are reviewed on:
+
+| Criterion | Weight |
+|---|---|
+| ICP specificity — is the target well-defined? | 20% |
+| Enrichment quality — are the signals real and specific? | 20% |
+| Copy quality — does it pass the QA checklist? | 25% |
+| System thinking — does the full pipeline hang together? | 20% |
+| Documentation — could someone else run this? | 15% |
+
+Passing score: 70%. Submissions below 70% get feedback and one re-submission opportunity.
+
+---
+
+<Info>
+  **Timeline:** Allow 3–4 hours for a first-time build. If you've been doing the challenges in OA-1 through OA-6, you already have most of the pieces — this is assembly and documentation.
+</Info>
+
+---
+
+## Certification: Outbound Specialist
+
+Submit and pass this capstone to unlock the **Outbound Specialist** certification:
+- Accredible-verified digital badge
+- LinkedIn-shareable
+- Confirms you can build production-ready outbound systems in Bitscale
+
+<Card title="Submit OA-7 Capstone →" icon="trophy" href="https://bitscale.fillout.com/academy-challenge-oa7">
+  Submit your grid link + CSV + system doc. **+300 XP on approval. Certification unlocked.**
+</Card>
+
+---
+
+<Card title="Next Track: Data & Enrichment →" icon="arrow-right" href="/academy/data-enrichment/overview">
+  You've completed the Outbound Automation track. The Data & Enrichment track is where the signal gets deeper — starting with how to find and clean data at scale.
+</Card>
