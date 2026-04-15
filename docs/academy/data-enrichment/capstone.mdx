@@ -1,0 +1,152 @@
+---
+title: "DE-8: Enrichment Specialist Capstone"
+description: "Build a production-grade data pipeline from scratch — source, clean, enrich, score, and route. Pass this and you're Data & Enrichment Specialist certified."
+---
+
+<Info>
+  **DE-8 · Data & Enrichment · 300 XP · ~4–5 hours**
+</Info>
+
+This is the capstone for the Data & Enrichment track. Everything from DE-1 through DE-7 was building blocks. This is where you assemble them into a complete, production-ready data pipeline.
+
+What you submit will be reviewed by the Bitscale team. Passing submissions earn the **Data & Enrichment Specialist** certification.
+
+---
+
+## What You're Building
+
+A complete data pipeline for a target market of your choosing. It must include:
+
+1. **Data source documentation** — which sources you used and why
+2. **Source grid** — 75+ contacts from your chosen ICP
+3. **Cleaning layer** — all 5 cleaning operations from DE-3
+4. **Waterfall enrichment** — 3-provider waterfall with master email + confidence score
+5. **Company intelligence layer** — firmographics, funding stage, tech stack, recent activity
+6. **Contact scoring** — fit score, timing score, composite score, priority tier
+7. **Intent signal layer** — first-party or third-party intent routing
+8. **Sequence routing** — each contact routed to the appropriate outreach tier
+9. **Pipeline documentation** — a 2-page brief explaining the full pipeline
+
+---
+
+## Build Instructions
+
+### Step 1: Define your target market (30 min)
+Write a one-paragraph definition:
+- ICP (industry, company size, persona)
+- Why this market? What problem does Bitscale solve for them?
+- What signals indicate they're in-market now?
+
+### Step 2: Source your contacts (45 min)
+Build a grid with 75+ contacts from your defined ICP. Document:
+- Which sources you used
+- Any filters applied (industry, size, title)
+- Starting data quality issues observed
+
+### Step 3: Apply the cleaning layer (45 min)
+Run all cleaning columns from DE-3:
+- Name normalization
+- Title standardization
+- Company normalization
+- Email format validation
+- Duplicate detection
+- Data quality score
+
+Document the number of records flagged at each stage.
+
+### Step 4: Waterfall enrichment (45 min)
+Build the 3-provider waterfall from DE-2:
+- Provider A → Provider B → Provider C
+- Master email column
+- Email confidence column
+- Source attribution
+
+Document fill rates by provider and overall.
+
+### Step 5: Company intelligence (60 min)
+For all 75+ companies, enrich:
+- Firmographics (industry, size, HQ)
+- Funding stage + timing signal
+- Tech stack (3+ categories)
+- Recent activity summary
+- ICP fit classification
+
+### Step 6: Scoring model (30 min)
+Apply the scoring model from DE-5:
+- Fit score
+- Timing score
+- Composite score
+- Priority tier (1–4)
+
+### Step 7: Intent layer (30 min)
+Apply intent routing from DE-7:
+- Use your recent activity data as a proxy for intent if you don't have a dedicated intent feed
+- Intent routing column
+- Combined fit × intent priority
+
+### Step 8: Sequence routing (15 min)
+Final routing column:
+- high_priority_multichannel (Tier 1)
+- standard_sequence (Tier 2)
+- nurture (Tier 3)
+- no_action (Tier 4)
+
+Document the distribution: how many contacts in each tier?
+
+### Step 9: Pipeline documentation (45 min)
+Write a 2-page brief:
+- ICP definition and rationale
+- Source methodology and data quality observations
+- Waterfall design and fill rate results
+- Scoring model explanation and calibration plan
+- Intent activation strategy
+- What you'd do in Week 1 with this pipeline
+
+---
+
+## Submission Checklist
+
+- [ ] 75+ contacts in source grid
+- [ ] All 5 cleaning columns with data quality scores
+- [ ] 3-provider waterfall with fill rate documentation
+- [ ] Company intelligence layer (all 5 categories)
+- [ ] Fit + timing + composite scoring columns
+- [ ] Intent routing column
+- [ ] Final sequence routing column with tier distribution
+- [ ] 2-page pipeline documentation
+- [ ] Grid is shareable
+- [ ] CSV export attached
+
+---
+
+## Evaluation Criteria
+
+| Criterion | Weight |
+|---|---|
+| Data quality: cleaning thoroughness | 15% |
+| Enrichment depth: company intelligence completeness | 20% |
+| Scoring model: logic and calibration plan | 20% |
+| Waterfall design: coverage and credit efficiency | 15% |
+| Intent activation: signal quality and routing logic | 15% |
+| Documentation: clarity and reproducibility | 15% |
+
+Passing score: 70%. One re-submission allowed with feedback.
+
+---
+
+## Certification: Data & Enrichment Specialist
+
+Pass this capstone to earn the **Data & Enrichment Specialist** certification:
+- Accredible-verified badge
+- LinkedIn-shareable
+- Confirms ability to build production-grade enrichment pipelines
+
+<Card title="Submit DE-8 Capstone →" icon="trophy" href="https://bitscale.fillout.com/academy-challenge-de8">
+  Submit grid link + CSV + pipeline documentation. **+300 XP on approval. Certification unlocked.**
+</Card>
+
+---
+
+<Card title="Next Track: Signal Intelligence →" icon="arrow-right" href="/academy/signal-intelligence/overview">
+  You've built the data foundation. Signal Intelligence is where you learn to detect and act on the triggers that tell you exactly when to reach out.
+</Card>
