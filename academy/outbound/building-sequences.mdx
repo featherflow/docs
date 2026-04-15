@@ -1,91 +1,217 @@
 ---
-title: "OA-2: Building Your First Sequence"
-description: "How to build a multi-touch outbound sequence in Bitscale — email, LinkedIn, and timing logic."
+title: "Building Sequences"
+description: "The Signal-Value-Close framework and how Bitscale generates personalised openers at scale. Build a 3-touch sequence that actually converts."
 ---
 
-<Note>
-  **Outbound Automation Track · Module 2 of 7.**
-</Note>
-
-## Watch First (15 min)
-
 <Info>
-  Video walkthrough coming soon. The written content below covers the same steps.
+  **OA-2 · Outbound Automation · 125 XP · ~15 min**
+
+  Complete the sequence build challenge at the bottom to earn 125 XP.
 </Info>
 
-## What a Good Sequence Looks Like
+# Building Sequences
 
-A sequence is a series of coordinated touchpoints across channels, spaced
-deliberately, each one building on the last. The goal is not to overwhelm —
-it's to give the prospect multiple opportunities to respond at the moment
-it's convenient for them.
+The best cold emails don't sound like cold emails.
 
-A standard 3-touch sequence that works:
+They sound like a message from someone who did their homework — someone who knows what's happening at your company, why it's relevant to them, and what a good next step looks like. The trick is that they didn't do the homework manually. They used data to make automation feel personal.
 
-| Touch | Channel | Timing | Purpose |
-|---|---|---|---|
-| 1 | Email | Day 0 | First contact — personalized, specific, one CTA |
-| 2 | LinkedIn | Day 3 | Connection request with a short context note |
-| 3 | Email | Day 7 | Follow-up referencing the LinkedIn connection |
+That's what we're building in this module.
 
-After 3 touches with no response, move on. Pestering someone past 3 touches
-damages your brand, not just your reply rate.
+<Note>
+  🎬 **Video coming soon.** Check back shortly.
+</Note>
 
-## Building the Sequence in Bitscale
+---
 
-<Steps>
-  <Step title="Prepare your grid">
-    Your grid should have: Company Name, First Name, Last Name, Email,
-    LinkedIn URL, and the personalization data you'll use in your copy
-    (company description, recent news, job posting, etc.).
-  </Step>
-  <Step title="Add an Email Generation column">
-    Click **+ Add Column** → **Text Model** → connect to OpenAI or Claude.
-    Write your prompt: "Write a 3-sentence cold email to {first_name} at
-    {company_name}. Reference {personalization_hook}. End with one specific
-    question." The prompt is a template — Bitscale fills in the variables
-    from your other columns.
-  </Step>
-  <Step title="Add a Subject Line column">
-    Separate column, same setup. Prompt: "Write 3 subject line options for
-    this email: {email_body}. Keep each under 50 characters. No clickbait."
-  </Step>
-  <Step title="Export to your sending tool">
-    Once the grid is enriched and copy is generated, export to Instantly,
-    Smartlead, Lemlist, or your preferred tool. Map your columns to their
-    fields: Email → To, Subject → Subject, Email Body → Body.
-  </Step>
-</Steps>
+## The Signal-Value-Close Framework
 
-## LinkedIn Coordination
+Most outbound sequences fail because every touch tries to do the same thing: get a meeting. Good sequences do three different jobs across three different touches.
 
-The LinkedIn step isn't automated through Bitscale directly (LinkedIn
-restricts this). Instead, use Bitscale to generate the connection note
-copy — a personalized 200-character message for each prospect — and
-export it alongside the contact list for manual or semi-automated sending
-via a LinkedIn tool.
+| Touch | Timing | Job | Approach |
+|-------|--------|-----|---------|
+| **1 — Signal** | Day 0 | Establish relevance | Reference a real, specific trigger |
+| **2 — Value** | Day 3 | Prove you're worth talking to | Share a concrete result, not a feature list |
+| **3 — Close** | Day 7 | Respect their time | Low-friction, keep the door open |
 
-## Your Challenge
+Each touch has one job. The signal touch gets their attention. The value touch earns credibility. The close touch respects their inbox.
 
-<Card title="Before moving to OA-3" icon="flag-checkered">
-  Build a 3-column sequence grid: Email Body, Subject Line, and LinkedIn
-  Note — all AI-generated using Bitscale's Text Model column. Use at
-  least one personalization variable pulled from an enrichment column.
-  Review 5 rows of output and note what's working and what needs prompt adjustment.
-</Card>
+---
+
+## Touch 1: The Signal Email
+
+The opener is the make-or-break moment. One sentence that makes the prospect think "how did they know that?" — followed by a clear, low-friction ask.
+
+**Anatomy of a Signal email:**
+
+```
+Subject: [signal-based, 5–7 words, no spam triggers]
+
+[Signal-based opener — one sentence referencing a real trigger]
+
+[Bridge — one sentence connecting the signal to their likely problem]
+
+[Value statement — one sentence on the outcome you deliver]
+
+[CTA — one sentence, specific, easy to say yes to]
+
+[Name]
+```
+
+**Example:**
+
+> Subject: scaling your SDR team
+>
+> Saw you're hiring 4 SDRs at Acme — most teams in that phase spend 30% of their ramp budget on manual data work that Bitscale automates in 60 seconds.
+>
+> Worth a quick look?
+>
+> [Name]
+
+That's it. 3 sentences plus a subject line. Under 50 words. No pitch deck. No feature list. Just a relevant observation and a low-friction ask.
+
+---
+
+## Touch 2: The Value Email
+
+If Touch 1 got an open but no reply, Touch 2 drops proof.
+
+```
+Subject: Re: [original subject — keep the thread]
+
+Quick follow-up.
+
+[Specific outcome a similar company got — use a real customer if possible]
+
+[One sentence on why this is relevant to them]
+
+Worth 15 minutes to see if it makes sense for Acme?
+
+[Name]
+```
+
+**Key principle:** Never repeat Touch 1. Touch 2 should add new information — specifically, a concrete result that makes the prospect think "that could be us."
+
+---
+
+## Touch 3: The Close
+
+Touch 3 is not another pitch. It's a graceful exit that keeps the door open.
+
+```
+Subject: Re: [original subject]
+
+Closing the loop here — completely understand if the timing isn't right.
+
+Happy to reconnect in Q3 if anything changes. Just reply and I'll set something up.
+
+[Name]
+```
+
+That's it. No follow-up on the follow-up. Respect their inbox. Deals that come back from a Touch 3 close often convert faster than ones that replied to Touch 1 — because the prospect made a decision, not a reflex response.
+
+---
+
+## Building This in Bitscale
+
+Here's how Bitscale feeds this sequence. In this grid, 50 contacts are prepped with everything needed to personalise Touch 1:
+
+```
+Column 1: First Name              → Static
+Column 2: Last Name               → Static
+Column 3: Title                   → Static / Enrichment
+Column 4: Company                 → Static
+Column 5: Domain                  → Static
+Column 6: SDR Hiring Signal       → Enrichment (Job Postings)
+Column 7: Tech Stack              → Enrichment (BuiltWith / Clearbit)
+Column 8: Email Opener            → AI Column
+Column 9: Email (Verified)        → Enrichment + Verification
+```
+
+The AI Email Opener column generates a unique, signal-based first line for every row automatically.
+
+---
+
+## The AI Opener Prompt (Copy-Paste Ready)
+
+```
+You are writing the opening line of a cold email to {{first_name}}, {{title}} at {{company}}.
+
+They are currently hiring {{sdr_hiring_count}} SDRs based on their job postings.
+
+Write one sentence that:
+- References this specific hiring signal naturally (not creepily)
+- Is under 20 words
+- Does not use the word "noticed"
+- Sounds like a smart colleague wrote it, not a salesperson
+- Contains no emojis
+```
+
+Swap `{{sdr_hiring_count}}` for whichever enrichment column has your signal. Run the column across all 50 rows in about 15 seconds.
+
+---
+
+## Adding LinkedIn to Your Sequence
+
+One pattern that consistently lifts reply rates: a LinkedIn touch between Touch 1 and Touch 2.
+
+| Day | Channel | Action |
+|-----|---------|--------|
+| 0 | Email | Touch 1 (Signal email) |
+| 1 | LinkedIn | Connection request — blank or 1-line note |
+| 3 | Email | Touch 2 (Value email) |
+| 5 | LinkedIn | Short message: reference your email, one question |
+| 7 | Email | Touch 3 (Close) |
+
+When Touch 2 arrives after you've connected on LinkedIn, your name is familiar. Familiarity converts.
+
+**AI column for the LinkedIn note:**
+
+```
+Write a one-line LinkedIn connection request note to {{first_name}} at {{company}}.
+
+Context: You're reaching out because they're hiring SDRs and you want to connect about GTM automation.
+
+Rules:
+- Maximum 15 words
+- No pitch
+- Sound curious, not salesy
+- No emojis
+```
+
+One Bitscale grid, two outputs: email opener and LinkedIn note. Same data, zero extra work.
 
 <Tip>
-  Clone the **Automated Outbound** template from the Templates section as
-  a starting point — it has the column structure pre-built.
+  **Quick check:** What are the three jobs of the Signal-Value-Close sequence? What happens if all three touches try to do the same thing?
 </Tip>
 
 ---
 
-<CardGroup cols={2}>
-  <Card title="← OA-1: Email Infrastructure" icon="arrow-left" href="/academy/outbound/email-infrastructure">
-    Previous module
-  </Card>
-  <Card title="Next: Copy That Converts →" icon="arrow-right" href="/academy/outbound/copy-that-converts">
-    OA-3 · ~12 min
-  </Card>
-</CardGroup>
+## 🎯 Challenge · 125 XP
+
+Build a 3-touch sequence using Bitscale-generated personalisation.
+
+<Steps>
+  <Step title="Set up your Bitscale grid">
+    Take your F-3 grid (or build a new one with contact data). Add the SDR hiring signal enrichment column if you haven't already.
+  </Step>
+  <Step title="Add the AI Opener column">
+    Add an AI column. Paste in the opener prompt above, mapping it to your enrichment columns. Run it across all rows.
+  </Step>
+  <Step title="Write your 3-touch sequence templates">
+    Write your Touch 2 and Touch 3 templates. Touch 1 will use the AI-generated opener from Bitscale.
+  </Step>
+  <Step title="Map to your sequencing tool">
+    Export the opener column from Bitscale and map it to the first-line variable in your sequencing tool (Outreach, Smartlead, Apollo, Instantly, etc.).
+  </Step>
+  <Step title="Submit">
+    Submit a screenshot showing: your Bitscale grid with AI openers populated, and your sequence template showing where the Bitscale variable maps in.
+  </Step>
+</Steps>
+
+[Submit your OA-2 sequence →](https://bitscale.fillout.com/academy-challenge-oa2)
+
+---
+
+<Card title="Up next: OA-3 · Copy That Converts" icon="arrow-right" href="/academy/outbound/copy-that-converts">
+  You have a structure. Now let's talk about the actual words — what makes a line of outbound copy convert versus what gets you marked as spam.
+</Card>
