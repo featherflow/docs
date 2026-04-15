@@ -1,0 +1,91 @@
+---
+title: "OA-2: Building Your First Sequence"
+description: "How to build a multi-touch outbound sequence in Bitscale — email, LinkedIn, and timing logic."
+---
+
+<Note>
+  **Outbound Automation Track · Module 2 of 7.**
+</Note>
+
+## Watch First (15 min)
+
+<Info>
+  Video walkthrough coming soon. The written content below covers the same steps.
+</Info>
+
+## What a Good Sequence Looks Like
+
+A sequence is a series of coordinated touchpoints across channels, spaced
+deliberately, each one building on the last. The goal is not to overwhelm —
+it's to give the prospect multiple opportunities to respond at the moment
+it's convenient for them.
+
+A standard 3-touch sequence that works:
+
+| Touch | Channel | Timing | Purpose |
+|---|---|---|---|
+| 1 | Email | Day 0 | First contact — personalized, specific, one CTA |
+| 2 | LinkedIn | Day 3 | Connection request with a short context note |
+| 3 | Email | Day 7 | Follow-up referencing the LinkedIn connection |
+
+After 3 touches with no response, move on. Pestering someone past 3 touches
+damages your brand, not just your reply rate.
+
+## Building the Sequence in Bitscale
+
+<Steps>
+  <Step title="Prepare your grid">
+    Your grid should have: Company Name, First Name, Last Name, Email,
+    LinkedIn URL, and the personalization data you'll use in your copy
+    (company description, recent news, job posting, etc.).
+  </Step>
+  <Step title="Add an Email Generation column">
+    Click **+ Add Column** → **Text Model** → connect to OpenAI or Claude.
+    Write your prompt: "Write a 3-sentence cold email to {first_name} at
+    {company_name}. Reference {personalization_hook}. End with one specific
+    question." The prompt is a template — Bitscale fills in the variables
+    from your other columns.
+  </Step>
+  <Step title="Add a Subject Line column">
+    Separate column, same setup. Prompt: "Write 3 subject line options for
+    this email: {email_body}. Keep each under 50 characters. No clickbait."
+  </Step>
+  <Step title="Export to your sending tool">
+    Once the grid is enriched and copy is generated, export to Instantly,
+    Smartlead, Lemlist, or your preferred tool. Map your columns to their
+    fields: Email → To, Subject → Subject, Email Body → Body.
+  </Step>
+</Steps>
+
+## LinkedIn Coordination
+
+The LinkedIn step isn't automated through Bitscale directly (LinkedIn
+restricts this). Instead, use Bitscale to generate the connection note
+copy — a personalized 200-character message for each prospect — and
+export it alongside the contact list for manual or semi-automated sending
+via a LinkedIn tool.
+
+## Your Challenge
+
+<Card title="Before moving to OA-3" icon="flag-checkered">
+  Build a 3-column sequence grid: Email Body, Subject Line, and LinkedIn
+  Note — all AI-generated using Bitscale's Text Model column. Use at
+  least one personalization variable pulled from an enrichment column.
+  Review 5 rows of output and note what's working and what needs prompt adjustment.
+</Card>
+
+<Tip>
+  Clone the **Automated Outbound** template from the Templates section as
+  a starting point — it has the column structure pre-built.
+</Tip>
+
+---
+
+<CardGroup cols={2}>
+  <Card title="← OA-1: Email Infrastructure" icon="arrow-left" href="/academy/outbound/email-infrastructure">
+    Previous module
+  </Card>
+  <Card title="Next: Copy That Converts →" icon="arrow-right" href="/academy/outbound/copy-that-converts">
+    OA-3 · ~12 min
+  </Card>
+</CardGroup>
