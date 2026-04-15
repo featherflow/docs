@@ -1,0 +1,198 @@
+---
+title: "OA-6: Campaign Analysis"
+description: "Most teams look at open rates and declare victory or defeat. Learn the metrics that actually matter and how to use Bitscale to diagnose and fix underperforming campaigns."
+---
+
+<Info>
+  **OA-6 · Outbound Automation · 125 XP · ~20 min**
+</Info>
+
+Open rates are a vanity metric. They measure whether your subject line worked and whether your domain is landing in the inbox. They tell you almost nothing about whether your campaign is working.
+
+This module is about the metrics that connect outbound activity to pipeline — and how to use Bitscale to run the analysis that actually improves results.
+
+---
+
+## The Metrics That Matter
+
+| Metric | What It Measures | Target (Cold Outbound) |
+|---|---|---|
+| **Deliverability rate** | % of emails reaching inbox (not spam) | > 95% |
+| **Open rate** | % of delivered emails opened | > 40% for targeted, > 25% for broad |
+| **Reply rate** | % of delivered emails getting any reply | > 5% for cold, > 10% for warm |
+| **Positive reply rate** | % of replies that are interested or curious | > 3% of sends |
+| **Meeting booked rate** | % of sends that convert to a scheduled meeting | > 1% |
+| **Pipeline generated** | Total $ value of pipeline sourced | Depends on ACV |
+| **Cost per meeting** | Total cost (time + tools) ÷ meetings booked | < 25% of ACV |
+
+Open rate matters for deliverability diagnosis. Everything else exists to diagnose the funnel below it.
+
+---
+
+## The Campaign Diagnostic Framework
+
+When a campaign underperforms, the failure is almost always in one of four layers. Work top-down:
+
+```
+Layer 1: Deliverability
+  → Is mail landing in inbox? Check bounce rate, spam rate, Postmaster Tools.
+  → If deliverability is broken, nothing else matters.
+
+Layer 2: Subject Lines / Open Rate
+  → Are people opening? If open rate < 25%, the problem is the subject line or sender name.
+  → Test 3 subject line variants on 100-person batches.
+
+Layer 3: Copy / Reply Rate
+  → Are people replying? If reply rate < 3%, the problem is the email body.
+  → Check: Is the signal specific? Is the value prop clear? Is the CTA friction-free?
+
+Layer 4: ICP / List Quality
+  → Are the replies qualified? If meeting rate is low but reply rate is OK, wrong ICP.
+  → Check: company size, persona match, industry fit vs. what you defined in F-2.
+```
+
+Most teams skip Layer 1 and go straight to rewriting copy when the problem is actually deliverability. Always check top-down.
+
+---
+
+## Running Campaign Analysis in Bitscale
+
+Bitscale is your analysis layer. After a campaign runs, pull the results back into a grid and build analysis columns.
+
+**Step 1: Import campaign results**
+Export from your sequencer: email address, send date, opens (yes/no), replies (yes/no), reply text, outcome (positive/negative/neutral/no reply).
+
+**Step 2: Build analysis columns**
+
+**Reply sentiment analysis:**
+```
+Analyze this email reply and classify the sentiment:
+- positive: expressed interest, asked for more info, agreed to a call
+- negative: not interested, asked to be removed, no fit
+- neutral: asked a clarifying question without commitment
+- auto_reply: automated out-of-office or delivery notice
+
+Reply: {{reply_text}}
+
+Return ONLY: positive, negative, neutral, or auto_reply
+```
+
+**Objection extraction:**
+```
+If this reply contains an objection, extract it as a single phrase.
+If no objection, return "none".
+
+Reply: {{reply_text}}
+
+Examples of objections: "not the right time", "already have a solution", "need to check with my team", "budget frozen"
+
+Return ONLY the objection phrase or "none".
+```
+
+**Step 3: Aggregate by segment**
+
+Add a summary prompt that analyzes the full batch:
+```
+You are analyzing outbound campaign results.
+
+Data summary:
+- Total sent: {{total_sent}}
+- Opens: {{total_opens}} ({{open_rate}}%)
+- Replies: {{total_replies}} ({{reply_rate}}%)
+- Positive replies: {{positive_replies}}
+- Top objections: {{objection_summary}}
+
+Diagnose which layer is the primary problem (deliverability, subject line, copy, or ICP fit) and suggest 2 specific tests to run next.
+```
+
+---
+
+## A/B Testing in Outbound
+
+Good campaign analysis enables systematic testing. Here's the testing hierarchy — run tests in this order:
+
+1. **Subject line test** (highest leverage, cheapest to run)
+   - Split: 50% get subject line A, 50% get B
+   - Metric: open rate
+   - Sample size: minimum 200 per variant
+
+2. **Opening line test** (second-highest leverage)
+   - Split: 50% get SVC opening, 50% get PAS
+   - Metric: reply rate
+   - Sample size: minimum 300 per variant
+
+3. **CTA test** (often underrated)
+   - "Worth a 15-minute call?" vs. "Want me to send the breakdown?"
+   - Metric: positive reply rate
+   - Sample size: minimum 200 per variant
+
+4. **Send time test** (smaller impact, worth running once)
+   - Tuesday–Thursday, 7–9am local vs. standard business hours
+   - Metric: open rate
+
+<Warning>
+  Never test more than one variable at a time. If you change the subject line AND the copy simultaneously, you won't know which change drove the result. One variable per test, always.
+</Warning>
+
+---
+
+## Reading Negative Replies
+
+Negative replies are not failures — they're free market research. A "not interested" with context tells you more than 100 non-replies.
+
+| Negative Reply Pattern | What It Means | Action |
+|---|---|---|
+| "We already use [Competitor]" | ICP is right, timing is wrong | Add to competitor displacement list; nurture in 6 months |
+| "Budget is frozen" | ICP is right, economic timing is wrong | Tag with "Q[next quarter] revisit" |
+| "Not the decision maker" | Wrong persona — too junior or too senior | Ask for referral: "Who would be the right person?" |
+| "We're not using outbound" | ICP mismatch on GTM model | Remove from sequence; update ICP definition |
+| "Too expensive" | Value prop not landing, or genuinely wrong fit | Send case study; if persists, remove from segment |
+
+Build a column in Bitscale that tags each negative reply with the pattern and action. After 200+ replies, sort by pattern frequency — the most common pattern is your most important test hypothesis.
+
+---
+
+## Campaign Scorecard
+
+Before launching any new sequence, set your benchmarks. After 2 weeks, run the scorecard:
+
+| Metric | Benchmark | Actual | Status |
+|---|---|---|---|
+| Deliverability | > 95% | ? | 🟡 |
+| Open rate | > 35% | ? | 🟡 |
+| Reply rate | > 5% | ? | 🟡 |
+| Positive reply rate | > 2% | ? | 🟡 |
+| Meeting rate | > 0.8% | ? | 🟡 |
+
+Green = at or above benchmark. Yellow = within 20% of benchmark. Red = more than 20% below benchmark.
+
+One red metric = one test to run. Two red metrics = pause the campaign and rebuild before resuming.
+
+---
+
+<Tip>
+  **Quick Check:** What's the difference between reply rate and positive reply rate? What does it mean if your open rate is high but reply rate is low? Name the four diagnostic layers in order.
+</Tip>
+
+---
+
+## OA-6 Challenge: Diagnose a Campaign (+125 XP)
+
+Take a real or simulated campaign dataset (minimum 100 rows) and run the full diagnostic in Bitscale:
+
+**Requirements:**
+- Reply sentiment classification column
+- Objection extraction column
+- A written diagnosis identifying which layer is failing
+- 2 specific A/B tests you would run next, with hypothesis, variant descriptions, and success metric
+- Campaign scorecard filled in with your data
+
+<Card title="Submit OA-6 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-oa6">
+  Share your grid link + written diagnosis + test hypotheses. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: OA-7 — Outbound Capstone →" icon="arrow-right" href="/academy/outbound/capstone">
+  You've done the work. OA-7 is where you build and ship a complete outbound system from scratch — and earn the Outbound Specialist certification.
+</Card>
