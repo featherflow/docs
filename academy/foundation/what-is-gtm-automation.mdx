@@ -1,90 +1,179 @@
 ---
-title: "F-1: What is GTM Automation?"
-description: "Why manual prospecting is broken and what a modern GTM system looks like."
+title: "What is GTM Automation?"
+description: "The GEO Framework and the four-layer Bitscale model. The mental model that makes every other module click faster."
 ---
 
-<Note>
-  **Before you start:** This is the first module in the GTM Foundation track.
-  Complete all 5 Foundation modules to unlock specialist tracks and earn your
-  Foundation Badge.
-</Note>
-
-## Watch First (8 min)
-
 <Info>
-  Video walkthrough coming soon. The written content below covers everything in the video.
+  **F-1 · GTM Foundation · 100 XP · ~15 min**
+
+  Complete the challenge at the bottom to earn your first 100 XP toward Foundation Certification.
 </Info>
 
-## Why Manual GTM Doesn't Scale
+# What is GTM Automation?
 
-Most GTM teams hit a ceiling. They're working hard — building lists, writing
-emails, making calls — but output doesn't compound. Every week looks like
-the week before. The reason is almost always the same: the system is built
-on manual effort rather than automation.
+Your SDR just spent three hours building a prospect list. Here's the uncomfortable truth: by the time they finished, it was already stale.
 
-The problems stack up fast:
+People change jobs. Companies get acquired. Funding rounds close. The data you manually compiled on Monday is partially wrong by Friday. **GTM Automation doesn't just save time — it solves the staleness problem by making your workflow live, not static.**
 
-- Lists go stale because enrichment is a one-time event, not a continuous process
-- Outreach is generic because personalization at scale is too slow to do by hand
-- Timing is off because the team reaches out when they have capacity, not when the
-  prospect has a live problem
-- Nothing is connected — email, LinkedIn, and calls run as separate activities with
-  no shared context
+<Note>
+  🎬 **Video coming soon.** Recording in progress — check back shortly. Everything below covers the same ground, so start here.
+</Note>
 
-Each of these is a GTM problem, not a hustle problem. Working harder doesn't fix
-a broken system. Redesigning the system does.
+## What You'll Learn
 
-## What a GTM System Looks Like
+- The **GEO Framework** — how every GTM workflow maps to Generate, Enrich, Outreach
+- The **four Bitscale layers** — Sources, Grids, Columns, Exports
+- Why automation isn't about replacing SDRs — it's about removing the 30% of their job that doesn't require human judgment
 
-A modern GTM system has four layers working together:
+---
 
-<Steps>
-  <Step title="Find: Identify the right companies and contacts">
-    Automated list building from intent signals, firmographic filters, and
-    live data sources — not static exports from a spreadsheet.
-  </Step>
-  <Step title="Enrich: Build a complete picture of each prospect">
-    Waterfall enrichment across multiple data providers to get verified
-    emails, phone numbers, and company context. Automated, not manual.
-  </Step>
-  <Step title="Research: Understand what each prospect is going through right now">
-    AI-powered research columns that pull company news, job postings, LinkedIn
-    activity, and funding signals — giving you a specific reason to reach out today.
-  </Step>
-  <Step title="Reach: Deliver the right message at the right time">
-    Personalized, multi-channel outreach sequences triggered by signals —
-    not by when the team has a spare hour.
-  </Step>
-</Steps>
+## The Real Cost of Manual GTM
 
-Bitscale is the infrastructure that connects all four layers in one place.
-You build the logic once. It runs continuously.
+The average SDR spends **30% of their time on manual data work.** For a team of five, that's 1.5 full-time salaries going to copy-pasting between tools, looking up companies on LinkedIn, and maintaining spreadsheets that are never fully accurate.
+
+That is not a people problem. It is a systems problem.
+
+GTM Automation is the practice of building systematic workflows that find leads, enrich them with context, and trigger outreach — without a human doing the same task twice.
+
+<Warning>
+  **What GTM Automation is not:** It's not a set-and-forget spam machine. The best automated workflows are *more* targeted and *more* personalised than most manual outreach, because they're powered by real-time data signals — not static guesswork from six months ago.
+</Warning>
+
+---
 
 ## The GEO Framework
 
-Everything in Bitscale maps to three core activities:
+Every workflow you'll ever build in Bitscale maps to one of three layers. Learn this and you'll never need to ask "how do I do X in Bitscale?" — you'll ask "which GEO layer does X live in?" and the answer points you straight to the right tool.
 
-**Generate** → Find the right companies and contacts matching your ICP.
+### Generate
 
-**Enrich** → Build verified contact data and contextual intelligence on each prospect.
+This is where you identify *who* belongs in your workflow.
 
-**Outreach** → Deliver personalized, timely messages across email, LinkedIn, and phone.
+- Companies that raised a Series B in the last 90 days
+- Businesses actively hiring SDRs right now
+- LinkedIn users who just moved into a VP Sales role
+- Accounts that visited your pricing page in the last 7 days
 
-You'll see this framework referenced throughout the Academy. It's the mental
-model behind every workflow you'll build.
+The Generate layer defines your universe. The richer your signal sources, the better your targeting.
 
-## Your Challenge
+### Enrich
 
-<Card title="Before moving to F-2" icon="flag-checkered">
-  Open Bitscale and spend 5 minutes exploring the Templates section.
-  Find one template that maps to a workflow you'd want to run for your ICP.
-  You don't need to clone it yet — just get familiar with what's available.
-</Card>
+Once you have a list, you need context. The Enrich layer answers:
+- Who specifically should I contact at this company?
+- What tech stack are they on?
+- What is their headcount and revenue range?
+- What signals tell me they're in-market *right now?*
+
+Bitscale connects to 50+ data providers to answer these questions. You control which providers fire for which rows — and what happens when the first one comes back empty.
+
+### Outreach
+
+With enriched, contextual data, you trigger personalised outreach. Not mail-merge personalisation (`Hi {first_name}`). *Actual* personalisation — copy written by an AI that references exactly what you know about that prospect, sent at exactly the right moment.
+
+<Tip>
+  **Quick check:** Can you name the three GEO layers without looking back? Generate, \_\_\_\_, Outreach. Fill in the blank before continuing.
+</Tip>
 
 ---
 
-<CardGroup cols={2}>
-  <Card title="Next: Understanding Your ICP →" icon="arrow-right" href="/academy/foundation/understanding-your-icp">
-    F-2 · ~10 min
-  </Card>
-</CardGroup>
+## The Four Bitscale Layers
+
+GEO is the framework. These are the four building blocks that make it real inside Bitscale.
+
+| Layer | What It Is | Example |
+|-------|-----------|---------|
+| **Sources** | Where your data comes from | LinkedIn Sales Nav, CSV, CRM sync, webhook |
+| **Grids** | Where you organise and process data | A grid of 200 target accounts |
+| **Columns** | Individual data transformations | Headcount · Hiring signal · AI opener |
+| **Exports** | Where enriched data goes next | HubSpot · Outreach · Smartlead · CSV |
+
+Think of a Grid as a spreadsheet where every column is a live API or AI model instead of a formula. Each column asks a question. The answer populates automatically. Change the question, get a different answer — instantly, across every row.
+
+---
+
+## A Real GEO Workflow (End-to-End)
+
+Here's what this looks like when it's running in production:
+
+**Source:** LinkedIn Sales Navigator search — Series A/B SaaS, 50–300 employees.
+
+**Grid:** 200 companies imported.
+
+**Columns:**
+1. Company Name (static)
+2. Domain (static)
+3. Headcount — enrichment via Clearbit
+4. SDR Hiring Signal — enrichment via job postings API (returns count of open SDR roles)
+5. Funding Round — enrichment via Crunchbase
+6. Best Contact — enrichment via Apollo (finds VP Sales)
+7. Email Opener — AI column (generates a signal-based first line)
+
+**Export:** Rows where `SDR Hiring > 0 AND Contact found` → pushed to Outreach sequence automatically.
+
+Total runtime: under 60 seconds. Manually: 2–3 days.
+
+---
+
+## AI Column Prompt Template
+
+Copy this directly into a Bitscale AI column to generate signal-based email openers:
+
+```
+You are writing the opening line of a cold email to {{first_name}}, {{title}} at {{company}}.
+
+Context: This company is currently hiring {{sdr_job_count}} SDRs, suggesting they are scaling their outbound team.
+
+Write a single sentence that references this hiring signal in a natural, non-creepy way.
+
+Rules:
+- Maximum 20 words
+- Do not use the word "noticed"
+- No emojis
+- Sound like a human colleague, not a sales robot
+```
+
+Replace `{{sdr_job_count}}` with the name of your hiring signal enrichment column.
+
+---
+
+## 🧠 Quick Check
+
+<Tip>
+  Test yourself before moving on — no scrolling back allowed:
+
+  1. What does GEO stand for?
+  2. What's the difference between a Source and a Grid?
+  3. If your goal is finding companies hiring SDRs, which GEO layer does that signal belong to?
+</Tip>
+
+---
+
+## 🎯 Challenge · 100 XP
+
+Build a 3-column Bitscale grid and run your first enrichment.
+
+<Steps>
+  <Step title="Create a grid">
+    Open Bitscale → New Grid. Name it: `ICP List — [Your Segment] — [Month Year]`
+  </Step>
+  <Step title="Add columns">
+    Add three columns: **Company Name** (Text), **Domain** (Text), **Company Headcount** (Enrichment).
+  </Step>
+  <Step title="Import rows">
+    Import 10–25 rows via CSV. Use real companies you'd actually want to reach out to.
+  </Step>
+  <Step title="Run the enrichment">
+    Click the Headcount column header → **Run All Rows**. Watch the cells populate.
+  </Step>
+  <Step title="Screenshot and submit">
+    Screenshot your populated grid and submit below.
+  </Step>
+</Steps>
+
+[Submit your F-1 challenge →](https://bitscale.fillout.com/academy-challenge-f1)
+
+---
+
+<Card title="Up next: F-2 · Understanding Your ICP" icon="arrow-right" href="/academy/foundation/understanding-your-icp">
+  You have a grid. Now let's talk about who should actually be in it — and how to define that precisely enough to use as a real filter.
+</Card>
