@@ -1,0 +1,172 @@
+---
+title: "OA-5: Multichannel Orchestration"
+description: "Email alone is not a strategy. Learn how to build coordinated LinkedIn + email + phone sequences that multiply response rates without multiplying workload."
+---
+
+<Info>
+  **OA-5 · Outbound Automation · 125 XP · ~22 min**
+</Info>
+
+Single-channel outreach is like knocking on one door and leaving if nobody answers. Multichannel outreach is coordinating all three doors — email, LinkedIn, and phone — in a way that feels like persistence to you but genuine interest to the prospect.
+
+The difference between multichannel spam and multichannel excellence is orchestration: timing, channel-appropriate messaging, and a coherent narrative across the sequence.
+
+---
+
+## Why Multichannel Outperforms Single-Channel
+
+The data is consistent across studies: multichannel sequences produce 2–4x the response rates of email-only sequences. The mechanism isn't just volume — it's pattern recognition. When a prospect sees your name on LinkedIn, then in their inbox, they register you as "someone who keeps showing up" rather than "someone who sent an email once."
+
+But this only works if the channels tell a consistent story.
+
+| Scenario | Response Rate | Why |
+|---|---|---|
+| Email only, 3 touches | 2–4% | Easy to ignore in inbox |
+| Email + LinkedIn, 5 touches | 8–12% | Two channels, pattern recognition kicks in |
+| Email + LinkedIn + Phone, 7 touches | 15–22% | Full multichannel; phone breaks digital fatigue |
+| Random spray across all channels | 1–3% | No coherence; feels spammy |
+
+The last row is the trap most teams fall into when they "go multichannel." More channels with incoherent messaging is worse than one channel with a clear narrative.
+
+---
+
+## The 7-Touch Multichannel Framework
+
+This is the sequence structure that works at scale for B2B SaaS with deal sizes of $5K–$50K ARR:
+
+| Day | Channel | Action | Content |
+|---|---|---|---|
+| **Day 1** | LinkedIn | Connection request | Short, no pitch: "Following your work on [topic]" |
+| **Day 2** | Email | First email | SVC framework — reference the signal |
+| **Day 4** | LinkedIn | Comment on post | Genuine comment on their recent LinkedIn post |
+| **Day 5** | Email | Follow-up email | Add value — case study, resource, or insight |
+| **Day 8** | Phone | Call attempt | Voicemail: reference the emails, ask for 15 min |
+| **Day 10** | Email | The nudge | Ultra-short: "Still relevant?" + one-sentence reminder |
+| **Day 14** | LinkedIn | InMail (if connected) | Final attempt: clear break-up or pivot offer |
+
+After Day 14, move to nurture. Don't burn the relationship — they may not be ready now.
+
+---
+
+## Channel Strategy: What Belongs Where
+
+Each channel has a different psychology. Match the message to the medium.
+
+### Email
+- Best for: detailed value propositions, case studies, content links
+- Tone: professional, direct, slightly formal
+- Length: 50–100 words for cold, 100–200 for warm follow-up
+- Never: long walls of text, multiple CTAs, heavy HTML design
+
+### LinkedIn
+- Best for: awareness building, social proof, warm connections
+- Tone: conversational, human, curiosity-driven
+- Connection request: < 25 words, no pitch
+- InMail: treat like a cold email — be specific, be short
+
+### Phone
+- Best for: breaking pattern, getting real-time feedback, executive access
+- Tone: confident, direct, immediately relevant
+- Voicemail: 20–30 seconds max. Name → why you're calling → specific ask → callback number (once)
+- Cold call opening: "I sent you a couple of emails about [specific thing]. I wanted to get 30 seconds with you — did you get a chance to see them?"
+
+---
+
+## Building Multichannel in Bitscale
+
+Bitscale manages the data layer; your sequencer manages the execution. Here's how they connect:
+
+**In Bitscale, build these columns:**
+
+1. **linkedin_url** — enriched from company + name
+2. **linkedin_connected** — manual tag or API check (true/false)
+3. **email_touch_1** — AI-generated SVC email
+4. **email_touch_2** — AI-generated follow-up (reference touch 1)
+5. **email_touch_3** — AI-generated nudge
+6. **voicemail_script** — AI-generated 25-second voicemail script
+7. **linkedin_comment_prompt** — AI generates a genuine comment based on their recent post content
+8. **sequence_channel_priority** — if phone number available: full multichannel; if not: email + LinkedIn only
+
+**The voicemail script column prompt:**
+```
+Write a 25-second voicemail script for a B2B cold call.
+
+Caller: {{sender_name}} at Bitscale
+Prospect: {{first_name}} at {{company_name}}
+Context: We've sent 2 emails about {{value_prop_summary}}
+
+Requirements:
+- Start with your name and company immediately
+- Reference the emails (they were sent, not "you may have seen")
+- State the specific reason for calling in one sentence
+- Ask for a callback — state your number twice
+- 25 seconds = approximately 65 words
+
+Return ONLY the script, no labels or formatting.
+```
+
+---
+
+## Avoiding the Multichannel Spam Trap
+
+There's a fine line between persistent and annoying. These rules keep you on the right side:
+
+1. **Never hit the same channel twice in one day** — back-to-back email + LinkedIn DM feels desperate
+2. **Each touch must add new information or value** — don't just say "following up on my last email"
+3. **The break-up email is real** — if you say "I won't bother you again," mean it
+4. **LinkedIn engagement must be authentic** — a generic "great post!" comment is worse than no comment
+5. **Phone on weekday mornings, 8–10am local time** — highest pickup rates; never call Friday afternoon
+
+<Info>
+  The 7-touch framework above is a starting point, not a rule. For enterprise prospects with longer buying cycles, extend to 12–14 touches over 30 days. For SMB, compress to 5 touches over 10 days. Match the cycle length to the deal size.
+</Info>
+
+---
+
+## Sequencer Integration
+
+Once your Bitscale grid is QA'd, export to your sequencer (Apollo, Outreach, Salesloft, Instantly, etc.) with these mapped fields:
+
+| Bitscale Column | Sequencer Field |
+|---|---|
+| first_name, last_name | Contact name |
+| email | Primary email |
+| linkedin_url | LinkedIn URL |
+| phone | Phone number |
+| email_touch_1 | Step 1 body |
+| email_touch_2 | Step 3 body |
+| email_touch_3 | Step 6 body |
+| voicemail_script | Call step notes |
+| sequence_channel_priority | Sequence assignment |
+
+Use dynamic sequences in your sequencer to skip steps based on `sequence_channel_priority` — if no phone number, skip the call step automatically.
+
+---
+
+<Tip>
+  **Quick Check:** Why does multichannel work? What is the #1 mistake teams make when "going multichannel"? What channel rule should you never break on LinkedIn?
+</Tip>
+
+---
+
+## OA-5 Challenge: Build a 7-Touch Multichannel Sequence (+125 XP)
+
+Pick a persona (e.g., VP of Sales at a Series B SaaS company) and build the complete 7-touch multichannel sequence in Bitscale for a batch of 20 prospects.
+
+**Requirements:**
+- 3 email touch columns (SVC, follow-up, nudge)
+- 1 voicemail script column
+- 1 LinkedIn comment prompt column
+- A `sequence_channel_priority` routing column
+- Screenshot of your grid with all 7 columns visible
+- Export the grid as CSV
+
+<Card title="Submit OA-5 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-oa5">
+  Upload CSV + grid screenshot. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: OA-6 — Campaign Analysis →" icon="arrow-right" href="/academy/outbound/campaign-analysis">
+  Sequences run. Now what? OA-6 is about reading the data, finding what's working, and rebuilding what isn't.
+</Card>
