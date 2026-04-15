@@ -1,0 +1,76 @@
+---
+title: "F-3: Your First Grid"
+description: "Create a grid, import a list, and run your first enrichment in Bitscale."
+---
+
+<Note>
+  **Foundation Track · Module 3 of 5.** This is a hands-on module —
+  follow along inside Bitscale as you read.
+</Note>
+
+## Watch First (12 min)
+
+<Info>
+  Video walkthrough coming soon. The written content below covers the same steps.
+</Info>
+
+## What is a Grid?
+
+A grid is Bitscale's core building block. Think of it as a spreadsheet that
+runs workflows — each row is a company or contact, each column is either data
+you're adding or an action you're running. The grid is where everything happens:
+enrichment, research, personalization, and export.
+
+## Creating Your First Grid
+
+<Steps>
+  <Step title="Go to the Grids page">
+    From the Bitscale sidebar, click **Grids** → **New Grid**.
+    Give it a name that describes what it's for (e.g., "ICP Companies — April").
+  </Step>
+  <Step title="Add your columns">
+    Start with the basics: Company Name, Website, LinkedIn URL.
+    These are your identifiers — everything else gets enriched from them.
+    Click **+ Add Column** → choose **Text** for each of these.
+  </Step>
+  <Step title="Import your first rows">
+    Click **Import** → upload a CSV with 10-20 companies from your ICP.
+    If you don't have a list yet, use the **Find Companies** source
+    to generate one based on your ICP parameters from F-2.
+  </Step>
+  <Step title="Add your first enrichment column">
+    Click **+ Add Column** → search for **LinkedIn Company Enrichment**.
+    Map the LinkedIn URL column as the input. Run it on your first 5 rows.
+    Watch what comes back.
+  </Step>
+  <Step title="Review the output">
+    You should now see headcount, description, industry, and employee count
+    populated for each company. This is the foundation of every workflow
+    you'll build on Bitscale.
+  </Step>
+</Steps>
+
+## Your Challenge
+
+<Card title="Before moving to F-4" icon="flag-checkered">
+  Build a grid with at least 10 rows from your ICP. Add 3 columns:
+  Company Name, Website, and LinkedIn URL. Run the LinkedIn Company
+  Enrichment on all 10 rows. Take note of which fields come back —
+  you'll need them in the next module.
+</Card>
+
+<Tip>
+  Use the **Templates** section to clone a pre-built grid if you want
+  a head start. The "ICP Company Research" template is a good starting point.
+</Tip>
+
+---
+
+<CardGroup cols={2}>
+  <Card title="← F-2: Understanding Your ICP" icon="arrow-left" href="/academy/foundation/understanding-your-icp">
+    Previous module
+  </Card>
+  <Card title="Next: Reading Your Data →" icon="arrow-right" href="/academy/foundation/reading-your-data">
+    F-4 · ~10 min
+  </Card>
+</CardGroup>
