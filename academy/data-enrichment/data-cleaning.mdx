@@ -1,0 +1,201 @@
+---
+title: "DE-3: Data Cleaning at Scale"
+description: "Raw data is always messy. Inconsistent formatting, duplicates, stale records, and garbage inputs break every workflow downstream. Learn to clean data at scale using Bitscale."
+---
+
+<Info>
+  **DE-3 · Data & Enrichment · 100 XP · ~18 min**
+</Info>
+
+Garbage in, garbage out. It's the oldest rule in data work — and the most consistently ignored.
+
+Data comes in with inconsistent capitalization, broken company names, duplicate records, titles that haven't been held in three years, and phone numbers in 12 different formats. Every one of these problems compounds downstream: bad personalization, failed validation, wrong routing, broken integrations.
+
+This module covers the cleaning operations that should run on every dataset before enrichment begins.
+
+---
+
+## The Six Most Common Data Quality Problems
+
+| Problem | Example | Impact |
+|---|---|---|
+| **Inconsistent capitalization** | "VP of sales", "VP Of Sales", "vp of sales" | Personalization breaks, segmentation fails |
+| **Duplicates** | Same contact appears 3x with slightly different names | Over-sends, burns relationship |
+| **Stale titles** | "Head of Growth" at a company they left 18 months ago | Sends to wrong person, wastes outreach |
+| **Malformed emails** | "john.doe@company..com", "john doe@company.com" | Bounces immediately |
+| **Non-standardized company names** | "Acme Corp", "Acme Corporation", "ACME" | De-duplication fails, wrong grouping |
+| **Mixed data in one field** | "John Smith (CEO)" in the name field | Breaks every downstream variable reference |
+
+---
+
+## Building a Data Cleaning Layer in Bitscale
+
+Run these cleaning operations in sequence before any enrichment or outreach.
+
+### Clean 1: Name normalization
+```
+Clean this person's name: {{raw_name}}
+
+Rules:
+- Proper case for first and last name (capitalize first letter only)
+- Remove titles, suffixes, and parenthetical notes from the name field
+- Remove extra spaces
+- Return format: {"first_name": "...", "last_name": "..."}
+
+If the name appears to be a company name or email address, return {"first_name": "REVIEW", "last_name": "REVIEW"}
+```
+
+### Clean 2: Title standardization
+```
+Standardize this job title: {{raw_title}}
+
+Rules:
+- Proper case
+- Expand common abbreviations: VP → Vice President, Dir → Director, Mgr → Manager
+- Remove symbols and special characters
+- Keep the core title, remove department suffixes if overly long
+
+Return ONLY the cleaned title.
+```
+
+### Clean 3: Company name normalization
+```
+Normalize this company name: {{raw_company}}
+
+Rules:
+- Remove legal suffixes if redundant (Inc, Corp, Ltd at the end) UNLESS the name is very short and removing it would cause confusion
+- Proper case
+- Remove trailing/leading spaces
+- Expand obvious abbreviations only if unambiguous
+
+Return ONLY the normalized company name.
+```
+
+### Clean 4: Email format validation
+```
+Validate the format of this email address: {{raw_email}}
+
+Check for:
+- Valid format (has @, valid TLD, no spaces)
+- Common typos (double dots, missing TLD, space in address)
+
+Return: {"valid": true/false, "cleaned_email": "corrected version or original", "issue": "description of problem or null"}
+```
+
+### Clean 5: Duplicate detection
+```
+Given this contact record:
+Name: {{first_name}} {{last_name}}
+Email: {{email}}
+Company: {{company_name}}
+Title: {{job_title}}
+
+And this existing record:
+Name: {{existing_first}} {{existing_last}}
+Email: {{existing_email}}
+Company: {{existing_company}}
+Title: {{existing_title}}
+
+Are these the same person? Consider: same name + same company = very likely duplicate; same email = definitive duplicate.
+
+Return: {"is_duplicate": true/false, "confidence": "high/medium/low", "reason": "brief explanation"}
+```
+
+---
+
+## The Cleaning Pipeline Order
+
+Run cleaning operations in this order — each step feeds the next:
+
+1. **Email format validation** — remove malformed addresses first (cheapest to check)
+2. **Name normalization** — clean names before they're used in any AI column
+3. **Title standardization** — standardize before segmentation or routing
+4. **Company name normalization** — standardize before de-duplication
+5. **Duplicate detection** — run after normalization so similar records match correctly
+6. **Data freshness check** — query LinkedIn or data provider to verify title/company is current
+
+---
+
+## Freshness: The Invisible Problem
+
+A clean record with stale data is worse than a messy record with current data. Job titles change every 18–24 months on average in SaaS. If your list was built 6 months ago, 15–25% of titles may be wrong.
+
+**Freshness check column:**
+```
+Based on this contact's LinkedIn URL {{linkedin_url}}, estimate data freshness:
+(Use web research if available, otherwise estimate based on the following)
+
+Current data in our record:
+- Title: {{job_title}}
+- Company: {{company_name}}
+
+Questions to assess:
+1. Is this company still active?
+2. Is this title realistic for this company's size?
+3. Any signals this contact has left (e.g., if you can check LinkedIn)?
+
+Return: {"likely_current": true/false, "confidence": "high/medium/low", "notes": "brief reason"}
+```
+
+For lists older than 3 months, run a freshness check on your highest-value segments before enrichment.
+
+---
+
+## Data Quality Scoring
+
+After the cleaning layer, add a composite quality score for each row:
+
+```
+Score this contact record's data quality based on:
+- email_valid: {{email_valid}} (true/false)
+- name_normalized: {{name_clean}} (cleaned/REVIEW)
+- title_complete: {{title}} (not empty/empty)
+- company_normalized: {{company}} (not empty/empty)
+- is_duplicate: {{is_duplicate}} (true/false)
+- freshness_likely: {{likely_current}} (true/false)
+
+Rules:
+- Start at 100
+- Deduct 30 if email_valid is false
+- Deduct 20 if is_duplicate is true
+- Deduct 15 if name contains REVIEW
+- Deduct 15 if title is empty
+- Deduct 10 if freshness_likely is false
+- Deduct 5 if company is empty
+
+Return ONLY the final score (0-100).
+```
+
+Use this score to route records:
+- 80–100: proceed to enrichment
+- 60–79: clean before enrichment
+- Below 60: manual review or discard
+
+---
+
+<Tip>
+  **Quick Check:** What are the six most common data quality problems? What order should you run cleaning operations? What quality score threshold should trigger manual review?
+</Tip>
+
+---
+
+## DE-3 Challenge: Clean a Messy Dataset (+100 XP)
+
+Download a sample messy dataset (we'll provide one via the challenge form, or use your own) and build the full cleaning pipeline in Bitscale.
+
+**Requirements:**
+- All 5 cleaning columns implemented
+- Duplicate detection column
+- Data quality score column
+- Record the starting vs. ending quality score distribution
+- A short paragraph on the most common data quality issues you found
+
+<Card title="Submit DE-3 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-de3">
+  Share your grid + quality score distribution (before/after). **+100 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: DE-4 — Company Intelligence →" icon="arrow-right" href="/academy/data-enrichment/company-intelligence">
+  With clean contact data in hand, DE-4 adds the company context layer — firmographics, growth signals, and competitive intelligence.
+</Card>
