@@ -1,0 +1,173 @@
+---
+title: "AP-2: Prompt Engineering for Outreach"
+description: "The quality of your AI-generated copy is entirely determined by the quality of your prompts. Learn the principles, patterns, and testing methodology that produce great outreach copy at scale."
+---
+
+<Info>
+  **AP-2 · AI Personalization · 125 XP · ~22 min**
+</Info>
+
+A bad prompt produces generic output, no matter how much context you provide. A great prompt constrains the AI to produce exactly what you want — the right length, the right tone, the right structure, the right level of specificity.
+
+Prompt engineering for outreach is a learnable skill. This module covers the patterns that work.
+
+---
+
+## The Anatomy of an Effective Outreach Prompt
+
+Every high-performing outreach prompt has six components:
+
+```
+1. ROLE: Who the AI is writing as
+2. CONTEXT: What you know about the prospect
+3. OBJECTIVE: What the email needs to accomplish
+4. CONSTRAINTS: Length, tone, structure, what to avoid
+5. OUTPUT FORMAT: Exactly what to return (just the email body, or JSON, etc.)
+6. EXAMPLES: Optional, but dramatically improves quality for nuanced copy
+```
+
+---
+
+## Component-by-Component Breakdown
+
+### 1. Role Definition
+Don't just say "write an email." Tell the AI who is writing it.
+
+**Weak:**
+> "Write a cold email to this prospect."
+
+**Strong:**
+> "You are writing on behalf of a B2B sales rep at Bitscale. Bitscale is a GTM automation platform that helps sales teams build, enrich, and activate prospect data using AI workflows. You are not writing as a marketer — you write like a thoughtful sales rep who has done research and genuinely believes this is relevant."
+
+The role definition sets the voice, credibility, and intent of the email.
+
+### 2. Context Variables
+
+Include all the enrichment data you've built in prior tracks:
+
+```
+Prospect context:
+- Name: {{first_name}} {{last_name}}
+- Title: {{job_title}}
+- Company: {{company_name}}
+- Industry: {{company_industry}}
+- Company size: {{company_size_range}}
+- Funding stage: {{funding_stage}}
+- Recent signal: {{signal_description}}
+- Tech stack maturity: {{tech_stack_maturity}}
+- Messaging angle: {{messaging_angle}}
+- LinkedIn activity summary: {{linkedin_summary}}
+```
+
+More context = better output, up to a point. Don't include every field — include the fields that are most likely to surface specific, relevant observations.
+
+### 3. Objective
+
+Be explicit about what success looks like:
+
+**Weak:** "Write a cold email."
+**Strong:** "Write a cold email that gets a reply. The goal is to get them to agree to a 15-minute conversation. The email should feel like it came from a human who did research — not automation."
+
+### 4. Constraints
+
+This is where most prompts are too vague. Be extremely specific:
+
+```
+Constraints:
+- Maximum 80 words. Count them. Reject internally if over limit.
+- No bullet points in the email body
+- No use of phrases: "I hope this finds you well", "quick question", "just checking in", "thought leader"
+- First person singular only — "I" not "we"
+- One CTA only — do not offer multiple options
+- Framework: Signal-Value-Close (signal in sentence 1, value in sentence 2, close in sentence 3-4)
+- No exclamation marks
+```
+
+### 5. Output Format
+
+Be explicit about what to return:
+
+```
+Return ONLY the email body text. No subject line. No greeting salutation line. No sign-off.
+Do not include labels, headers, or explanations.
+```
+
+### 6. Examples (When to Include)
+
+Include 1–2 examples when:
+- The tone is nuanced (e.g., "direct but not aggressive")
+- The structure is unconventional
+- You've tested variants and know what performs best
+
+```
+Example of the voice and style I want:
+---
+Saw you just closed your Series B — timing on this is probably good. We help teams like yours skip the 3-month data infrastructure build that usually delays the first SDR hire. Worth 15 minutes to see what it looks like in practice?
+---
+```
+
+---
+
+## Prompt Testing Methodology
+
+Great prompts are discovered, not written perfectly on the first try. Here's the testing process:
+
+**Step 1: Write v1 prompt**
+Use the six-component structure above. Run it on 10 sample contacts.
+
+**Step 2: Quality review**
+For each output, score on 1–5:
+- Specificity (does it feel personal?)
+- Naturalness (does it sound human?)
+- Compliance (did it follow all constraints?)
+- CTA clarity (is the ask clear?)
+
+**Step 3: Identify failure modes**
+Where does the prompt consistently fail? Too long? Generic value prop? Wrong tone?
+
+**Step 4: Iterate one variable at a time**
+Change one thing in the prompt. Re-run on the same 10 contacts. Compare scores.
+
+**Step 5: Establish your v2 prompt**
+After 3–4 iterations, you should have a prompt that scores 4+ consistently.
+
+---
+
+## Common Prompt Failures and Fixes
+
+| Failure Mode | Symptom | Fix |
+|---|---|---|
+| Generic output | "Companies like yours often struggle with..." | Add stronger role definition + more specific context variables |
+| Too long | Consistently 120–150 words | Add explicit word count constraint with instruction to "count internally" |
+| Hollow personalization | References signal but doesn't connect it to anything specific | Add the "so what" instruction: "connect the signal to the specific downstream problem they're likely experiencing" |
+| Corporate tone | "I wanted to reach out regarding..." | Add example of desired voice + explicit instruction to avoid corporate phrases |
+| Wrong structure | Doesn't follow SVC or whatever framework you want | Name the framework explicitly and describe each component in the constraints |
+
+---
+
+<Tip>
+  **Quick Check:** What are the six components of an effective outreach prompt? Why do you include role definition? What is the right testing methodology for prompt iteration?
+</Tip>
+
+---
+
+## AP-2 Challenge: Build and Test 3 Prompt Variants (+125 XP)
+
+Write 3 variants of a personalized outreach prompt (varying one element between each variant). Test all three on the same 10 contacts.
+
+**Requirements:**
+- All 3 prompts documented with all six components
+- 10 contacts × 3 variant columns = 30 AI-generated emails
+- Quality scoring column for each email (specificity, naturalness, compliance, CTA — each 1–5)
+- Average quality score per variant
+- Winner analysis: which prompt variant performed best, and why?
+
+<Card title="Submit AP-2 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-ap2">
+  Share your grid + prompt variants + winner analysis. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: AP-3 — Multi-Layer Personalization →" icon="academy/ai-personalization/multi-layer-personalization">
+  AP-3 combines company, role, and individual signals into a single layered personalization system.
+</Card>
