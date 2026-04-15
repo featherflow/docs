@@ -1,161 +1,141 @@
 ---
-title: "Email Infrastructure"
-description: "SPF, DKIM, DMARC, and domain warmup. The boring stuff that kills your campaign if you skip it."
+title: "OA-1: Email Infrastructure"
+description: "SPF, DKIM, DMARC, domain warmup, and inbox rotation. The technical foundation that determines whether your outbound lands or disappears."
 ---
 
 <Info>
-  **OA-1 · Outbound Automation · 100 XP · ~15 min**
-
-  Complete the MXToolbox audit challenge at the bottom to earn 100 XP.
+  **OA-1 · Outbound Automation · 100 XP · ~18 min**
 </Info>
 
-# Email Infrastructure
-
-A customer came to us with a 2% reply rate. Great copy. Solid targeting. 400 sends per day. After 3 weeks of work and zero results, we checked the basics — their domain had a spam score of 95. Every email they sent was going straight to junk before a human ever read a word of it.
-
-**Don't be that team.** Do the infrastructure first.
-
-<Note>
-  🎬 **Video coming soon.** Check back shortly. The written content below is enough to complete the setup.
-</Note>
+A team came to us with a 2% reply rate. Great copy. Solid targeting. 400 sends per day. The problem: 70% of their email was landing in spam. Three weeks of campaigns, completely wasted. We fixed their authentication records, warmed three new domains, and reply rate went to 8% within two weeks — same copy, same list. Infrastructure is not optional.
 
 ---
 
-## Why Infrastructure Comes Before Everything Else
+## Why Email Infrastructure Matters
 
-Before you write a single line of copy, three things need to be true about your sending domain:
+Every email you send passes through a gauntlet of reputation filters before it reaches an inbox. Gmail, Outlook, and every major email provider scores your sending domain on three dimensions:
 
-1. **SPF** is configured correctly
-2. **DKIM** is configured correctly
-3. **DMARC** is configured correctly
+- **Authentication** — Can they verify you are who you say you are?
+- **Reputation** — Has this domain sent spam before? What's the bounce rate?
+- **Engagement** — Do people open and reply, or mark it as spam?
 
-If any one of these is missing or wrong, major email providers will filter your messages before they reach the inbox. No amount of great copy fixes a spam score problem.
+You control authentication completely. Reputation takes time to build. Engagement comes from quality. This module focuses on authentication and reputation — the things you can get right before sending a single email.
 
 ---
 
-## The Three Auth Records Explained
+## The Three Authentication Records
 
 ### SPF (Sender Policy Framework)
 
-Tells receiving servers which IP addresses are authorised to send email on behalf of your domain.
+SPF is a DNS record that lists which servers are authorized to send email on behalf of your domain. If an email claims to be from `you@yourcompany.com` but comes from a server not in your SPF record, receiving servers can reject it.
 
-**What it prevents:** Someone else spoofing your domain in the `From:` field.
-
-**What it looks like in DNS:**
 ```
-Type: TXT
-Name: @
-Value: v=spf1 include:_spf.google.com ~all
+v=spf1 include:_spf.google.com include:sendgrid.net ~all
 ```
 
-Replace `_spf.google.com` with your mail provider's SPF record. Google Workspace, Microsoft 365, and every major sending platform publishes this value in their docs.
+The `~all` is a soft fail — suspicious emails get tagged but not rejected. `~all` is recommended over `-all` (hard fail) for cold outreach domains.
 
 ### DKIM (DomainKeys Identified Mail)
 
-Adds a cryptographic signature to every outbound email. Receiving servers use the public key in your DNS to verify the signature — proving the email hasn't been tampered with in transit.
+DKIM adds a cryptographic signature to every email you send. The receiving server checks the signature against a public key in your DNS. If they match, the email is authenticated.
 
-**What it prevents:** Email content being modified after sending (and signals trustworthiness to inbox providers).
-
-**How to set it up:** Your email platform generates a unique DKIM key pair. You add the public key as a TXT record in DNS. In Google Workspace: Admin → Apps → Google Workspace → Gmail → Authenticate email. Copy the TXT record value and add it to your DNS.
+DKIM doesn't prevent spam — it proves the email actually came from you. Combined with DMARC, it creates a strong authentication chain.
 
 ### DMARC (Domain-based Message Authentication, Reporting and Conformance)
 
-Tells receiving servers what to do when an email fails SPF or DKIM checks — and sends you reports about authentication failures.
+DMARC tells receiving servers what to do when an email fails SPF or DKIM:
 
-**Start with monitoring mode (p=none) before enforcing:**
+| Policy | Behavior |
+|---|---|
+| `p=none` | Monitor only — log failures but deliver the email |
+| `p=quarantine` | Send failures to spam folder |
+| `p=reject` | Reject failures entirely |
+
+For cold outreach, start with `p=none` to monitor, then move to `p=quarantine` once you've verified your authentication is clean.
+
 ```
-Type: TXT
-Name: _dmarc
-Value: v=DMARC1; p=none; rua=mailto:dmarc@yourdomain.com
+v=DMARC1; p=none; rua=mailto:dmarc@yourcompany.com
 ```
-
-Once you've reviewed a few weeks of reports and confirmed legitimate mail is passing, move to `p=quarantine` and eventually `p=reject`.
-
-<Warning>
-  **DNS propagation takes time.** Changes take 15 minutes to 48 hours to propagate globally. Run your verification checks after your DNS TTL expires — not immediately after saving the records.
-</Warning>
 
 ---
 
-## Verify Everything with MXToolbox
+## Domain Strategy for Cold Outbound
 
-[MXToolbox SuperTool](https://mxtoolbox.com/SuperTool.aspx) is the fastest way to check your authentication setup.
+Never use your primary company domain for cold outreach. One spam complaint spike can damage your entire company's email deliverability — including your transactional and marketing emails.
 
-1. Go to mxtoolbox.com/SuperTool.aspx
-2. Enter your sending domain
-3. Run **SPF Lookup**, **DKIM Lookup**, and **DMARC Lookup**
-4. Everything should return green
+**The recommended setup:**
+- Register 2–3 "sending domains" similar to your main domain
+  - Examples: `yourco.io`, `getyourco.com`, `tryyourco.com`
+- Set up SPF, DKIM, DMARC on each
+- Warm each domain separately (see below)
+- Rotate sending across domains to stay under per-domain limits
 
-If anything is red or yellow, fix it before moving forward. Do not skip this step.
+Keep your `yourcompany.com` domain only for replies and transactional email.
 
 ---
 
-## Domain Warmup: Building Your Sender Reputation
+## Domain Warmup
 
-A brand-new domain that suddenly sends 200 emails per day looks like a spammer. Email providers build a reputation score for every domain over time — you need to ramp gradually.
+A brand new domain has zero sending reputation. If you send 500 emails on day one, every major provider will flag it as spam. Warmup is the process of building reputation gradually.
 
-| Week | Sends/Day | What to Watch | Red Flag |
-|------|-----------|--------------|---------|
-| 1–2 | 5–15 | Bounce rate, spam complaints | Bounce > 5% = stop and fix |
-| 3–4 | 20–40 | Open rate, reply rate | Open rate < 25% = review targeting |
-| 5–6 | 50–80 | Inbox placement | Use GlockApps to check placement |
-| 7+ | 100–150 | Sustained deliverability | Monitor weekly, never stop caring |
+**Manual warmup schedule:**
 
-**Use a warmup tool for the first 6 weeks.** Warmup Inbox, Lemwarm, and Mailreach all send and receive emails automatically to build your reputation with real inbox providers. This runs in the background — you don't need to manage it manually.
+| Week | Daily Volume per Domain |
+|---|---|
+| Week 1 | 10–20 emails/day |
+| Week 2 | 20–40 emails/day |
+| Week 3 | 40–75 emails/day |
+| Week 4 | 75–150 emails/day |
+| Week 5+ | 150–300 emails/day |
+
+**Automated warmup tools** (Instantly Warmup, Mailreach, Lemwarm) simulate email exchanges to build reputation faster. Use them, but don't rely on them alone — real replies to real emails are the strongest reputation signal.
+
+---
+
+## Inbox Rotation
+
+Even warmed domains have per-day sending limits before deliverability degrades. The solution is inbox rotation: spread your sends across multiple inboxes and domains.
+
+In Instantly, Smartlead, and most modern sequencers, you can add multiple sending accounts and the tool rotates sends automatically. A typical setup:
+
+- 3 domains × 2 inboxes per domain = 6 inboxes
+- 50 emails/inbox/day × 6 = 300 sends/day total
+- Safely under any single domain's reputation threshold
+
+---
+
+## Audit Checklist
+
+Before running any campaign, run this checklist:
+
+- [ ] SPF record exists and includes all sending servers
+- [ ] DKIM record exists and key is active
+- [ ] DMARC record exists (even `p=none` is fine to start)
+- [ ] Domain is at least 2 weeks old
+- [ ] Domain has been warmed to your target send volume
+- [ ] You are not sending from your primary company domain
+- [ ] Reply-to address is monitored (you'll get replies)
+
+Use [MXToolbox](https://mxtoolbox.com/SuperTool.aspx) to check all three authentication records at once.
+
+---
 
 <Tip>
-  **Pro tip:** Use a subdomain for outbound prospecting (`outreach.yourdomain.com`), not your primary domain. This isolates your prospecting reputation from your transactional email reputation. If your outbound domain gets flagged, your product emails are unaffected.
+  **Quick Check:** What happens if you send 500 cold emails from a brand new domain on day one? What's the difference between SPF and DKIM in plain English?
 </Tip>
 
 ---
 
-## The Deliverability Checklist
+## OA-1 Challenge: Run an MXToolbox Audit (+100 XP)
 
-Before your first send:
+Run an MXToolbox audit on your sending domain (or a domain you're setting up). Screenshot the results showing SPF, DKIM, and DMARC status. If any are missing, document what needs to be added.
 
-- [ ] SPF record added and verified (MXToolbox shows green)
-- [ ] DKIM configured and verified
-- [ ] DMARC added in `p=none` monitoring mode
-- [ ] Warmup tool connected and running
-- [ ] Sending from a subdomain (not primary domain)
-- [ ] Unsubscribe link or mechanism in place
-- [ ] Sending volume under 20/day for first two weeks
+<Card title="Submit OA-1 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-oa1">
+  Share your MXToolbox audit results and any remediation steps needed. **+100 XP on approval.**
+</Card>
 
 ---
 
-## 🧠 Quick Check
-
-<Tip>
-  1. What does SPF stand for and what does it protect against?
-  2. Why start DMARC in `p=none` mode rather than `p=reject`?
-  3. Why use a subdomain for outbound prospecting rather than your primary domain?
-</Tip>
-
----
-
-## 🎯 Challenge · 100 XP
-
-Run a full deliverability audit on your sending domain.
-
-<Steps>
-  <Step title="Run MXToolbox checks">
-    Go to mxtoolbox.com/SuperTool.aspx. Run SPF Lookup, DKIM Lookup, and DMARC Lookup on your sending domain. Screenshot the results.
-  </Step>
-  <Step title="Fix any failures">
-    If any check fails, fix the DNS record. Wait for propagation. Re-run MXToolbox. Screenshot the passing results.
-  </Step>
-  <Step title="Check your warmup status">
-    Confirm you have a warmup tool connected (or note if this is a new domain that hasn't started warmup yet).
-  </Step>
-  <Step title="Submit">
-    Submit your MXToolbox screenshot showing all three checks. Note any fixes you made and current warmup status.
-  </Step>
-</Steps>
-
-[Submit your OA-1 audit →](https://bitscale.fillout.com/academy-challenge-oa1)
-
----
-
-<Card title="Up next: OA-2 · Building Sequences" icon="arrow-right" href="/academy/outbound/building-sequences">
-  Infrastructure is ready. Now let's build the actual sequences — and use Bitscale to make every email feel manually written.
+<Card title="Next: OA-2 Building Sequences →" icon="arrow-right" href="/academy/outbound/building-sequences">
+  Infrastructure is set. Now learn how to architect email sequences that generate pipeline — not just opens.
 </Card>
