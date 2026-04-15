@@ -1,0 +1,147 @@
+---
+title: "GA-5: Pipeline Attribution"
+description: "What gets measured gets managed. GA-5 covers the attribution models, tracking infrastructure, and reporting systems that connect GTM activity to pipeline."
+---
+
+<Info>
+  **GA-5 · GTM Architect · 150 XP · ~20 min**
+</Info>
+
+Most GTM teams can tell you how many emails they sent. Few can tell you how much pipeline those emails generated. Attribution is the discipline that connects activity (sends, replies) to outcomes (meetings, opportunities, revenue).
+
+Without it, you're optimizing for the wrong things.
+
+---
+
+## The Attribution Problem in GTM
+
+GTM attribution is hard because buying is non-linear. A prospect might:
+1. See your LinkedIn post (awareness)
+2. Open your email twice (consideration)
+3. Attend a webinar you hosted (engagement)
+4. Get a referral from a colleague who's a customer (validation)
+5. Reply to an outbound email three months later (conversion)
+
+Which touchpoint gets credit? All of them contributed. None of them alone "caused" the conversion.
+
+The goal of attribution isn't perfect accuracy — it's enough accuracy to make better decisions about where to invest.
+
+---
+
+## Attribution Models for Outbound
+
+| Model | Best For | How to Implement |
+|---|---|---|
+| **First outreach attribution** | Understanding which channel/campaign initiated the relationship | Tag every contact with the campaign that first touched them |
+| **Reply attribution** | Understanding what copy/signal drove the first positive engagement | Tag every reply with the email variant and signal that triggered it |
+| **Meeting attribution** | Understanding what sequence/channel booked the meeting | Log in CRM which sequence the contact was in when they booked |
+| **Opportunity attribution** | Connecting outbound activity to pipeline created | CRM opportunity record should carry source campaign tags |
+| **Revenue attribution** | Full-funnel from first touch to closed won | Requires CRM + sequencer + billing integration |
+
+For most outbound programs, first outreach + meeting attribution is sufficient for optimization decisions.
+
+---
+
+## Building Attribution in Bitscale
+
+### Campaign tagging at the source:
+
+Every contact exported to a sequencer should carry attribution tags:
+```
+Assign attribution tags for this contact going into the sequencer:
+
+Contact: {{first_name}} {{last_name}}, {{company_name}}
+Signal that triggered outreach: {{signal_type}} — {{signal_description}}
+Sequence being enrolled in: {{sequence_name}}
+Personalization tier: {{personalization_tier}}
+ICP fit score: {{fit_score}}
+Primary vertical: {{company_vertical}}
+
+Generate:
+- campaign_tag: [signal_type]_[sequence_name]_[date_month_year]
+- source_signal: clear label of what triggered this
+- personalization_tag: full_personalization / two_layer / company_only / minimal
+- icp_segment: [vertical]_[size_range]
+
+Return as JSON.
+```
+
+### Meeting attribution column:
+
+When a meeting gets booked, pull back the attribution data:
+```
+A meeting was booked with {{first_name}} {{last_name}} at {{company_name}}.
+
+Their history in our system:
+- First outreach date: {{first_outreach_date}}
+- Signal that triggered outreach: {{source_signal}}
+- Sequence they were in: {{sequence_name}}
+- Number of touches before reply: {{touch_count}}
+- Channel that produced the reply: {{reply_channel}}
+- Days from first touch to meeting: {{days_to_meeting}}
+
+Generate an attribution summary for the CRM opportunity record.
+
+Return as JSON with all relevant attribution fields.
+```
+
+---
+
+## The Pipeline Attribution Dashboard
+
+Build a Bitscale analysis grid that tracks aggregate attribution data:
+
+**Columns:**
+- `campaign_name` — the campaign/workflow that sourced the contact
+- `contacts_enrolled` — total contacts in this campaign
+- `replies` — total replies
+- `positive_replies` — replies expressing interest
+- `meetings_booked` — meetings attributed to this campaign
+- `opportunities_created` — CRM opportunities with this source tag
+- `pipeline_generated` — total $ value of those opportunities
+- `cost_per_meeting` — total spend ÷ meetings booked
+- `signal_type` — which signal type drove this campaign
+
+This grid lets you answer: which signal types generate the most pipeline per dollar spent?
+
+---
+
+## Revenue Attribution Metrics
+
+| Metric | Formula | Why It Matters |
+|---|---|---|
+| **Reply rate** | Replies ÷ Sends | Measures copy + targeting effectiveness |
+| **Meeting rate** | Meetings ÷ Sends | Primary measure of outbound efficiency |
+| **Opportunity rate** | Opportunities ÷ Sends | Pipeline generation effectiveness |
+| **Win rate from outbound** | Closed Won ÷ Opportunities | Outbound lead quality |
+| **Cost per opportunity** | Total cost ÷ Opportunities | Efficiency compared to other channels |
+| **Signal ROI** | Pipeline from signal ÷ Cost of signal detection | Value of each signal type |
+
+---
+
+<Tip>
+  **Quick Check:** Why is attribution hard in multi-touch GTM programs? What four attribution tags should every sequencer contact carry? What is "signal ROI" and how do you calculate it?
+</Tip>
+
+---
+
+## GA-5 Challenge: Build an Attribution System (+150 XP)
+
+Build a pipeline attribution system for a real or simulated outbound program.
+
+**Requirements:**
+- Campaign tagging column for 30+ contacts going into sequencer
+- Attribution dashboard grid with all columns
+- Meeting attribution summary for 5 simulated meetings
+- Signal ROI calculation for at least 2 signal types
+- A brief analysis: if you could only run one type of outbound campaign, what does the attribution data suggest?
+
+<Card title="Submit GA-5 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-ga5">
+  Submit your attribution system grid + analysis. **+150 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: GA-6 — GTM Stack Design →" icon="arrow-right" href="/academy/gtm-architect/gtm-stack-design">
+  GA-6 covers how to evaluate, select, and integrate the tools that make up a complete GTM stack at different company stages.
+</Card>
