@@ -1,0 +1,139 @@
+---
+title: "SI-1: The Signal Framework"
+description: "Not all signals are equal. Learn the taxonomy of B2B signals, how to evaluate signal quality, and which signals consistently drive outbound results."
+---
+
+<Info>
+  **SI-1 · Signal Intelligence · 100 XP · ~18 min**
+</Info>
+
+A signal is any observable event that indicates a company or person may be more receptive to your outreach right now than they were yesterday.
+
+The key word is "observable." You can't know what someone is thinking — but you can observe what they're doing. A company posting 8 sales job listings, announcing a $20M Series B, and onboarding a new VP of Sales is observable. It's also a strong, time-sensitive buying signal.
+
+---
+
+## Signal Taxonomy
+
+Signals exist on two axes: strength (how predictive they are of buying intent) and latency (how quickly you need to act before the signal goes cold).
+
+| Signal Category | Strength | Latency | Examples |
+|---|---|---|---|
+| **First-party direct** | Very high | Hours | Pricing page visit, demo request, free trial |
+| **Job change** | High | Days | New executive hire in a relevant role |
+| **Funding event** | High | Days–weeks | Series A/B/C announcement |
+| **Hiring surge** | Medium-high | Days–weeks | Posting 5+ SDR/sales/growth roles |
+| **Product launch** | Medium | Days | New product, new market, partnership announcement |
+| **Competitive displacement** | Medium | Days–weeks | Job posting requires competitor tool, G2 review comparing competitors |
+| **Content engagement** | Low-medium | Days | Downloaded a relevant resource, attended a webinar |
+| **Tech stack change** | Medium | Weeks | Added or removed a tool from their stack |
+| **News & events** | Variable | Days | Conference speaking slot, press coverage, award |
+
+---
+
+## Signal Decay
+
+Every signal has a half-life. Wait too long to act and the signal is worthless.
+
+| Signal Type | Optimal Outreach Window | Why |
+|---|---|---|
+| Pricing page visit | Same day | Buyer is actively comparing |
+| Funding announcement | Within 3 days | Budget decisions made immediately post-close |
+| Executive hire | Within 7 days | New hire is in "make my mark" mode |
+| Job posting (sales roles) | Within 2 weeks | Hiring cycle in progress |
+| Product launch | Within 1 week | Company is in growth mode |
+| Content download | Within 48 hours | Interest is highest immediately |
+
+After the optimal window, you can still act — but the signal is weaker. The personalization becomes "I noticed you hired a new VP of Sales last month" which sounds less timely than "I saw you just announced [Name] as your new VP of Sales."
+
+---
+
+## Signal vs. Noise: The Quality Filter
+
+Not every signal is worth building a workflow around. Apply this three-question filter:
+
+1. **Is it specific?** — "Company is in SaaS" is noise. "Company just hired a VP of Sales from Salesforce" is a signal.
+2. **Is it timely?** — Can you act on it within the optimal window?
+3. **Is it actionable?** — Does it give you something specific to say in your outreach?
+
+A signal passes all three filters. Anything else is data, not a signal.
+
+**Examples:**
+- "They're a B2B SaaS company" → Data (useful for filtering, not for triggering)
+- "They raised a $15M Series B announced yesterday" → Signal (specific, timely, actionable)
+- "They use Salesforce" → Data (useful for personalization, not for triggering — unless they just added it)
+- "Their VP of Revenue posted 3 times this week about pipeline generation" → Signal (specific, very timely, actionable)
+
+---
+
+## Building a Signal Detection System
+
+Signal detection in Bitscale is a combination of scheduled workflows that check for events and trigger enrichment when a signal fires.
+
+The architecture has three layers:
+
+**Layer 1: Signal sources** — where you monitor for events
+- LinkedIn (job postings, executive hires, company updates)
+- Crunchbase / PitchBook (funding events)
+- Google News API / Bing News (press coverage)
+- Job boards (Indeed, Glassdoor, Lever, Greenhouse APIs)
+- Your CRM (first-party behavioral signals)
+
+**Layer 2: Signal detection** — the Bitscale grid that processes raw events
+- Imports new events from signal sources
+- Classifies signal type and strength
+- Filters for your ICP
+
+**Layer 3: Signal activation** — the enrichment + outreach trigger
+- Enriches the company and contact when a signal fires
+- Generates personalized copy using the signal as context
+- Routes to sequencer or creates a task for manual review
+
+---
+
+## Signal Quality Scoring Column
+
+```
+Evaluate the quality of this signal for B2B outbound:
+
+Signal: {{signal_description}}
+Source: {{signal_source}}
+Date: {{signal_date}}
+Company: {{company_name}}
+
+Score the signal on:
+- Specificity (0-30): Is it specific and unique to this company? Generic = 0, highly specific = 30
+- Timeliness (0-30): Is it recent? Older than 30 days = 0, within 3 days = 30
+- Actionability (0-40): Does it give you something specific to reference in outreach?
+
+Return: {"specificity": N, "timeliness": N, "actionability": N, "total": N, "recommendation": "act_now / act_this_week / note_for_nurture / ignore"}
+```
+
+---
+
+<Tip>
+  **Quick Check:** What are the two axes that define signal quality? What's the optimal outreach window for a funding announcement? What three questions separate signals from noise?
+</Tip>
+
+---
+
+## SI-1 Challenge: Build a Signal Quality Scoring Grid (+100 XP)
+
+Collect 20 real signals from any combination of sources (LinkedIn, Crunchbase, news) for companies in your ICP.
+
+**Requirements:**
+- All 20 signals documented with: signal description, source, date, company
+- Signal quality score column (specificity, timeliness, actionability, total)
+- Recommendation column (act_now / act_this_week / note_for_nurture / ignore)
+- Distribution summary: how many in each recommendation bucket?
+- A short paragraph on which signal type had the highest average quality score and why
+
+<Card title="Submit SI-1 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-si1">
+  Share your grid + analysis paragraph. **+100 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: SI-2 — Job Change Detection →" icon="arrow-right" href="/academy/signal-intelligence/job-change-detection">
+  Job changes are among the highest-converting signals in B2B outbound. SI-2 covers how to detect, qualify, and activate them at scale.
+</Card>
