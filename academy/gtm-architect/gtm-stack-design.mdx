@@ -1,0 +1,140 @@
+---
+title: "GA-6: GTM Stack Design"
+description: "The right tool stack at Seed is wrong at Series B. Learn how to design, evaluate, and evolve a GTM stack that matches company stage, team size, and motion complexity."
+---
+
+<Info>
+  **GA-6 · GTM Architect · 150 XP · ~20 min**
+</Info>
+
+There is no universal "best GTM stack." The right stack depends on company stage, team size, ICP complexity, and motion type. A 10-person company with one founder doing outbound needs different tools than a 200-person company with a 20-rep SDR team.
+
+This module teaches you to design stacks that match context — and to know when a stack needs to evolve.
+
+---
+
+## Stack by Stage
+
+### Seed / Pre-Seed (1–10 employees, founder-led GTM)
+
+**Core needs:** Find leads fast, validate messaging, book meetings without overhead.
+
+| Category | Tool Options | Why |
+|---|---|---|
+| CRM | HubSpot Free / Airtable | Low cost, easy setup |
+| Contact source | Apollo.io | All-in-one: find + enrich + sequence |
+| Email infrastructure | Google Workspace + Instantly | Affordable, reliable |
+| Data enrichment | Bitscale | AI-powered enrichment without enterprise pricing |
+| Analytics | Sheets / Notion | Low overhead |
+
+**Total monthly cost:** $200–500/month
+
+---
+
+### Series A (11–50 employees, first sales team)
+
+**Core needs:** Scale what's working, build process, start measuring attribution.
+
+| Category | Tool Options | Why |
+|---|---|---|
+| CRM | HubSpot Pro or Salesforce Starter | Reporting + pipeline visibility |
+| Contact source | Apollo + LinkedIn Sales Nav | Broader ICP coverage |
+| Sequencer | Apollo Sequences or Instantly Pro | Volume + reply tracking |
+| Email infrastructure | Multiple warmup domains | 3–5 sending domains |
+| Data enrichment | Bitscale + Clearbit | Deeper enrichment per contact |
+| Signal | LinkedIn alerts + Crunchbase | Basic signal detection |
+| Analytics | HubSpot reports or Looker | Pipeline attribution starting |
+
+**Total monthly cost:** $2,000–5,000/month
+
+---
+
+### Series B (51–200 employees, scaling SDR team)
+
+**Core needs:** Efficiency at scale, full attribution, tech stack optimization.
+
+| Category | Tool Options | Why |
+|---|---|---|
+| CRM | Salesforce Enterprise | Full attribution, complex routing |
+| Contact source | ZoomInfo + LinkedIn Sales Nav | Largest coverage |
+| Sequencer | Outreach or Salesloft | Advanced analytics, AI features |
+| Email infrastructure | Warmy + 10+ sending domains | High-volume sending |
+| Data enrichment | Bitscale + enrichment waterfall | Maximum coverage + quality |
+| Signal | Bombora + Crunchbase + job board monitoring | Full signal coverage |
+| Intent | 6sense or Demandbase | Account-based intent |
+| Analytics | Salesforce + Tableau or Looker | Full funnel attribution |
+| Automation | Zapier / n8n for integrations | Workflow automation |
+
+**Total monthly cost:** $15,000–40,000/month
+
+---
+
+## Stack Evaluation Framework
+
+When evaluating any tool for your GTM stack, score it on six dimensions:
+
+```
+Evaluate this tool for our GTM stack:
+
+Tool name: {{tool_name}}
+Use case: {{intended_use_case}}
+Company stage: {{company_stage}}
+
+Score 1-5 on each dimension:
+1. Coverage: Does it cover our ICP well?
+2. Accuracy: Is the data/output reliable?
+3. Integration: Does it connect cleanly to our existing stack?
+4. Cost efficiency: Value relative to price at our volume?
+5. Time to value: How quickly can we operationalize it?
+6. Scalability: Will it still work 2x our current volume?
+
+Calculate total score (max 30). Recommend: adopt / trial / defer / reject.
+
+Return as JSON.
+```
+
+---
+
+## Stack Evolution Triggers
+
+Know when your stack needs to change:
+
+| Signal | Implication |
+|---|---|
+| Bounce rates creeping above 3% | Email infrastructure not scaling with volume |
+| CRM data quality degrading | Enrichment source coverage has gaps |
+| SDR ramp time > 90 days | Process and tooling too complex for new hires |
+| Attribution gaps in the funnel | Analytics integration incomplete |
+| 3+ tools doing overlapping functions | Tech debt accumulating; consolidation needed |
+| Sequencer not logging activity back to CRM | Integration broken; attribution blind |
+
+Run a quarterly stack review: for each tool, document utilization, actual cost, and whether you'd buy it again today.
+
+---
+
+<Tip>
+  **Quick Check:** What are the three company stages and their primary GTM stack needs? What six dimensions should you evaluate when selecting a tool? Name three signals that indicate your stack needs to evolve.
+</Tip>
+
+---
+
+## GA-6 Challenge: Design a GTM Stack (+150 XP)
+
+Design a complete GTM stack for two different company stages (your choice of which two).
+
+**Requirements:**
+- Tool selection with rationale for each category (both stages)
+- Stack evaluation scoring for 3 specific tools using the 6-dimension framework
+- Cost estimate per stage
+- Migration plan: if a Series A company is moving to a Series B stack, what's the transition sequence?
+- A 2-paragraph brief: what's the most common stack mistake you see at each stage?
+
+<Card title="Submit GA-6 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-ga6">
+  Submit your stack designs + migration plan. **+150 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: GA-7 — GTM Architect Capstone →" icon="arrow-right" href="/academy/gtm-architect/capstone">
+  The final capstone. Design and build a complete, integrated GTM system from scratch. Earn the GTM Architect certification.
+</Card>
