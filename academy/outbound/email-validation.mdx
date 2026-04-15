@@ -1,19 +1,170 @@
 ---
-title: "OA-4: Email Validation & List Hygiene"
-description: "Catch-all detection, bounce prevention, and list scoring to protect your sender reputation."
+title: "OA-4: Email Validation"
+description: "Bounce rates above 3% damage your sender reputation faster than anything else. Learn how to validate at scale before you ever hit send."
 ---
 
-<Note>
-  **Outbound Automation Track · Module 4 of 7.** Full content coming soon.
-</Note>
-
 <Info>
-  This module is being finalized. Check back within a few days —
-  or [join the founding cohort](https://bitscale.fillout.com/academy-founding)
-  to get early access and a personal walkthrough.
+  **OA-4 · Outbound Automation · 100 XP · ~18 min**
 </Info>
 
-<CardGroup cols={2}>
-  <Card title="← OA-3: Copy That Converts" icon="arrow-left" href="/academy/outbound/copy-that-converts">Previous</Card>
-  <Card title="Next: Multichannel →" icon="arrow-right" href="/academy/outbound/multichannel-orchestration">OA-5</Card>
-</CardGroup>
+A 5% bounce rate sounds small. But it compounds: mailbox providers flag you as a low-quality sender, your deliverability drops, your open rates fall, and eventually your emails stop reaching inboxes entirely. Email validation is the unglamorous work that keeps the machine running.
+
+This module covers the four validation layers you need, how to build them in Bitscale, and what to do with the results.
+
+---
+
+## The Four Validation Layers
+
+Not all validation is equal. Most teams only do one or two layers and wonder why their bounce rates creep up.
+
+| Layer | What It Checks | When to Run |
+|---|---|---|
+| **Syntax** | Valid email format (has @, valid domain structure) | Always, first |
+| **Domain** | Does the domain exist and accept email? (MX record check) | Always |
+| **Catch-all detection** | Does the server accept *all* emails regardless of whether the mailbox exists? | Before enrichment |
+| **Mailbox verification** | Does this specific mailbox exist? (SMTP probe) | Final layer, before sending |
+
+Running all four layers before sending is table stakes for any serious outbound program.
+
+---
+
+## Catch-All Domains: The Hidden Problem
+
+A "catch-all" domain is configured to accept email addressed to any address at that domain — even if the mailbox doesn't exist. This means validation services will return "valid" for `sdflkjsdf@catch-all-company.com` even though nobody checks that inbox.
+
+Catch-all addresses are common at mid-market and enterprise companies. If you're seeing high bounce rates despite "validated" lists, catch-all addresses are usually the culprit.
+
+**How to handle catch-all addresses in Bitscale:**
+1. Tag them separately in a `validation_status` column
+2. Apply a separate sending strategy: lower volume, more conservative sending windows
+3. Or deprioritize entirely if you have enough valid addresses in the segment
+
+---
+
+## Building a Validation Column in Bitscale
+
+The cleanest approach is a dedicated validation column that runs an external API, then a routing column that sorts addresses into buckets.
+
+**Step 1: Add an API integration column**
+
+Connect to your preferred validation provider (NeverBounce, ZeroBounce, Millionverifier). The Bitscale enrichment column can call any API that accepts an email address and returns a status.
+
+Input: `{{email}}`
+
+**Step 2: Map the response to a status bucket**
+
+Your AI column processes the API response into clean categories:
+```
+Based on this email validation API response: {{api_response}}
+
+Classify this email as one of:
+- valid: mailbox confirmed to exist
+- invalid: mailbox does not exist
+- catch-all: domain accepts all mail
+- risky: cannot be confirmed (timeout, firewall, etc.)
+- undeliverable: hard bounce
+
+Return ONLY the classification word.
+```
+
+**Step 3: Routing logic**
+
+Add a column for send/hold/skip logic:
+```
+Given validation_status = {{validation_status}}, classify as:
+- send: if valid
+- send_carefully: if catch-all (limit to 20/day from this domain)
+- skip: if invalid or undeliverable
+- manual_review: if risky
+
+Return ONLY the routing decision.
+```
+
+---
+
+## Validation at the Domain Level
+
+Before you even verify individual mailboxes, you can filter at the domain level. This is much cheaper (no per-address API cost) and removes obvious dead weight.
+
+Domains to filter immediately:
+- **Free email providers**: gmail.com, yahoo.com, hotmail.com, outlook.com (for B2B)
+- **Role-based addresses**: info@, hello@, admin@, support@, sales@ (usually unmonitored)
+- **Known spam traps**: check against blacklists
+- **Domains with no MX records**: the company literally doesn't have email set up
+
+**Bitscale column for domain-level filtering:**
+```
+Email: {{email}}
+
+Extract the domain from this email. Then classify:
+- personal_email: if it's a common free provider (gmail, yahoo, hotmail, outlook, icloud)
+- role_based: if it starts with info, hello, admin, support, sales, contact, noreply, no-reply
+- business: everything else
+
+Return ONLY: personal_email, role_based, or business
+```
+
+Run this column first. It costs nothing (no API call) and typically removes 10–20% of a raw list before you spend a penny on validation.
+
+---
+
+## Bounce Rate Management
+
+Even with perfect validation, you'll get some bounces. The goal is staying under thresholds:
+
+| Metric | Green | Yellow | Red — Stop sending |
+|---|---|---|---|
+| Hard bounce rate | < 1% | 1–2% | > 3% |
+| Soft bounce rate | < 3% | 3–5% | > 8% |
+| Spam complaint rate | < 0.08% | 0.08–0.3% | > 0.3% |
+
+If you hit red on any metric, pause sending immediately, investigate the source of bounces, re-validate the affected segment, and restart at reduced volume.
+
+<Warning>
+  Google's 2024 sender requirements set a 0.3% spam complaint rate as a hard threshold for bulk senders. Exceed it and your emails stop reaching Gmail inboxes. Monitor complaint rates in Google Postmaster Tools — not just in your sequencer.
+</Warning>
+
+---
+
+## Validation Workflow: The Full Sequence
+
+Here's the complete validation pipeline as a Bitscale grid flow:
+
+1. **Import raw list** → your source data
+2. **Domain filter column** → remove personal/role-based emails
+3. **MX record check column** → remove domains with no mail server
+4. **Catch-all detection column** → tag catch-all domains
+5. **Mailbox verification column** → SMTP probe on remaining addresses
+6. **Routing column** → send / send_carefully / skip / manual_review
+7. **Export filtered list** → only `send` and `send_carefully` rows go to sequencer
+
+This pipeline typically removes 15–35% of a raw list. That's not wasted effort — it's saved sender reputation.
+
+---
+
+<Tip>
+  **Quick Check:** What's the difference between a syntax check and a mailbox verification? What is a catch-all domain and why is it a problem? What bounce rate triggers immediate sending pause?
+</Tip>
+
+---
+
+## OA-4 Challenge: Build a Validation Pipeline (+100 XP)
+
+Take a list of at least 50 email addresses (use a sample from a public dataset or generate test addresses) and build the full 4-layer validation pipeline in Bitscale.
+
+**Requirements:**
+- At least 4 validation columns (syntax, domain filter, catch-all detection, routing)
+- A `validation_status` column with clean bucketed output
+- A `routing_decision` column (send / send_carefully / skip / manual_review)
+- Screenshot showing the distribution of each bucket
+- Brief paragraph explaining your decision-making on the catch-all addresses
+
+<Card title="Submit OA-4 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-oa4">
+  Share your grid link + screenshot of bucket distribution. **+100 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: OA-5 — Multichannel Orchestration →" icon="arrow-right" href="/academy/outbound/multichannel-orchestration">
+  Email is one channel. OA-5 covers how to coordinate LinkedIn, email, and phone into a single orchestrated outbound motion.
+</Card>
