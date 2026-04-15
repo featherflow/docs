@@ -1,0 +1,158 @@
+---
+title: "GA-4: Workflow Automation & Triggers"
+description: "The difference between a workflow you run and a workflow that runs is trigger-based automation. GA-4 covers the architecture of always-on, event-driven GTM systems."
+---
+
+<Info>
+  **GA-4 · GTM Architect · 150 XP · ~22 min**
+</Info>
+
+Every workflow you've built so far has been batch-based: you run it manually when you have a list to process. That's fine for getting started. But the highest-performing GTM teams run on triggers: something happens → workflow fires → result delivered. No manual intervention.
+
+This module covers the architecture of trigger-based automation.
+
+---
+
+## Batch vs. Trigger Architecture
+
+| Characteristic | Batch | Trigger |
+|---|---|---|
+| **Timing** | Scheduled (daily/weekly) | Event-driven (immediate) |
+| **Latency** | Hours to days | Minutes to hours |
+| **Coverage** | Predetermined list | Any event that matches criteria |
+| **Scalability** | Limited by manual review capacity | Scales with event volume |
+| **Signal freshness** | Decays with batch cycle | Always fresh |
+| **Complexity** | Lower | Higher |
+
+For time-sensitive signals (job changes, funding events, pricing page visits), batch processing is a competitive disadvantage — your competitors acting on the same signal with a trigger will get there first.
+
+---
+
+## Trigger Architecture in Bitscale
+
+A trigger-based workflow has three components:
+
+**1. The trigger source**
+What event fires the trigger? Options:
+- CRM event (new lead created, deal stage changed, activity logged)
+- Webhook from external source (Crunchbase funding event, LinkedIn change, form submission)
+- Scheduled check (daily query for new job postings matching ICP criteria)
+- First-party behavior (pricing page visit from web analytics)
+
+**2. The trigger condition**
+Not every event should fire the full workflow. The condition filters:
+- Is this company in our ICP?
+- Is this contact not already in an active sequence?
+- Has this signal been seen before for this company in the last 30 days?
+
+**3. The triggered workflow**
+What happens when a valid trigger fires:
+- Enrich the company (if new)
+- Find decision-maker contact (if not already known)
+- Score for fit × timing
+- Generate personalized copy
+- Route: Tier 1 auto-export to sequencer, Tier 2 to review queue, Tier 3 to nurture
+
+---
+
+## Building Trigger Logic in Bitscale
+
+**Trigger condition check:**
+```
+Evaluate whether this event should trigger the enrichment workflow:
+
+Event: {{event_type}} at {{company_name}}
+Event date: {{event_date}}
+
+Checks:
+1. ICP fit: is {{company_name}} in our defined ICP? (Industry: {{company_industry}}, Size: {{company_size}})
+2. Recent duplicate: have we triggered for {{company_name}} in the last 30 days? Last trigger date: {{last_trigger_date}}
+3. Already in sequence: is the primary contact already enrolled? CRM status: {{crm_sequence_status}}
+4. Blacklist: is {{company_name}} on the do-not-contact list? {{blacklist_status}}
+
+Result: proceed / skip_duplicate / skip_in_sequence / skip_blacklist / skip_no_fit
+
+Return as JSON: {"decision": "proceed or skip_[reason]", "reason": "brief explanation"}
+```
+
+**Deduplication window:**
+Don't trigger multiple times for the same company within 30 days. This prevents spamming a company that has multiple overlapping signals.
+
+---
+
+## Always-On Workflow Design
+
+Design your trigger workflows to run continuously with minimal maintenance:
+
+**Structure of an always-on workflow:**
+
+```
+ALWAYS-ON: Series B Funding Trigger
+
+Trigger: New Series B announcement from Crunchbase webhook
+Condition: ICP check → no duplicate → not in sequence
+
+On trigger:
+1. Enrich company (Clearbit + LinkedIn)
+2. Find VP Sales / CRO / Head of SDR contact (waterfall enrichment)
+3. Score: fit × timing composite
+4. If score > 65:
+   → Generate personalized funding-triggered email
+   → QA check
+   → If QA passes: add to "funding_trigger" sequence in sequencer
+   → Log activity in CRM
+   → Send Slack notification: "Tier 1 funding trigger: [Company]"
+5. If score 40-65:
+   → Add to review queue grid
+   → Send Slack notification: "Tier 2 trigger to review: [Company]"
+6. If score < 40:
+   → Log signal in CRM, no outreach
+
+Runs: continuously (webhook-triggered)
+Review: weekly scan of Tier 2 queue
+Maintenance: monthly calibration of scoring thresholds
+```
+
+Document every always-on workflow with this structure. It makes handoffs, debugging, and optimization much easier.
+
+---
+
+## Trigger Failure Handling
+
+Every trigger needs explicit failure handling:
+
+| Failure Type | Example | Handling |
+|---|---|---|
+| **Contact not found** | Enrichment returns no contacts for the company | Log event, add to manual research queue |
+| **QA failure** | Generated email fails QA check | Auto-retry once; if retry fails, add to review queue |
+| **CRM sync failure** | API call to CRM returns error | Retry 3x with exponential backoff; alert if all fail |
+| **Duplicate trigger** | Same company triggers twice in 24 hours | Dedup check catches it; log second trigger, don't act |
+| **Enrichment API down** | Provider returns 503 | Queue for retry in 1 hour; max 3 retries |
+
+---
+
+<Tip>
+  **Quick Check:** What's the core difference between batch and trigger architecture? What are the three components of a trigger-based workflow? Name three trigger failure types and how to handle them.
+</Tip>
+
+---
+
+## GA-4 Challenge: Design Two Always-On Workflows (+150 XP)
+
+Design two complete always-on trigger workflows using the structure above.
+
+**Requirements:**
+- Both workflows fully documented: trigger source, condition, on-trigger steps, failure handling
+- Trigger condition check column built in Bitscale
+- Deduplication logic documented
+- One workflow tested end-to-end with 10 sample trigger events
+
+<Card title="Submit GA-4 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-ga4">
+  Submit both workflow docs + tested grid. **+150 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: GA-5 — Pipeline Attribution →" icon="arrow-right" href="/academy/gtm-architect/pipeline-attribution">
+  GA-5 covers how to track, measure, and report on the pipeline your GTM system generates.
+</Card>
