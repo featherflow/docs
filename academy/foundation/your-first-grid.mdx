@@ -1,199 +1,115 @@
 ---
-title: "Your First Grid"
-description: "Build a live Bitscale grid from scratch. Import rows, run enrichments, export results. Hands-on from start to finish."
+title: "F-3: Your First Grid"
+description: "Build your first working Bitscale grid — from blank canvas to a live ICP-scored prospect list in under 30 minutes."
 ---
 
 <Info>
-  **F-3 · GTM Foundation · 150 XP · ~20 min**
-
-  This is the most hands-on module in Foundation. Open Bitscale before you start. Don't just read it — build it. The XP is higher because we expect you to actually do it.
+  **F-3 · GTM Foundation · 100 XP · ~25 min**
 </Info>
 
-# Your First Grid
-
-Stop reading. Open Bitscale.
-
-You're going to build a working enrichment workflow by the end of this module. The written content is here as a reference — the real learning happens when you're clicking through it yourself.
-
-**Expected output:** A grid with 25–50 rows, 5 columns (2 static + 3 enrichments), fully populated. You'll screenshot this and submit it as your challenge.
-
-<Note>
-  🎬 **Video coming soon.** Follow the steps below in real time while we get the recording live. The step-by-step breakdown is detailed enough to complete this without the video.
-</Note>
+Reading about GTM automation is different from actually building it. This module is hands-on. By the end, you'll have a live Bitscale grid that sources companies, enriches them, and scores them against your ICP — automatically.
 
 ---
 
-## Before You Start
+## What a Bitscale Grid Is
 
-You'll need:
-- Access to a Bitscale workspace
-- A CSV file with 25–50 rows: company name + domain (no formatting issues)
-- About 20 minutes with no interruptions
+A Bitscale grid looks like a spreadsheet but behaves like a workflow engine. Each row is a company or contact. Each column is either raw data or an automated operation.
+
+There are four column types:
+
+| Column Type | What it does | Example |
+|---|---|---|
+| **Input** | Data you bring in or manually enter | Company name, domain |
+| **Enrichment** | Pulls external data via API | Employee count, funding, tech stack |
+| **AI** | Runs an LLM prompt on each row | Generate first line, summarize news |
+| **Formula** | Computes derived values | ICP score = sum of enrichment flags |
+
+Your first grid will use all four types.
+
+---
+
+## Step-by-Step: Building Your First Grid
+
+### Step 1: Create a New Grid
+
+Open Bitscale → New Grid → Start from scratch. Name it something like `[ICP Name] — Prospecting`.
+
+### Step 2: Add Your Seed Input
+
+You'll start with a list of company domains. You can:
+- Paste a CSV of companies you want to test
+- Connect an Apollo search to pull dynamically
+- Start with 20–50 rows manually for a first run
+
+Add a **Domain** column and a **Company Name** column as your base inputs.
+
+### Step 3: Add Enrichment Columns
+
+Add the following enrichment columns. Each one calls an external data source automatically:
+
+| Column | Data Source | Maps to ICP Criteria |
+|---|---|---|
+| Employee Count | Clearbit / LinkedIn | Size range check |
+| Industry | Clearbit | Vertical match |
+| Funding Stage | Clearbit / Crunchbase | Stage fit |
+| HQ Country | Clearbit | Geography filter |
+| Tech Stack — CRM | BuiltWith | Technographic fit |
+| Tech Stack — SEP | BuiltWith | Technographic fit |
+
+### Step 4: Add a Signal Column
+
+Add one signal column to start: **LinkedIn Headcount Growth (90d)**. This pulls the company's LinkedIn headcount trend. Companies growing >15% in 90 days are in expansion mode — a strong buying signal.
+
+### Step 5: Add the ICP Score Formula Column
+
+Add a Formula column with this logic:
+
+```
+ICP Score = 
+  (industry IN target_list ? 1 : 0)
+  + (employee_count BETWEEN 50 AND 500 ? 1 : 0)
+  + (funding_stage IN ['Series A', 'Series B', 'Series C'] ? 1 : 0)
+  + (crm_detected = true ? 1 : 0)
+  + (sep_detected = true ? 1 : 0)
+  + (headcount_growth > 0.15 ? 2 : 0)
+```
+
+This gives every row a score from 0–7. Sort descending. The top rows are your hottest ICP matches.
+
+### Step 6: Run the Grid
+
+Click **Run All**. Bitscale will enrich every row in parallel. A 50-row grid typically finishes in 2–3 minutes.
+
+---
+
+## Reading Your Results
+
+Once the grid runs, you'll have three tiers:
+
+- **Score 5–7** — Hot ICP. These go to outbound immediately.
+- **Score 3–4** — Warm ICP. Flag for signal monitoring. Reach out when a trigger fires.
+- **Score 0–2** — Outside ICP. Archive or deprioritize.
+
+Your outbound queue is now built automatically — not manually researched row by row.
+
+---
 
 <Tip>
-  **No data yet?** Use your top 25 target accounts. Google them, copy their domains into a spreadsheet, export as CSV. Takes 5 minutes. Use real companies you'd actually want to reach — it makes the output meaningful and the challenge more useful.
+  **Quick Check:** After your grid runs, look at the top 5 companies by ICP score. Do they feel right intuitively? If not, your scoring criteria need tuning — either the weights are off or a criterion is too broad.
 </Tip>
 
 ---
 
-## Step 1: Create the Grid
+## F-3 Challenge: Ship Your First Working Grid (+100 XP)
 
-<Steps>
-  <Step title="Click New Grid">
-    In the Bitscale dashboard, click **New Grid** in the top left.
-  </Step>
-  <Step title="Name it descriptively">
-    Use this naming convention: `[Use Case] — [Target Segment] — [Month Year]`
+Build a grid with at least 30 companies, at least 4 enrichment columns, and an ICP score formula. Screenshot the sorted results and submit.
 
-    Example: `ICP Outbound — Series B SaaS — April 2026`
-
-    You'll thank yourself when you have 30 grids and need to find this one in six months.
-  </Step>
-  <Step title="Confirm and create">
-    Click **Create**. You'll land on an empty grid with no columns and no rows. This is correct. Give it five minutes.
-  </Step>
-</Steps>
+<Card title="Submit F-3 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-f3">
+  Share your live grid with ICP scoring. **+100 XP on approval.**
+</Card>
 
 ---
 
-## Step 2: Add Your Static Columns
-
-These two columns are the anchor for everything else. Every enrichment uses Domain as its lookup key.
-
-<Steps>
-  <Step title="Add Company Name">
-    Click **Add Column** → Choose **Text** → Name it `Company Name`
-  </Step>
-  <Step title="Add Domain">
-    Add Column → Text → Name it `Domain`
-
-    **Why Domain is the most important column:** It's the universal identifier. Every enrichment API — Apollo, Clearbit, Hunter, Crunchbase — accepts domain as input. If you have the domain, you can find everything else.
-  </Step>
-</Steps>
-
-<Warning>
-  **Common mistake #1:** Adding an email column at this stage. Skip it — email comes from your contact enrichment, not from manual input.
-
-  **Common mistake #2:** Entering company websites with `https://` prefixes. Domains only: `acme.com`, not `https://www.acme.com`.
-</Warning>
-
----
-
-## Step 3: Add Your Enrichment Columns
-
-Now the useful part. Each enrichment column fires an API request and returns data automatically.
-
-<Steps>
-  <Step title="Add Headcount enrichment">
-    Add Column → **Enrichment** → Select **Company Headcount**
-
-    The input defaults to `Domain`. Leave it. Click **Save column**.
-  </Step>
-  <Step title="Add SDR Hiring Signal">
-    Add Column → Enrichment → **Job Postings**
-
-    Configuration:
-    - Job title filter: `SDR` or `Sales Development Representative`
-    - Time window: Last 30 days
-    - Output: Count (returns number of open roles)
-
-    Companies with 2+ open SDR roles are your priority targets.
-  </Step>
-  <Step title="Add Contact Finder">
-    Add Column → Enrichment → **Contact Finder** (or **People Enrichment**)
-
-    Configuration:
-    - Title filter: `VP Sales` or `Head of Sales`
-    - Seniority: Director+
-    - Output: First name, last name, title, LinkedIn URL
-
-    This is the person you'll be reaching out to. Not finding a contact here means you need a different provider or a manual lookup.
-  </Step>
-</Steps>
-
-**Your grid should now have 5 columns:** Company Name · Domain · Headcount · SDR Hiring Signal · Contact
-
-<Tip>
-  **Pro tip:** Run enrichments in order of cost — cheapest first. Headcount is cheap and fast. Contact Finder is slower and more expensive. Run Headcount first — if the company is under 10 employees (too small for your ICP), filter it out before spending credits on the contact lookup.
-</Tip>
-
----
-
-## Step 4: Import Your Rows
-
-<Steps>
-  <Step title="Click Import Rows">
-    In the toolbar, click **Import Rows** → **Import from CSV**
-  </Step>
-  <Step title="Upload your file">
-    Upload your CSV. Bitscale will detect columns automatically.
-  </Step>
-  <Step title="Map your columns">
-    Map your CSV's name column → `Company Name`, domain column → `Domain`. Click **Import**.
-  </Step>
-  <Step title="Verify the import">
-    You should see rows populate in 2–3 seconds. Check for domain formatting issues — missing TLDs, extra spaces, or `www.` prefixes. Fix them now before running enrichments or you'll get empty results on clean data.
-  </Step>
-</Steps>
-
----
-
-## Step 5: Run Your Enrichments
-
-<Steps>
-  <Step title="Run Headcount first">
-    Click the **Headcount** column header → **Run All Rows**
-
-    25 rows should complete in under 10 seconds. If a cell returns an error, the domain is wrong or the company is too small/new to appear in the provider's database. You'll learn to handle this properly in F-4.
-  </Step>
-  <Step title="Run SDR Hiring Signal">
-    Click **SDR Hiring Signal** → **Run All Rows**
-
-    Expected output: Numbers. 0 = no current openings. 1+ = actively hiring. Companies with 2+ = your warmest targets.
-  </Step>
-  <Step title="Run Contact Finder">
-    Click **Contact Finder** → **Run All Rows**
-
-    This takes slightly longer (5–20 seconds per row) because it's looking up specific people. Some rows will return empty — that's valid data, not an error. It means there's no VP Sales-equivalent in the provider's database for that company.
-  </Step>
-</Steps>
-
----
-
-## What Your Completed Grid Should Look Like
-
-| Company Name | Domain | Headcount | SDR Hiring | Contact |
-|-------------|--------|-----------|------------|---------|
-| Acme Corp | acme.com | 87 | 3 | Sarah Chen, VP Sales |
-| Globex Inc | globex.io | 134 | 0 | Michael Torres, Head of Sales |
-| Initech | initech.com | 52 | 1 | — (not found) |
-| Umbrella | umbrella.co | 12 | 0 | — (too small) |
-
-Rows with `SDR Hiring > 0` are your priority. Rows where Contact is empty need either a different provider or a manual lookup. Rows where Headcount is very small might not be in your ICP at all — you can filter them out.
-
----
-
-## 🧠 Quick Check
-
-<Tip>
-  1. Why is Domain more important than Company Name as a column?
-  2. If your Contact Finder returns empty on 30% of rows, what are your options?
-  3. What would happen if you ran Contact Finder *before* Headcount — why is order important?
-</Tip>
-
----
-
-## 🎯 Challenge · 150 XP
-
-Submit a screenshot of your completed grid showing:
-- At least **25 rows**
-- All **3 enrichment columns** populated (at least partially)
-- At least **5 rows** where all three enrichments returned data
-
-[Submit your F-3 grid screenshot →](https://bitscale.fillout.com/academy-challenge-f3)
-
----
-
-<Card title="Up next: F-4 · Reading Your Data" icon="arrow-right" href="/academy/foundation/reading-your-data">
-  Your grid is full of data. Now let's talk about how much of it you can actually trust — and what to do when you can't.
+<Card title="Next: F-4 Reading Your Data →" icon="arrow-right" href="/academy/foundation/reading-your-data">
+  Your grid ran. Now learn how to actually interpret what the data is telling you — and what to do about it.
 </Card>
