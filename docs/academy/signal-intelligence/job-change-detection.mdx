@@ -1,0 +1,150 @@
+---
+title: "SI-2: Job Change Detection"
+description: "When a VP of Sales starts a new role, they have 90 days to prove themselves and budget to spend. This is the highest-converting B2B signal. Learn to detect and activate it at scale."
+---
+
+<Info>
+  **SI-2 · Signal Intelligence · 125 XP · ~20 min**
+</Info>
+
+A new executive in a buying role is in the most receptive state of their career. They're establishing themselves, building their team, evaluating vendors, and have political capital to make changes. For B2B sellers, this is as close to a "raised hand" as it gets.
+
+Job change detection is about finding these moments before your competitors do.
+
+---
+
+## Why Job Changes Convert
+
+Three dynamics make new executive hires high-converting prospects:
+
+1. **Mandate to improve** — New leaders are typically hired to fix something or build something. They're actively evaluating tools and processes in their first 30–60 days.
+
+2. **Budget authority** — New executives at the VP+ level usually have discretionary budget or can influence procurement decisions.
+
+3. **Vendor neutrality** — They don't have legacy relationships with the current vendor stack. They're more open to switching or evaluating alternatives.
+
+The optimal outreach window for a new executive hire is 7–21 days after they start. Earlier, they're still getting oriented. Later, they've formed opinions and made initial commitments.
+
+---
+
+## Which Job Changes to Target
+
+Not all job changes are equal. Here's a priority framework for a GTM automation tool:
+
+| Role | Relevance | Why |
+|---|---|---|
+| VP of Sales / CRO | Very high | Directly owns outbound motion and tools budget |
+| Head of Sales Development | Very high | Directly manages the outbound team and workflow |
+| Director/VP of Revenue Operations | High | Owns sales tech stack evaluation |
+| VP of Marketing / CMO | Medium | Influences GTM strategy and demand gen tools |
+| Head of Growth | Medium | Often owns outbound + inbound blend |
+| CEO / Founder (early stage) | High | At <50 employees, CEO often owns GTM directly |
+| VP of Customer Success | Low | Not the buyer unless you have a CS use case |
+
+---
+
+## Building Job Change Detection in Bitscale
+
+### Step 1: Monitor LinkedIn for job changes
+
+LinkedIn is the primary source. You can monitor via:
+- LinkedIn Sales Navigator alerts (set up for saved searches)
+- Proxycurl API (LinkedIn enrichment, can detect recent job changes)
+- Third-party tools like SalesIntel or Zoominfo that aggregate LinkedIn changes
+
+In Bitscale, create a monitoring grid where each row is a tracked person or company, and a scheduled workflow checks for role changes.
+
+### Step 2: Classify the job change
+
+```
+Analyze this LinkedIn profile update:
+
+Person: {{full_name}}
+Previous role: {{previous_title}} at {{previous_company}}
+New role: {{new_title}} at {{new_company}}
+Change date: {{change_date}}
+
+Classify:
+1. Relevance: high/medium/low (based on new title's buying authority for GTM tools)
+2. Change type: promotion_within/lateral_move/new_company/founder_hire/unknown
+3. Signal window: days since change
+4. Recommendation: act_immediately (0-14 days) / act_this_week (15-30 days) / act_next_month (31-60 days) / deprioritize (>60 days or low relevance)
+
+Return as JSON.
+```
+
+### Step 3: Generate job-change-triggered outreach
+
+```
+Write a cold email for someone who just started a new role.
+
+Prospect: {{first_name}} {{last_name}}
+New title: {{new_title}} at {{new_company}}
+Previous company: {{previous_company}}
+Days since starting: {{days_in_role}}
+
+Context:
+- They're in early days of a new role
+- They're evaluating tools and processes
+- They have a mandate to build or improve the outbound motion
+
+Email requirements:
+- Acknowledge the new role (genuinely, not sycophantically)
+- Connect their likely current priority (building pipeline, inheriting a team, evaluating the stack) to what we solve
+- Keep it under 75 words
+- CTA: 15-minute conversation, framed as "share what's worked for teams in similar situations"
+- Do NOT say "congratulations" — it's overused and sounds automated
+
+Return ONLY the email body.
+```
+
+---
+
+## The Champion Change Use Case
+
+Job changes matter in both directions: when a new buyer joins your ICP, AND when a current customer's champion leaves.
+
+**Champion departure detection:**
+```
+This contact {{full_name}}, who was {{previous_title}} at {{customer_company}}, has updated their LinkedIn to show a new role at {{new_company}}.
+
+They were a key champion for Bitscale at {{customer_company}}.
+
+What should happen:
+1. Alert the account manager to assess churn risk at the original account
+2. Reach out to the contact at their new company (warm lead — they know the product)
+
+Classify:
+- original_account_risk: high/medium/low (based on whether the champion's replacement is known)
+- new_company_opportunity: high/medium/low (based on {{new_company}} fit)
+
+Return as JSON.
+```
+
+---
+
+<Tip>
+  **Quick Check:** What is the optimal outreach window for a new executive hire and why? Which job title changes have the highest relevance for a GTM automation tool? What is the "champion change" use case?
+</Tip>
+
+---
+
+## SI-2 Challenge: Build a Job Change Detection Workflow (+125 XP)
+
+Monitor for 15 job changes in your ICP over 1 week (use LinkedIn Sales Navigator, Proxycurl, or manual research).
+
+**Requirements:**
+- Job change classification column (relevance, change type, days since change, recommendation)
+- Personalized job-change email generated for each contact
+- Champion departure check: identify any contacts from existing customer companies
+- A written summary: which change type generated the best email copy and why?
+
+<Card title="Submit SI-2 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-si2">
+  Share your grid + written summary. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: SI-3 — Funding & Growth Signals →" icon="arrow-right" href="/academy/signal-intelligence/funding-signals">
+  Funding events open budget cycles and create urgency. SI-3 covers how to detect and act on funding rounds before competitors do.
+</Card>
