@@ -1,0 +1,137 @@
+---
+title: "GA-2: Multi-Channel Architecture"
+description: "Email, LinkedIn, and phone each have distinct roles in the GTM system. Learn to design multi-channel architectures that coordinate channels coherently rather than running them in parallel."
+---
+
+<Info>
+  **GA-2 · GTM Architect · 150 XP · ~22 min**
+</Info>
+
+Most companies run "multi-channel outreach" that's really just three separate outreach programs with the same contact list. Email team runs sequences. LinkedIn team sends connection requests. SDRs make calls. No coordination, no shared narrative, no measurement of cross-channel influence.
+
+True multi-channel architecture means the channels know about each other, tell the same story in different formats, and hand off cleanly when a prospect moves between them.
+
+---
+
+## Channel Architecture Principles
+
+**1. Channels are formats, not silos**
+Email, LinkedIn, and phone should carry the same narrative, adapted to the format. The prospect should experience a coherent progression, not three independent campaigns.
+
+**2. Channel sequencing has logic**
+Not all sequences should start with email. For senior executives, LinkedIn is often the right first touch — it's less interruptive and builds familiarity before the email arrives. For SDR teams with phone numbers, a voicemail-first approach can work for certain ICPs.
+
+**3. Channel-specific CRM tracking enables cross-channel intelligence**
+If a prospect opens your email 3 times but doesn't reply, that's a signal. If they accept your LinkedIn request the same week, that's a stronger signal. Your CRM needs to capture both to surface the combined signal.
+
+**4. Channel switching is a strategy, not a fallback**
+"They didn't reply to email so I tried LinkedIn" is reactive. "When email reply rate drops below X%, we shift to LinkedIn-first for that segment" is a strategy.
+
+---
+
+## Designing a Multi-Channel Sequence in Bitscale
+
+The Bitscale layer is responsible for the copy and context across all channels. The sequencer executes the schedule.
+
+**Multi-channel grid design:**
+
+For each contact, build these columns in Bitscale:
+- `email_touch_1` through `email_touch_3` (from OA track)
+- `linkedin_connection_note` — ultra-short, specific, no pitch
+- `linkedin_inmail` — if they don't accept connection, short InMail after 7 days
+- `voicemail_script` — 25-second script
+- `linkedin_comment_topic` — AI-identified topic to comment on genuinely
+
+**Channel routing column:**
+```
+Given:
+- Phone number available: {{has_phone}}
+- LinkedIn URL available: {{has_linkedin}}
+- Company size: {{company_size_range}}
+- Persona seniority: {{seniority_level}}
+
+Assign the optimal channel sequence:
+- full_multichannel: email + linkedin + phone (phone available, seniority VP+)
+- email_linkedin: email + linkedin (no phone, or seniority Director and below)
+- email_only: no LinkedIn URL available
+- phone_first: phone available, seniority C-suite or Founder at <50 employees
+
+Return ONLY: full_multichannel, email_linkedin, email_only, or phone_first
+```
+
+---
+
+## Cross-Channel Handoff Design
+
+When a prospect engages on one channel, the other channels should adapt:
+
+**LinkedIn acceptance trigger:**
+When a prospect accepts your connection request, queue a direct follow-up (within 24 hours) that:
+- Thanks them for connecting (briefly)
+- Moves to the core value prop without a cold pitch
+- Uses their LinkedIn content as context if available
+
+```
+Generate a LinkedIn DM for a prospect who just accepted a connection request.
+
+Prospect: {{first_name}} {{last_name}}, {{job_title}} at {{company_name}}
+Our original connection note: {{linkedin_connection_note}}
+Their recent LinkedIn activity: {{linkedin_recent_post_summary}}
+
+Requirements:
+- Acknowledge the connection (1 sentence, not sycophantic)
+- Reference something specific from their profile or recent activity
+- Move to value naturally — not a pitch, but an invitation to explore
+- Ask a question that opens dialogue
+- Max 50 words
+
+Return ONLY the DM text.
+```
+
+**Email reply → LinkedIn pause:**
+When a prospect replies to email (positive or negative), pause LinkedIn outreach immediately. Mixing channels while a conversation is active is confusing and looks automated.
+
+---
+
+## Multi-Channel Attribution
+
+Tracking which channel drove conversion is surprisingly hard in multi-channel programs. Common approaches:
+
+| Attribution Model | How It Works | Limitation |
+|---|---|---|
+| **First-touch** | Credit goes to first channel the prospect engaged with | Ignores all subsequent channel contribution |
+| **Last-touch** | Credit goes to channel right before reply/conversion | Ignores awareness-building early channels |
+| **Linear** | Credit distributed equally across all touched channels | Oversimplifies; not all touches are equal |
+| **Time-decay** | More recent touches get more credit | Still doesn't capture context influence |
+| **Agreed-value** | Team manually assigns credit based on sequence review | Most accurate; least scalable |
+
+For most teams, tracking which channel produced the first reply is sufficient as a proxy for channel effectiveness. Run this analysis quarterly to adjust sequence structure.
+
+---
+
+<Tip>
+  **Quick Check:** What's the difference between multi-channel as silos vs. multi-channel as architecture? What should happen when a prospect accepts a LinkedIn connection request? What attribution model is most accurate?
+</Tip>
+
+---
+
+## GA-2 Challenge: Design a Multi-Channel Architecture (+150 XP)
+
+Design and build a complete multi-channel architecture for 30 contacts.
+
+**Requirements:**
+- Channel routing column for all 30 contacts
+- All copy variants built: 3 emails + LinkedIn connection + LinkedIn DM (post-accept) + voicemail
+- LinkedIn acceptance follow-up prompt documented
+- Attribution tracking setup: how will you measure which channel is driving replies?
+- A brief architecture doc: sequence design, timing, channel switching rules
+
+<Card title="Submit GA-2 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-ga2">
+  Share your grid + architecture doc. **+150 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: GA-3 — RevOps Integration →" icon="arrow-right" href="/academy/gtm-architect/revops-integration">
+  GA-3 covers how to connect Bitscale workflows to your CRM, sequencer, and analytics stack.
+</Card>
