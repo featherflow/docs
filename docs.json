@@ -148,37 +148,65 @@
           {
             "group": "Data & Enrichment",
             "pages": [
-              "academy/enrichment/overview",
-              "academy/enrichment/coming-soon"
+              "academy/data-enrichment/overview",
+              "academy/data-enrichment/data-sources",
+              "academy/data-enrichment/waterfall-enrichment",
+              "academy/data-enrichment/data-cleaning",
+              "academy/data-enrichment/company-intelligence",
+              "academy/data-enrichment/contact-scoring",
+              "academy/data-enrichment/technographic-data",
+              "academy/data-enrichment/intent-data",
+              "academy/data-enrichment/capstone"
             ]
           },
           {
             "group": "Signal Intelligence",
             "pages": [
-              "academy/signals/overview",
-              "academy/signals/coming-soon"
+              "academy/signal-intelligence/overview",
+              "academy/signal-intelligence/signal-framework",
+              "academy/signal-intelligence/job-change-detection",
+              "academy/signal-intelligence/funding-signals",
+              "academy/signal-intelligence/hiring-patterns",
+              "academy/signal-intelligence/news-triggers",
+              "academy/signal-intelligence/signal-workflows",
+              "academy/signal-intelligence/capstone"
             ]
           },
           {
             "group": "AI Personalization",
             "pages": [
-              "academy/ai/overview",
-              "academy/ai/coming-soon"
+              "academy/ai-personalization/overview",
+              "academy/ai-personalization/personalization-principles",
+              "academy/ai-personalization/prompt-engineering",
+              "academy/ai-personalization/multi-layer-personalization",
+              "academy/ai-personalization/linkedin-research",
+              "academy/ai-personalization/vertical-messaging",
+              "academy/ai-personalization/personalization-at-scale",
+              "academy/ai-personalization/capstone"
             ]
           },
           {
             "group": "GTM Architect",
             "pages": [
-              "academy/architect/overview",
-              "academy/architect/coming-soon"
+              "academy/gtm-architect/overview",
+              "academy/gtm-architect/gtm-system-design",
+              "academy/gtm-architect/multi-channel-architecture",
+              "academy/gtm-architect/revops-integration",
+              "academy/gtm-architect/workflow-automation",
+              "academy/gtm-architect/pipeline-attribution",
+              "academy/gtm-architect/gtm-stack-design",
+              "academy/gtm-architect/capstone"
             ]
           },
           {
             "group": "Certifications",
             "pages": [
-              "academy/certifications/overview",
-              "academy/certifications/foundation",
-              "academy/certifications/outbound-specialist"
+              "academy/certifications/foundation-certified",
+              "academy/certifications/outbound-specialist",
+              "academy/certifications/enrichment-specialist",
+              "academy/certifications/signal-specialist",
+              "academy/certifications/ai-specialist",
+              "academy/certifications/gtm-architect-cert"
             ]
           }
         ]
