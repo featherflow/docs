@@ -1,0 +1,128 @@
+---
+title: "SI-5: News & Event Triggers"
+description: "Product launches, press coverage, conference appearances, and industry events all create natural conversation openers. Learn to monitor and activate them efficiently."
+---
+
+<Info>
+  **SI-5 · Signal Intelligence · 100 XP · ~16 min**
+</Info>
+
+News and events create natural conversation openers that feel earned rather than manufactured. "I saw you're speaking at SaaStr next month" is a fundamentally different conversation starter than "We help companies like yours."
+
+The challenge is monitoring at scale. You can't manually read the news for every company in your ICP. This module covers systematic monitoring and activation.
+
+---
+
+## News Signal Types and Relevance
+
+| News Type | Example | Outreach Relevance | Urgency |
+|---|---|---|---|
+| **Product launch** | "Company launches AI-powered [feature]" | High — growth mode, new ICP | Within 1 week |
+| **Partnership announcement** | "Company partners with Salesforce" | High — expanding distribution | Within 1 week |
+| **Award / recognition** | "Named to G2 Leader in [category]" | Medium — company is growing | Within 2 weeks |
+| **Executive hire announcement** | "Appoints new CRO" | High — new decision-maker (see SI-2) | Within 7 days |
+| **Conference appearance** | Speaking slot at SaaStr, Dreamforce | Medium — company is investing in brand | Before event |
+| **Negative news** | Layoffs, leadership departure | Low / caution | Monitor but don't lead with it |
+| **Acquisition** | Company acquires or is acquired | Variable — depends on direction | Act quickly if buyer, monitor if target |
+
+---
+
+## Building a News Monitoring Workflow
+
+### Step 1: Set up monitoring sources
+
+Bitscale can pull news data from multiple sources:
+- **Google News / Bing News API** — broad coverage, keyword-based
+- **Company blogs and press rooms** — most accurate, but requires per-company monitoring
+- **LinkedIn company updates** — self-reported, often first-hand
+- **PR Newswire / BusinessWire** — for companies that issue formal press releases
+- **Crunchbase updates** — funding + strategic news
+
+### Step 2: News relevance classification
+
+```
+Classify this news item for outbound relevance:
+
+Company: {{company_name}}
+News headline: {{headline}}
+News summary: {{summary}}
+Date: {{news_date}}
+
+Evaluate:
+1. News type: product_launch / partnership / award / exec_hire / conference / funding / acquisition / negative / other
+2. Outbound relevance: high / medium / low / not_relevant
+3. Why relevant: one sentence connecting this news to a buying signal
+4. Optimal action: immediate_outreach / outreach_this_week / monitor / ignore
+5. Conversation opener: one sentence you could use to open an email naturally referencing this news
+
+Return as JSON.
+```
+
+### Step 3: News-triggered email generation
+
+```
+Write a cold email using this recent news item as a conversation opener:
+
+Prospect: {{first_name}} {{last_name}}, {{job_title}} at {{company_name}}
+News item: {{news_headline}} — {{news_summary}}
+News date: {{news_date}}
+
+Requirements:
+- Open with the news reference in a way that shows you actually read it (1 sentence)
+- Connect the news to their likely current challenge or priority (1 sentence)
+- State what we offer and why it's relevant now (1 sentence)
+- CTA: specific low-friction ask (1 sentence)
+- Max 75 words total
+
+Tone: Collegial, genuinely interested in what they're building. Not congratulatory to the point of being sycophantic.
+
+Return ONLY the email body.
+```
+
+---
+
+## Conference and Event Monitoring
+
+Conferences create compressed buying windows. When your prospect is attending or speaking at an event, you have a natural time-bound hook.
+
+**Pre-event outreach (2–3 weeks before):**
+- Reference that you'll both be at the event or that you saw them speaking
+- Keep it very short: acknowledge the event, suggest a quick coffee or 15 minutes at the venue
+- 50–60 words maximum
+
+**During-event outreach:**
+- LinkedIn DM is better than email for same-day contact
+- Be specific about where/when you could meet
+- "I saw your talk on [topic] this morning. The point about [X] was really practical. Are you around this afternoon for a coffee?"
+
+**Post-event outreach (within 3 days after):**
+- Reference a specific thing that happened or was said
+- "The overall theme at [Conference] was [X] — we're seeing the same thing with our customers. Worth comparing notes?"
+
+---
+
+<Tip>
+  **Quick Check:** Which news signal types have the highest outbound relevance? What makes a news conversation opener feel earned? What's different about conference outreach vs. standard cold outreach?
+</Tip>
+
+---
+
+## SI-5 Challenge: Build a News Monitoring Grid (+100 XP)
+
+Set up news monitoring for 20 ICP companies over 1 week.
+
+**Requirements:**
+- News items collected (at least 20 total across the 20 companies)
+- Relevance classification column for each news item
+- News-triggered email generated for the top 5 news events
+- Conference/event column: are any of these companies attending a major event in the next 60 days?
+
+<Card title="Submit SI-5 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-si5">
+  Share your grid + top 5 emails. **+100 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: SI-6 — Building Signal Workflows →" icon="arrow-right" href="/academy/signal-intelligence/signal-workflows">
+  SI-6 is where you connect all signal types into a single automated detection and activation system.
+</Card>
