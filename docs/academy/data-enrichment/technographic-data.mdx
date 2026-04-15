@@ -1,0 +1,157 @@
+---
+title: "DE-6: Technographic Data"
+description: "What a company uses tells you what they value — and what they're willing to buy. Technographic data is one of the most powerful ICP signals in B2B outbound."
+---
+
+<Info>
+  **DE-6 · Data & Enrichment · 100 XP · ~17 min**
+</Info>
+
+A company running Salesforce Enterprise + Outreach + LinkedIn Sales Navigator is spending $150K+ per year on sales technology. They're not price-sensitive. They have a dedicated outbound motion. They understand the category. That's a fundamentally different prospect from a company on HubSpot Starter.
+
+Tech stack tells you budget, maturity, and process sophistication before you ever speak to anyone.
+
+---
+
+## What Technographic Data Reveals
+
+| Tech Category | What It Signals | Outbound Use |
+|---|---|---|
+| **CRM tier** | Budget and org sophistication | Salesforce = enterprise budget; HubSpot = mid-market |
+| **Sales engagement tool** | Dedicated outbound motion | Outreach/Salesloft = serious SDR team |
+| **Data/enrichment tool** | Already investing in data quality | Competitor displacement or upgrade opportunity |
+| **Marketing automation** | Inbound vs. outbound balance | Marketo = enterprise; Mailchimp = likely inbound-heavy |
+| **Analytics stack** | Data maturity and product sophistication | Mixpanel/Amplitude = product-led growth signals |
+| **Infrastructure** | Engineering team size and practices | AWS + Kubernetes = technical buyer, likely large eng team |
+
+---
+
+## Sources of Technographic Data
+
+| Source | Methodology | Best For |
+|---|---|---|
+| **BuiltWith** | Crawls website code/headers | Web technologies, marketing tools, analytics |
+| **HG Insights** | Aggregated install data | Enterprise software installs at scale |
+| **Clearbit** | API enrichment | Tech stack as part of broader company enrichment |
+| **G2 Stack** | Self-reported by users | CRM and sales tools (highly accurate, self-reported) |
+| **LinkedIn job postings** | Infer from required skills in JDs | Active tool usage (if hiring "Salesforce experience") |
+| **Manual research** | Website source inspection | Confirmation layer for high-value accounts |
+
+---
+
+## Building Technographic Enrichment in Bitscale
+
+### Step 1: Web-based tech detection
+
+For any company with a public website, Bitscale can run a web enrichment that detects commonly used tools from public signals:
+
+```
+Research this company's technology stack based on their website and public information:
+Company: {{company_name}}
+Domain: {{company_domain}}
+
+Identify which tools they use in each category (if detectable):
+- CRM: (specific tool name, or "not detected")
+- Marketing automation: (specific tool name, or "not detected")
+- Analytics: (specific tool name, or "not detected")
+- Live chat/support: (specific tool name, or "not detected")
+- CDN/hosting: (specific tool name, or "not detected")
+- Advertising pixels: (e.g., Facebook Pixel, Google Ads, LinkedIn Insight Tag, or "not detected")
+
+Return as JSON.
+```
+
+### Step 2: Job posting tech signal extraction
+
+Job descriptions reveal what a company actively uses:
+
+```
+Analyze this job description and extract all technology tools mentioned as requirements or nice-to-have:
+
+Job description: {{job_description_text}}
+
+Categorize extracted tools:
+- required: explicitly required or "must have"
+- preferred: "nice to have" or "experience preferred"
+- mentioned: referenced in context but not required
+
+Return as JSON with tool names and category.
+```
+
+### Step 3: Competitor displacement identification
+
+Once you know their tech stack, identify displacement opportunities:
+
+```
+Given this company's current tech stack:
+- CRM: {{crm_tool}}
+- Sales engagement: {{sales_engagement_tool}}
+- Data/enrichment: {{data_tool}}
+
+Our product is: Bitscale (GTM automation and enrichment platform)
+
+Identify:
+1. Direct competitor in use: (which competitor we could displace, if any)
+2. Displacement opportunity: (what pain point our product solves that their current tool doesn't address)
+3. Expansion opportunity: (is there a gap in their stack we could fill?)
+
+Return as JSON: {"direct_competitor": "...", "displacement_opportunity": "...", "expansion_gap": "..."}
+```
+
+---
+
+## Technographic Personas
+
+Different tech stacks correlate with different buying personas and objections. Use this to adjust your messaging:
+
+| Tech Stack Profile | Persona Signals | Likely Objections | Messaging Angle |
+|---|---|---|---|
+| Salesforce + Outreach + ZoomInfo | Enterprise buyer, process-mature | "We already have a solution" | Competitive differentiation, ROI improvement |
+| HubSpot + Apollo | Building outbound motion | "We're figuring this out internally" | Time-to-value, ease of implementation |
+| Custom CRM + no engagement tool | Early-stage, technical founders | "We'll build this ourselves" | Build vs. buy, speed, maintenance cost |
+| HubSpot Starter only | Inbound-first, outbound-nascent | "We're focused on inbound" | Complementary to inbound, not a replacement |
+
+Build a `messaging_angle` column in Bitscale that reads from tech stack data:
+
+```
+Given:
+- CRM: {{crm_tool}}
+- Sales engagement: {{sales_engagement_tool}}
+- Data enrichment: {{data_tool}}
+
+Select the best messaging angle for outreach about Bitscale:
+- competitive_displacement: if they use a direct competitor (Clay, Apollo automation, etc.)
+- infrastructure_upgrade: if they have tools but are outgrowing them
+- first_stack_build: if they have minimal tooling and are building their first outbound stack
+- inbound_expansion: if they are primarily inbound with minimal outbound infrastructure
+
+Return ONLY one: competitive_displacement, infrastructure_upgrade, first_stack_build, or inbound_expansion
+```
+
+---
+
+<Tip>
+  **Quick Check:** What does CRM tier signal about a company? What are two ways to infer tech stack from public signals? How does messaging angle connect to technographic data?
+</Tip>
+
+---
+
+## DE-6 Challenge: Map a Technographic Segment (+100 XP)
+
+Pick a specific ICP segment and build a technographic analysis grid for 30 companies.
+
+**Requirements:**
+- Tech detection column (web-based, at least 3 categories)
+- Competitor displacement identification column
+- Messaging angle routing column
+- A written summary: what tech stack pattern is most common in your ICP segment, and what does that mean for your messaging?
+
+<Card title="Submit DE-6 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-de6">
+  Share your grid + written summary. **+100 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: DE-7 — Intent Data →" icon="arrow-right" href="/academy/data-enrichment/intent-data">
+  Intent data is the closest thing to knowing who's in market right now. DE-7 covers what it is, where it comes from, and how to activate it in outbound.
+</Card>
