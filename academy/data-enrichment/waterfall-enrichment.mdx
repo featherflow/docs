@@ -1,0 +1,174 @@
+---
+title: "DE-2: Waterfall Enrichment"
+description: "No single data provider covers your entire ICP. Waterfall enrichment sequences multiple providers to maximize coverage — and Bitscale makes it automatable."
+---
+
+<Info>
+  **DE-2 · Data & Enrichment · 125 XP · ~20 min**
+</Info>
+
+Every data provider has gaps. Apollo misses some companies. Hunter can't find certain email formats. ZoomInfo is expensive and patchy in EMEA. No single source will enrich 100% of your list.
+
+Waterfall enrichment solves this by running multiple providers in sequence — Provider A first, then Provider B if A returns nothing, then Provider C. You only pay for successful enrichments, and you maximize coverage without redundant spend.
+
+---
+
+## How Waterfall Enrichment Works
+
+The concept is simple: try the cheapest or most accurate source first. If it returns a result, stop. If it returns nothing, fall to the next provider.
+
+```
+Row → Provider A (try first)
+        → Result found? → Use it. Done.
+        → No result? → Provider B
+                          → Result found? → Use it. Done.
+                          → No result? → Provider C
+                                            → Result found? → Use it. Done.
+                                            → No result? → Flag as "not found"
+```
+
+The order you sequence providers matters. Put your most accurate (or most affordable) source first, your broadest coverage source last.
+
+---
+
+## Building a Waterfall in Bitscale
+
+In Bitscale, a waterfall is a series of enrichment columns with conditional logic.
+
+**Step 1: First-pass enrichment column**
+
+Add an API enrichment column calling Provider A (e.g., Hunter.io email finder):
+- Input: `{{first_name}} {{last_name}} {{company_domain}}`
+- Output: email address or null
+
+**Step 2: Fallback enrichment column**
+
+Add a second enrichment column that only runs if Step 1 returned null:
+
+```
+If {{provider_a_result}} is empty or null, use this enrichment. Otherwise return {{provider_a_result}}.
+```
+
+Connect this column to Provider B (e.g., Snov.io).
+
+**Step 3: Final fallback + status column**
+
+After all providers, add a status column:
+```
+Given these enrichment results:
+- Provider A: {{provider_a_result}}
+- Provider B: {{provider_b_result}}
+- Provider C: {{provider_c_result}}
+
+Return the first non-empty result, or "not_found" if all are empty.
+Also return the source that provided the result.
+
+Output format: {"email": "result_or_not_found", "source": "provider_name_or_not_found"}
+```
+
+---
+
+## Waterfall Priority Frameworks
+
+Different use cases call for different provider ordering:
+
+### For Email Accuracy (minimize bounces)
+1. NeverBounce / ZeroBounce verified emails (highest accuracy, narrowest coverage)
+2. Hunter.io (good coverage for SMB/mid-market, domain-pattern matching)
+3. Apollo.io (broad coverage, slightly lower accuracy)
+4. People Data Labs (backup for hard-to-find contacts)
+
+### For Coverage (maximize list size)
+1. Apollo.io (largest contact database)
+2. Hunter.io (strong for tech companies)
+3. LinkedIn Proxycurl (professional profiles)
+4. ContactOut (good for senior executives)
+
+### For International Contacts (EMEA/APAC)
+1. Prospeo or Findymail (strong EU coverage)
+2. People Data Labs (global)
+3. Hunter.io (lower international coverage but reliable)
+4. Manual research fallback
+
+---
+
+## The Credit Economy
+
+Waterfall enrichment is also a credit optimization strategy. Here's why:
+
+Without waterfall: You call Provider A for every row → pay for successful AND failed lookups.
+
+With waterfall: Provider A fills 60% of rows cheaply. Only the remaining 40% fall to Provider B. Provider C handles the final 15%. You spend credits proportionally to results.
+
+**Cost comparison example (1,000 rows):**
+| Approach | Provider A | Provider B | Provider C | Total Cost | Fill Rate |
+|---|---|---|---|---|---|
+| Provider A only | 1,000 credits | — | — | $50 | 60% |
+| Provider A + B only | 600 + 400 | 400 credits | — | $50 + $24 = $74 | 85% |
+| Full waterfall | 600 + 400 | 400 + 240 | 160 + 64 | ~$95 | 95% |
+
+Getting from 60% to 95% fill rate costs only ~90% more in this example — often worth it if your ICP is well-defined.
+
+---
+
+## Handling Waterfall Results
+
+After the waterfall runs, you need a clean master column and a confidence score:
+
+**Master email column:**
+```
+Return the best available email from this list, in priority order:
+1. {{provider_a_email}} (use if not empty)
+2. {{provider_b_email}} (use if not empty)
+3. {{provider_c_email}} (use if not empty)
+4. Return "not_found" if all empty
+
+Return ONLY the email address or "not_found".
+```
+
+**Email confidence column:**
+```
+Given:
+- source: {{email_source}}
+- validation_status: {{validation_status}}
+
+Assign a confidence score:
+- high: validated email from a verified source
+- medium: unverified email from a reliable source
+- low: catch-all domain or risky status
+- none: not_found
+
+Return ONLY: high, medium, low, or none
+```
+
+Only send to `high` and `medium` confidence rows. Put `low` confidence on a separate, lower-volume sending track.
+
+---
+
+<Tip>
+  **Quick Check:** What's the fundamental logic of a waterfall? What determines the priority order of providers? What does "credit economy" mean in the context of waterfall enrichment?
+</Tip>
+
+---
+
+## DE-2 Challenge: Build a 3-Provider Waterfall (+125 XP)
+
+Build a Bitscale waterfall enrichment grid for a list of 50+ contacts using at least 2 enrichment providers (can use trial accounts or test APIs).
+
+**Requirements:**
+- 3-step waterfall (Provider A → Provider B → fallback)
+- Master email column pulling from waterfall results
+- Email confidence column (high/medium/low/none)
+- Source attribution column (which provider filled this row)
+- Fill rate summary: how many rows each provider filled (can be a note in your submission)
+- Cost comparison: what it would have cost to run all rows through Provider A only vs. waterfall
+
+<Card title="Submit DE-2 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-de2">
+  Share your grid link + fill rate summary + cost comparison. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: DE-3 — Data Cleaning at Scale →" icon="arrow-right" href="/academy/data-enrichment/data-cleaning">
+  Raw data is always messy. DE-3 covers the cleaning layer that standardizes, deduplicates, and normalizes data before it enters your workflow.
+</Card>
