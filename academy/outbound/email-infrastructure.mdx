@@ -1,0 +1,97 @@
+---
+title: "OA-1: Email Infrastructure 101"
+description: "Domain warmup, DMARC/SPF/DKIM setup, and the deliverability fundamentals that protect your sender reputation."
+---
+
+<Note>
+  **Outbound Automation Track · Module 1 of 7.**
+</Note>
+
+## Watch First (12 min)
+
+<Info>
+  Video walkthrough coming soon. The written content below covers everything in the video.
+</Info>
+
+## Why This Module Exists
+
+Most SDRs and founders skip email infrastructure. They set up a new domain,
+load a list, and start sending — then spend weeks wondering why their emails
+land in spam. By the time they diagnose the problem, the domain reputation
+is damaged and recovery takes months.
+
+This module is the one you wish you'd done first.
+
+## The Three Non-Negotiables
+
+<Steps>
+  <Step title="SPF (Sender Policy Framework)">
+    A DNS record that specifies which mail servers are authorized to send
+    email on behalf of your domain. Without it, receiving mail servers
+    have no way to verify your identity.
+
+    **How to set it up:** Add a TXT record to your DNS:
+    `v=spf1 include:youremailprovider.com ~all`
+
+    Most email providers (Google Workspace, Microsoft 365, etc.) give you
+    the exact record to add during setup.
+  </Step>
+  <Step title="DKIM (DomainKeys Identified Mail)">
+    A cryptographic signature attached to every email you send.
+    It proves the email wasn't modified in transit and comes from a
+    legitimate source.
+
+    **How to set it up:** Your email provider generates a DKIM key pair.
+    You add the public key as a TXT record in DNS. The provider handles
+    signing automatically after that.
+  </Step>
+  <Step title="DMARC (Domain-based Message Authentication)">
+    A policy that tells receiving servers what to do when SPF or DKIM fails.
+    Without DMARC, a failing SPF check might still let your email through —
+    or might silently drop it with no feedback.
+
+    **Recommended starting policy:** `v=DMARC1; p=none; rua=mailto:your@email.com`
+    The `p=none` policy monitors without blocking — you'll get reports showing
+    whether your authentication is working before enforcing stricter rules.
+  </Step>
+</Steps>
+
+## Domain Warmup
+
+A new sending domain has no reputation. ISPs treat it as a potential spam source
+until it builds a history of legitimate engagement. Warmup means gradually
+increasing your send volume over 4–6 weeks.
+
+**Warmup schedule:**
+| Week | Daily sends |
+|---|---|
+| Week 1 | 10–20 |
+| Week 2 | 30–50 |
+| Week 3 | 75–100 |
+| Week 4 | 150–200 |
+| Week 5+ | Scale up |
+
+Use a warmup tool (Mailreach, Warmbox, or your sending platform's built-in warmup)
+to automate this. Warmup tools send emails to real inboxes in their network and
+simulate engagement, building your reputation without risking real prospects.
+
+## Your Challenge
+
+<Card title="Before moving to OA-2" icon="flag-checkered">
+  Check your current sending domain: (1) verify SPF, DKIM, and DMARC are
+  configured correctly using [MXToolbox](https://mxtoolbox.com/SuperTool.aspx),
+  (2) if they're not set up, set them up before proceeding,
+  (3) confirm your domain has been warming for at least 2 weeks before
+  sending cold outreach at volume.
+</Card>
+
+---
+
+<CardGroup cols={2}>
+  <Card title="← Track Overview" icon="arrow-left" href="/academy/outbound/overview">
+    Outbound Automation
+  </Card>
+  <Card title="Next: Building Your First Sequence →" icon="arrow-right" href="/academy/outbound/building-sequences">
+    OA-2 · ~15 min
+  </Card>
+</CardGroup>
