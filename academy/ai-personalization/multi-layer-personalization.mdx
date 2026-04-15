@@ -1,0 +1,173 @@
+---
+title: "AP-3: Multi-Layer Personalization"
+description: "The most compelling outreach combines company-level context, role-specific challenges, and individual signals. Learn to layer all three sources in a single Bitscale workflow."
+---
+
+<Info>
+  **AP-3 · AI Personalization · 125 XP · ~20 min**
+</Info>
+
+A Level 4 personalized email requires three things simultaneously: it knows what's happening at the company right now, it understands what this specific role typically deals with, and it references something specific about this individual. Building these three layers manually takes 20+ minutes per contact. In Bitscale, it takes seconds.
+
+---
+
+## Layer 1: Company-Level Signals
+
+You've already built this in the Signal Intelligence track. The company layer answers:
+- What is this company doing right now?
+- What triggered your outreach today specifically?
+- What is their current growth context?
+
+**Input columns:** funding_stage, signal_description, tech_stack_maturity, recent_activity_summary, hiring_signal
+
+### Company context synthesis column:
+```
+Synthesize the following company intelligence into a 2-sentence context summary for use in outreach:
+
+Company: {{company_name}}
+Recent signal: {{signal_description}}
+Funding stage: {{funding_stage}}
+Hiring activity: {{hiring_signal}}
+Tech stack: {{tech_stack_maturity}}
+
+Output: a 2-sentence summary of what's most relevant about this company's current context for an outbound pitch about GTM automation. Focus on what's happening NOW, not historical facts.
+
+Return ONLY the 2-sentence summary.
+```
+
+---
+
+## Layer 2: Role-Level Challenges
+
+This layer answers: what does someone in this specific role at a company of this stage typically worry about?
+
+Different job titles at the same company have different priorities. A VP of Sales cares about pipeline coverage. A Head of SDR cares about rep productivity. A RevOps leader cares about data quality and tool efficiency. Your outreach needs to speak to their role's reality.
+
+### Role challenge mapping column:
+```
+Given:
+- Job title: {{job_title}}
+- Company stage: {{funding_stage}} startup
+- Company size: {{company_size_range}} employees
+- Hiring situation: {{hiring_signal}}
+
+What are the top 2 challenges this person is most likely facing right now in their role?
+
+Focus on challenges that a GTM automation / data enrichment tool could plausibly solve.
+
+Return as JSON: {"primary_challenge": "...", "secondary_challenge": "..."}
+```
+
+---
+
+## Layer 3: Individual-Level Context
+
+The individual layer is the differentiator. What has this specific person said or done that you can reference?
+
+**Sources:**
+- Their LinkedIn headline and summary
+- Recent LinkedIn posts (last 30 days)
+- Conference talks or published content
+- Job history (what path brought them to this role)
+
+### LinkedIn content synthesis:
+```
+Based on this person's LinkedIn activity:
+
+Name: {{first_name}} {{last_name}}
+Title: {{job_title}}
+LinkedIn headline: {{linkedin_headline}}
+Recent post summary: {{recent_post_summary}} (if available)
+Career context: {{career_summary}}
+
+Identify ONE specific, genuine observation that could open an email naturally.
+This should be:
+- Something they've actually expressed an opinion about or done
+- Relevant to their professional context (not personal)
+- Something you could reference without it feeling creepy
+
+If there is no meaningful individual signal available, return "no_individual_signal".
+
+Return ONLY the observation or "no_individual_signal".
+```
+
+---
+
+## Combining All Three Layers
+
+Once you have all three layers, synthesize them into a single email:
+
+```
+You are writing a cold outreach email on behalf of a Bitscale sales rep.
+
+Layer 1 — Company context: {{company_context_summary}}
+Layer 2 — Role challenge: {{primary_challenge}}
+Layer 3 — Individual signal: {{individual_observation}} (use only if not "no_individual_signal")
+
+Email requirements:
+- Opening line: Lead with whichever layer is strongest (company signal is usually most specific)
+- Value connection: Connect their specific context to what Bitscale solves
+- If Layer 3 is available, weave it in naturally — don't force it
+- CTA: 15-minute conversation, framed around their specific challenge
+- Max 90 words
+- Sound like a thoughtful human, not a system
+
+Return ONLY the email body.
+```
+
+---
+
+## Personalization Fallback Logic
+
+Not every contact will have all three layers available. Build fallback logic:
+
+```
+Determine which personalization layers are available for this contact:
+
+Company signal: {{signal_description}} — is this specific? (yes/no)
+Role challenge: {{primary_challenge}} — was this populated? (yes/no)
+Individual signal: {{individual_observation}} — is this "no_individual_signal"? (yes/no)
+
+Classify:
+- full_personalization: all 3 layers specific and available
+- two_layer: 2 layers available (specify which 2)
+- company_only: only company signal is specific
+- role_only: only role challenge is available
+- minimal: no specific layers — use only generic personalization
+
+This classification will determine which prompt variant to use.
+
+Return ONLY the classification.
+```
+
+Route different classifications to different prompt variants — the `full_personalization` prompt differs from the `minimal` prompt in specificity level.
+
+---
+
+<Tip>
+  **Quick Check:** What does each of the three personalization layers answer? What is the fallback logic for when individual signals aren't available? How do you determine which layer to lead with in the email?
+</Tip>
+
+---
+
+## AP-3 Challenge: Multi-Layer Grid for 25 Contacts (+125 XP)
+
+Build a 25-contact grid with all three personalization layers and the synthesized email.
+
+**Requirements:**
+- Company context synthesis column
+- Role challenge column (primary + secondary)
+- Individual observation column
+- Personalization classification column (full / two-layer / company-only / role-only / minimal)
+- Final email column using the appropriate prompt variant
+- Distribution: how many contacts in each personalization tier?
+
+<Card title="Submit AP-3 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-ap3">
+  Share your grid + tier distribution. **+125 XP on approval.**
+</Card>
+
+---
+
+<Card title="Next: AP-4 — LinkedIn Research Automation →" icon="arrow-right" href="/academy/ai-personalization/linkedin-research">
+  AP-4 digs into the tactics and tools for automating LinkedIn profile research at scale.
+</Card>
