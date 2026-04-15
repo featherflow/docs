@@ -1,0 +1,79 @@
+---
+title: "F-4: Reading Your Data"
+description: "How to interpret enrichment results, spot data quality issues, and know what good looks like."
+---
+
+<Note>
+  **Foundation Track · Module 4 of 5.** You should have a grid with enriched
+  company data from F-3 before working through this module.
+</Note>
+
+## Watch First (10 min)
+
+<Info>
+  Video walkthrough coming soon. The written content below covers the same concepts.
+</Info>
+
+## What You're Looking At
+
+After running enrichment on your grid, you'll have columns filled with
+varying types and quality of data. Not all of it is equally useful.
+Learning to read data quality quickly is one of the most valuable skills
+in the platform.
+
+## Data Quality Signals
+
+<Steps>
+  <Step title="Completeness">
+    What percentage of rows have a value for each column?
+    High-priority columns (email, LinkedIn URL) should be 80%+.
+    If you're seeing 40% fill rates, either your source list has quality
+    issues or you need to add a fallback enrichment provider.
+  </Step>
+  <Step title="Confidence indicators">
+    Some enrichment providers return a confidence score alongside the data.
+    Emails marked as "verified" or "valid" have passed a deliverability check.
+    Treat unverified emails as risky until validated.
+  </Step>
+  <Step title="Freshness">
+    Data goes stale. A LinkedIn URL scraped 18 months ago may point to
+    a person who has changed roles. Job titles and company information
+    should be treated as approximate, not definitive.
+  </Step>
+  <Step title="Catch-all domains">
+    Some company email servers accept all incoming mail regardless of
+    whether the address exists (catch-all). These appear valid but
+    have high bounce rates. Bitscale flags these — treat them as
+    medium-risk and validate before sending at volume.
+  </Step>
+</Steps>
+
+## Reading Enrichment Columns in Bitscale
+
+When you hover over a cell in an enrichment column, you'll see:
+- The raw value returned
+- The provider that returned it
+- Any validation status (for emails)
+
+If a cell is empty, check the **Errors** view to see why the enrichment
+failed for that row — often it's a missing or malformed input value.
+
+## Your Challenge
+
+<Card title="Before moving to F-5" icon="flag-checkered">
+  Go back to the grid you built in F-3. For each enrichment column, check:
+  (1) what percentage of rows have a value, (2) whether any emails are
+  flagged as catch-all or invalid. Note the fill rate and make a list of
+  the rows that need better source data.
+</Card>
+
+---
+
+<CardGroup cols={2}>
+  <Card title="← F-3: Your First Grid" icon="arrow-left" href="/academy/foundation/your-first-grid">
+    Previous module
+  </Card>
+  <Card title="Next: The Bitscale Workflow Model →" icon="arrow-right" href="/academy/foundation/bitscale-workflow-model">
+    F-5 · ~12 min
+  </Card>
+</CardGroup>
