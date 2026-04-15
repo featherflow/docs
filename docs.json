@@ -110,6 +110,79 @@
         ]
       },
       {
+        "tab": "GTM Academy",
+        "groups": [
+          {
+            "group": "Start Here",
+            "pages": [
+              "academy/overview",
+              "academy/skill-tree",
+              "academy/role-quiz"
+            ]
+          },
+          {
+            "group": "GTM Foundation",
+            "pages": [
+              "academy/foundation/what-is-gtm-automation",
+              "academy/foundation/understanding-your-icp",
+              "academy/foundation/your-first-grid",
+              "academy/foundation/reading-your-data",
+              "academy/foundation/bitscale-workflow-model",
+              "academy/foundation/knowledge-check"
+            ]
+          },
+          {
+            "group": "Outbound Automation",
+            "pages": [
+              "academy/outbound/overview",
+              "academy/outbound/email-infrastructure",
+              "academy/outbound/building-sequences",
+              "academy/outbound/copy-that-converts",
+              "academy/outbound/email-validation",
+              "academy/outbound/multichannel-orchestration",
+              "academy/outbound/campaign-analysis",
+              "academy/outbound/capstone"
+            ]
+          },
+          {
+            "group": "Data & Enrichment",
+            "pages": [
+              "academy/enrichment/overview",
+              "academy/enrichment/coming-soon"
+            ]
+          },
+          {
+            "group": "Signal Intelligence",
+            "pages": [
+              "academy/signals/overview",
+              "academy/signals/coming-soon"
+            ]
+          },
+          {
+            "group": "AI Personalization",
+            "pages": [
+              "academy/ai/overview",
+              "academy/ai/coming-soon"
+            ]
+          },
+          {
+            "group": "GTM Architect",
+            "pages": [
+              "academy/architect/overview",
+              "academy/architect/coming-soon"
+            ]
+          },
+          {
+            "group": "Certifications",
+            "pages": [
+              "academy/certifications/overview",
+              "academy/certifications/foundation",
+              "academy/certifications/outbound-specialist"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "List Building",
         "groups": [
           {
@@ -162,12 +235,28 @@
         "tab": "For SDRs",
         "groups": [
           {
-            "group": "Basics",
-            "pages": []
+            "group": "Your Learning Path",
+            "pages": [
+              "academy/overview",
+              "academy/foundation/what-is-gtm-automation"
+            ]
           },
           {
-            "group": "Advanced",
-            "pages": []
+            "group": "Recommended Track",
+            "pages": [
+              "academy/outbound/overview",
+              "academy/outbound/email-infrastructure",
+              "academy/outbound/building-sequences",
+              "academy/outbound/copy-that-converts"
+            ]
+          },
+          {
+            "group": "Quick References",
+            "pages": [
+              "playbook/sdr-playbook",
+              "playbook/automated-outbound",
+              "ingredients/tools-waterfall"
+            ]
           }
         ]
       },
@@ -175,12 +264,26 @@
         "tab": "For Revops",
         "groups": [
           {
-            "group": "Basics",
-            "pages": []
+            "group": "Your Learning Path",
+            "pages": [
+              "academy/overview",
+              "academy/foundation/what-is-gtm-automation"
+            ]
           },
           {
-            "group": "Advanced",
-            "pages": []
+            "group": "Recommended Track",
+            "pages": [
+              "academy/enrichment/overview",
+              "academy/enrichment/coming-soon"
+            ]
+          },
+          {
+            "group": "Quick References",
+            "pages": [
+              "playbook/salesforce-2-way",
+              "ingredients/tools-waterfall",
+              "playbook/company-firmography"
+            ]
           }
         ]
       },
@@ -188,12 +291,26 @@
         "tab": "For Growth",
         "groups": [
           {
-            "group": "Basics",
-            "pages": []
+            "group": "Your Learning Path",
+            "pages": [
+              "academy/overview",
+              "academy/foundation/what-is-gtm-automation"
+            ]
           },
           {
-            "group": "Advanced",
-            "pages": []
+            "group": "Recommended Track",
+            "pages": [
+              "academy/signals/overview",
+              "academy/signals/coming-soon"
+            ]
+          },
+          {
+            "group": "Quick References",
+            "pages": [
+              "playbook/hiring-signals",
+              "ingredients/intent-signals",
+              "ingredients/reverse-lookup"
+            ]
           }
         ]
       },
