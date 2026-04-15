@@ -1,185 +1,120 @@
 ---
-title: "Understanding Your ICP"
-description: "The difference between a vague ICP and a useful one is precision. Learn to build one specific enough to filter with."
+title: "F-2: Understanding Your ICP"
+description: "How to define an ICP that's specific enough to build a targeting system around — not just a Confluence doc nobody reads."
 ---
 
 <Info>
-  **F-2 · GTM Foundation · 100 XP · ~15 min**
-
-  Complete the ICP worksheet challenge at the bottom to earn 100 XP.
+  **F-2 · GTM Foundation · 100 XP · ~18 min**
 </Info>
 
-# Understanding Your ICP
-
-**Bad ICP:** "B2B SaaS companies with 50–500 employees."
-
-That describes roughly 80,000 companies. It gives you zero signal about whether any of them are ready to buy, able to buy, or worth talking to right now.
-
-**Good ICP:** "Series A/B SaaS companies in outbound-heavy verticals (sales tech, HR tech, fintech), 50–200 employees, actively hiring SDRs, using Outreach or Salesloft, VP Sales in seat for less than 18 months."
-
-That describes maybe 2,000 companies — and every single one of them has a reason to care about what you're selling.
-
-The difference is precision. This module teaches you how to get there.
-
-<Note>
-  🎬 **Video coming soon.** Check back shortly. The written content below covers the same ground.
-</Note>
+Most ICP documents are wrong. Not because the team didn't think hard enough — but because they defined the ICP based on who they want to sell to, not who actually buys. This module teaches you the difference, and how to translate a real ICP into targeting criteria you can automate.
 
 ---
 
-## The Four ICP Dimensions
+## Why Most ICPs Are Wrong
 
-A precise ICP has four layers. Most teams only define the first one.
+The classic ICP document lists things like: "B2B SaaS companies, 50–500 employees, Series A–C, US-based." That describes half the companies on LinkedIn. It's not a targeting definition — it's a demographic sketch.
 
-### 1. Firmographic
+A real ICP answers a different question: **what combination of attributes predicts that this company will buy from us, get value, and stay?**
 
-The baseline structural facts about a company. Necessary — but not sufficient.
+The answer always comes from your existing customers. Not from a whiteboard.
 
-| Signal | Example | Bitscale Column Type |
-|--------|---------|---------------------|
-| Industry | SaaS, fintech, e-commerce | Enrichment → Company Industry |
-| Headcount | 50–200 employees | Enrichment → Headcount |
-| Revenue range | $5M–$50M ARR | Enrichment → Estimated Revenue |
-| Funding stage | Series A or B | Enrichment → Funding Data |
-| HQ location | US or UK | Enrichment → Company Location |
+---
 
-Firmographic data is table stakes. Everyone has this. Use it to filter *down*, not to select *up*.
+## Building an ICP from Existing Customer Data
 
-### 2. Situational
+Run this analysis on your best customers — define "best" as highest LTV, fastest time-to-value, or fewest support tickets:
 
-What's *happening* at this company right now that makes them a fit.
+| Attribute | Where to Find It | What to Look For |
+|---|---|---|
+| **Company size** | LinkedIn, Clearbit | Is there a range that clusters? |
+| **Industry / vertical** | CRM, LinkedIn | Which verticals appear most? |
+| **Funding stage** | Crunchbase, Apollo | Bootstrap vs VC-backed pattern? |
+| **Tech stack** | BuiltWith, Clearbit | What tools do they all use? |
+| **Team structure** | LinkedIn job postings | SDR team? Marketing team size? |
+| **Growth signals** | LinkedIn headcount trend | Were they hiring when they bought? |
+| **Trigger event** | CRM notes, deal history | What made them look for a solution now? |
 
-| Signal | What It Means | Bitscale Column Type |
-|--------|--------------|---------------------|
-| Hiring SDRs | They're scaling outbound | Job Postings enrichment |
-| Raised funding in last 90 days | They have budget to spend | Funding Data enrichment |
-| New VP Sales just hired | They're rebuilding the team | Job Change Signal |
-| Adopted new tech in last 6 months | They're evaluating new tools | Tech Stack enrichment |
+When you map 20–30 of your best customers against these columns, patterns emerge. Those patterns are your real ICP.
 
-Situational signals are your edge. Most competitors can't see them. You can.
+---
 
-### 3. Stakeholder
+## The ICP Scoring Matrix
 
-Not just which company — but *who inside* the company.
+Once you've identified patterns, translate them into a scoring rubric:
 
-| Factor | Example |
-|--------|---------|
-| Title | VP Sales, Head of Revenue Ops, Director of Demand Gen |
-| Seniority | Director and above |
-| Tenure in role | Less than 18 months (still making decisions, not yet entrenched) |
-| Reports to | CRO or CEO (indicates budget ownership) |
+```
+ICP Fit Score (0–10):
 
-A VP Sales who's been in role for 3 months is 5x more likely to evaluate new tools than one who's been there 4 years with locked-in processes.
+Firmographic fit:      0–3 points
+  - Industry match:    +1
+  - Size in range:     +1
+  - Funding stage:     +1
 
-### 4. Behavioral
+Technographic fit:     0–3 points
+  - Uses CRM:          +1
+  - Has SEP (e.g. Outreach/Instantly): +1
+  - Has data tool (Apollo/ZoomInfo):   +1
 
-What they've already *done* that signals genuine intent.
+Signal fit:            0–4 points
+  - Actively hiring SDRs: +2
+  - Recent funding:       +1
+  - Headcount growth >20%: +1
 
-| Behavior | Signal Strength | Source |
-|---------|----------------|--------|
-| Visited your pricing page | Very high | Reverse IP / intent data |
-| Downloaded content or attended a webinar | High | Your CRM |
-| Mentioned a pain point on LinkedIn | Medium | Social listening |
-| Team member left for a competitor | Low | LinkedIn alerts |
+Score 8–10: Hot ICP — top priority
+Score 5–7:  Warm ICP — work the signal
+Score 0–4:  Outside ICP — deprioritize
+```
 
-Behavioral signals require more infrastructure to capture but convert 3–4x better than firmographic data alone.
+This matrix becomes the backbone of your enrichment and scoring columns in Bitscale.
+
+---
+
+## Negative ICP: Who to Exclude
+
+Equally important: who you should not spend time on.
+
+Common negative ICP signals:
+- Fewer than 10 employees (no budget, no infrastructure)
+- No sales team at all (wrong use case)
+- Competitor's customer (already solved the problem)
+- Wrong geography (if you have regional constraints)
+- Stage too early or too late (pre-product or enterprise with 18-month sales cycle)
+
+Build your negative ICP list explicitly. In Bitscale, you can filter these out before they ever reach your outbound queue.
+
+---
+
+## Encoding ICP as Bitscale Criteria
+
+Once you have your ICP defined, it lives in your Bitscale grids as column filters and scoring formulas:
+
+- **Industry** column → filter to target verticals
+- **Employee count** column → filter to size range
+- **Tech stack** columns → flag CRM/SEP presence
+- **Hiring signal** column → detect SDR hiring
+- **ICP score** formula column → sum the above
+
+You'll build this in F-3 (Your First Grid). For now, make sure your ICP is specific enough to encode — if you can't write it as a filter, it's not specific enough.
+
+---
 
 <Tip>
-  **Quick check:** What's the difference between a firmographic signal and a situational signal? Give an example of each without looking up.
+  **Quick Check:** Can you name three firmographic and two technographic criteria that predict a customer buys from you? If you can't yet, that's what the F-2 challenge will help you figure out.
 </Tip>
 
 ---
 
-## How the Four Dimensions Map to Bitscale Columns
+## F-2 Challenge: Build Your ICP Scoring Matrix (+100 XP)
 
-Your ICP definition maps directly to your grid structure. Here's what a fully-built ICP grid looks like:
+Take your 10 best current customers. Map them against the attributes above. Identify the top 3 patterns that appear across 7+ of them. Write up your ICP scoring matrix.
 
-```
-Column 1:  Company Name          → Text (static)
-Column 2:  Domain                → Text (static)
-Column 3:  Industry              → Enrichment (Clearbit / Apollo)
-Column 4:  Headcount             → Enrichment (Clearbit)
-Column 5:  Funding Stage         → Enrichment (Crunchbase)
-Column 6:  SDR Hiring Signal     → Enrichment (Job Postings, filter: SDR)
-Column 7:  Days Since Funding    → Formula (derived from Column 5 date)
-Column 8:  Best Contact          → Enrichment (Apollo, filter: VP Sales)
-Column 9:  ICP Score             → AI Column (0–10 score using all signals above)
-Column 10: Include in Campaign   → Formula (ICP Score > 7 = TRUE)
-```
-
-Column 10 is your filter. Only rows where `Include in Campaign = TRUE` get exported.
+<Card title="Submit F-2 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-f2">
+  Submit your ICP scoring matrix based on real customer data. **+100 XP on approval.**
+</Card>
 
 ---
 
-## The ICP Worksheet
-
-Fill this in for your company. Keep it open next to your Bitscale setup — you'll reference it in F-3.
-
-```
-=== MY ICP WORKSHEET ===
-
-FIRMOGRAPHIC
-Industry:              _______________
-Headcount range:       _______________
-Funding stage:         _______________
-Revenue range (est.):  _______________
-Geography:             _______________
-
-SITUATIONAL (pick 2–3 signals that matter most)
-Signal 1:  _______________
-Signal 2:  _______________
-Signal 3:  _______________
-
-STAKEHOLDER
-Primary title:         _______________
-Seniority:             _______________
-Tenure sweet spot:     _______________
-
-BEHAVIORAL (if you have this data)
-Intent signal:         _______________
-
-DISQUALIFIERS (who NOT to contact — just as important)
-Industry exclusions:   _______________
-Size exclusions:       _______________
-Stage exclusions:      _______________
-```
-
----
-
-## The Calibration Loop
-
-Your ICP is a hypothesis. Treat it like one.
-
-Every two weeks, do this:
-
-1. Pull your last 10 closed-won deals. What firmographic and situational signals were present?
-2. Pull your last 10 closed-lost deals. What was different?
-3. Update your Bitscale grid to weight the winning signals higher.
-
-Bitscale makes this loop fast because you're adding or removing a column — not rebuilding a spreadsheet from scratch.
-
-<Warning>
-  **The trap:** Most teams define their ICP once, put it in a slide deck, and never update it. Your ICP should evolve every quarter as you learn what actually closes. If it hasn't changed in 6 months, you're not learning from your pipeline data.
-</Warning>
-
----
-
-## 🎯 Challenge · 100 XP
-
-Fill in your ICP Worksheet using the template above.
-
-Requirements:
-- At least **3 firmographic signals** defined
-- At least **2 situational signals** defined
-- At least **1 stakeholder filter** defined
-- At least **1 disqualifier** defined
-
-Paste your completed worksheet into the submission form.
-
-[Submit your F-2 ICP worksheet →](https://bitscale.fillout.com/academy-challenge-f2)
-
----
-
-<Card title="Up next: F-3 · Your First Grid" icon="arrow-right" href="/academy/foundation/your-first-grid">
-  Time to put your ICP into a real Bitscale grid. This one's hands-on — have Bitscale open when you start.
+<Card title="Next: F-3 Your First Grid →" icon="arrow-right" href="/academy/foundation/your-first-grid">
+  Turn your ICP definition into a live Bitscale grid that finds and scores prospects automatically.
 </Card>
