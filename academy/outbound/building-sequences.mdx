@@ -1,217 +1,131 @@
 ---
-title: "Building Sequences"
-description: "The Signal-Value-Close framework and how Bitscale generates personalised openers at scale. Build a 3-touch sequence that actually converts."
+title: "OA-2: Building Sequences"
+description: "The architecture of cold email sequences that generate pipeline — step count, timing, multi-channel touchpoints, and when to stop."
 ---
 
 <Info>
-  **OA-2 · Outbound Automation · 125 XP · ~15 min**
-
-  Complete the sequence build challenge at the bottom to earn 125 XP.
+  **OA-2 · Outbound Automation · 125 XP · ~20 min**
 </Info>
 
-# Building Sequences
-
-The best cold emails don't sound like cold emails.
-
-They sound like a message from someone who did their homework — someone who knows what's happening at your company, why it's relevant to them, and what a good next step looks like. The trick is that they didn't do the homework manually. They used data to make automation feel personal.
-
-That's what we're building in this module.
-
-<Note>
-  🎬 **Video coming soon.** Check back shortly.
-</Note>
+Most cold email sequences are too long, too soon, too similar, or stop at the wrong time. This module gives you the structural framework for building sequences that generate pipeline: when to send each touchpoint, what each step should do differently, when to add LinkedIn, and when to take someone off the sequence entirely.
 
 ---
 
-## The Signal-Value-Close Framework
+## What a Sequence Actually Is
 
-Most outbound sequences fail because every touch tries to do the same thing: get a meeting. Good sequences do three different jobs across three different touches.
+A sequence is a pre-planned series of touchpoints sent to a prospect over time. It's not just a follow-up schedule — it's a deliberate escalation strategy. Each step serves a different purpose, targets a different objection, and uses a different approach.
 
-| Touch | Timing | Job | Approach |
-|-------|--------|-----|---------|
-| **1 — Signal** | Day 0 | Establish relevance | Reference a real, specific trigger |
-| **2 — Value** | Day 3 | Prove you're worth talking to | Share a concrete result, not a feature list |
-| **3 — Close** | Day 7 | Respect their time | Low-friction, keep the door open |
-
-Each touch has one job. The signal touch gets their attention. The value touch earns credibility. The close touch respects their inbox.
+The mistake most teams make: every email in the sequence says roughly the same thing. "Just checking in." "Wanted to resurface this." That's not a sequence — it's a nagging machine. A good sequence reads like a conversation that was designed, not automated.
 
 ---
 
-## Touch 1: The Signal Email
+## The 6-Step Framework
 
-The opener is the make-or-break moment. One sentence that makes the prospect think "how did they know that?" — followed by a clear, low-friction ask.
+This is the sequence structure that consistently performs across B2B outbound:
 
-**Anatomy of a Signal email:**
+| Step | Day | Channel | Purpose |
+|---|---|---|---|
+| **Step 1** | Day 1 | Email | First touch — strong hook, specific signal, clear ask |
+| **Step 2** | Day 3 | LinkedIn | Profile view or connection request (human signal) |
+| **Step 3** | Day 5 | Email | Different angle — case study, social proof, or insight |
+| **Step 4** | Day 9 | Email | Direct value add — relevant content, benchmark, tool |
+| **Step 5** | Day 14 | Email + LinkedIn | Breakup-style — short, honest, easy to respond to |
+| **Step 6** | Day 21 | Email | Long-shot final — "passing the baton" or referral ask |
 
-```
-Subject: [signal-based, 5–7 words, no spam triggers]
-
-[Signal-based opener — one sentence referencing a real trigger]
-
-[Bridge — one sentence connecting the signal to their likely problem]
-
-[Value statement — one sentence on the outcome you deliver]
-
-[CTA — one sentence, specific, easy to say yes to]
-
-[Name]
-```
-
-**Example:**
-
-> Subject: scaling your SDR team
->
-> Saw you're hiring 4 SDRs at Acme — most teams in that phase spend 30% of their ramp budget on manual data work that Bitscale automates in 60 seconds.
->
-> Worth a quick look?
->
-> [Name]
-
-That's it. 3 sentences plus a subject line. Under 50 words. No pitch deck. No feature list. Just a relevant observation and a low-friction ask.
+Six steps over 21 days. More than this and you're annoying the people who were never going to buy. Fewer than this and you're leaving pipeline on the table.
 
 ---
 
-## Touch 2: The Value Email
+## Step Design: What Each Email Does
 
-If Touch 1 got an open but no reply, Touch 2 drops proof.
+### Step 1 — Signal-Led First Touch
 
-```
-Subject: Re: [original subject — keep the thread]
+Lead with something specific. Not "I saw you're in SaaS." Specific:
 
-Quick follow-up.
+> "Noticed [Company] posted three SDR roles last week — that timing usually means outbound infrastructure becomes the constraint before headcount arrives."
 
-[Specific outcome a similar company got — use a real customer if possible]
+This step is the hardest to write and the most important. If it doesn't land, nothing else matters.
 
-[One sentence on why this is relevant to them]
+### Step 2 — LinkedIn Touchpoint
 
-Worth 15 minutes to see if it makes sense for Acme?
+Don't send another email on day 3. View their profile and/or connect. This is a human signal that someone real is reaching out — and it primes them to recognize your name when the next email arrives.
 
-[Name]
-```
+Connection request note (if you connect): one line, no pitch. "Saw your team's been scaling outbound — thought it'd be good to connect."
 
-**Key principle:** Never repeat Touch 1. Touch 2 should add new information — specifically, a concrete result that makes the prospect think "that could be us."
+### Step 3 — Different Angle
 
----
+Don't restate step 1. Come at it from a different dimension:
+- Step 1 was about their signal → Step 3 is about a customer like them
+- Step 1 was about the problem → Step 3 is about the cost of the problem
+- Step 1 was about your solution → Step 3 is about a specific feature relevant to them
 
-## Touch 3: The Close
+### Step 4 — Value-Add
 
-Touch 3 is not another pitch. It's a graceful exit that keeps the door open.
+Give something useful without asking for anything. A benchmark report, a relevant tool, a piece of content that directly addresses a challenge they likely have. This step builds goodwill and demonstrates expertise.
 
-```
-Subject: Re: [original subject]
+### Step 5 — The Honest Breakup
 
-Closing the loop here — completely understand if the timing isn't right.
+Short. Direct. Low pressure.
 
-Happy to reconnect in Q3 if anything changes. Just reply and I'll set something up.
+> "Hey [Name] — I've sent a few notes and haven't heard back. Totally fair if the timing's off or it's not relevant right now. I'll stop following up after this. If there's ever a better time, just reply with 'Later' and I'll reach back out in 90 days. Either way — no hard feelings."
 
-[Name]
-```
+This step generates replies. Prospects who were never going to respond suddenly say "actually, let's talk." The psychology: relief at being off the hook, combined with a clear off-ramp.
 
-That's it. No follow-up on the follow-up. Respect their inbox. Deals that come back from a Touch 3 close often convert faster than ones that replied to Touch 1 — because the prospect made a decision, not a reflex response.
+### Step 6 — The Pass
 
----
+If step 5 got no reply, this is genuinely the last one.
 
-## Building This in Bitscale
+> "Last email, I promise. If outbound efficiency isn't a priority right now, is there someone else on your team I should be talking to? Happy to reach out to whoever owns [problem area]."
 
-Here's how Bitscale feeds this sequence. In this grid, 50 contacts are prepped with everything needed to personalise Touch 1:
-
-```
-Column 1: First Name              → Static
-Column 2: Last Name               → Static
-Column 3: Title                   → Static / Enrichment
-Column 4: Company                 → Static
-Column 5: Domain                  → Static
-Column 6: SDR Hiring Signal       → Enrichment (Job Postings)
-Column 7: Tech Stack              → Enrichment (BuiltWith / Clearbit)
-Column 8: Email Opener            → AI Column
-Column 9: Email (Verified)        → Enrichment + Verification
-```
-
-The AI Email Opener column generates a unique, signal-based first line for every row automatically.
+This either gets a referral or finally closes the loop.
 
 ---
 
-## The AI Opener Prompt (Copy-Paste Ready)
+## Timing Rules
 
-```
-You are writing the opening line of a cold email to {{first_name}}, {{title}} at {{company}}.
-
-They are currently hiring {{sdr_hiring_count}} SDRs based on their job postings.
-
-Write one sentence that:
-- References this specific hiring signal naturally (not creepily)
-- Is under 20 words
-- Does not use the word "noticed"
-- Sounds like a smart colleague wrote it, not a salesperson
-- Contains no emojis
-```
-
-Swap `{{sdr_hiring_count}}` for whichever enrichment column has your signal. Run the column across all 50 rows in about 15 seconds.
+- **Never send two emails on consecutive days** — it reads as desperate
+- **Step 1 and Step 3 need the most time** — 4–5 days apart feels natural
+- **Step 5 and Step 6 should be 7+ days apart** — spacing signals you're not chasing
+- **Don't send on Mondays before 10am or Fridays after 2pm** — opens tank at these times
 
 ---
 
-## Adding LinkedIn to Your Sequence
+## When to Remove Someone from a Sequence
 
-One pattern that consistently lifts reply rates: a LinkedIn touch between Touch 1 and Touch 2.
+Remove immediately if:
+- They reply "not interested" or "please unsubscribe"
+- They open every email but never reply (they're just not the right person)
+- They're a current customer or are already in an active deal
+- LinkedIn shows they've changed companies (your context is now wrong)
 
-| Day | Channel | Action |
-|-----|---------|--------|
-| 0 | Email | Touch 1 (Signal email) |
-| 1 | LinkedIn | Connection request — blank or 1-line note |
-| 3 | Email | Touch 2 (Value email) |
-| 5 | LinkedIn | Short message: reference your email, one question |
-| 7 | Email | Touch 3 (Close) |
+In Bitscale, you can automate removal triggers — a new column that checks CRM status and flags anyone who should exit the sequence before they receive the next step.
 
-When Touch 2 arrives after you've connected on LinkedIn, your name is familiar. Familiarity converts.
+---
 
-**AI column for the LinkedIn note:**
+## Multi-Channel Architecture
 
-```
-Write a one-line LinkedIn connection request note to {{first_name}} at {{company}}.
+The LinkedIn touchpoint on Step 2 isn't optional if you have access to it. Email + LinkedIn together produce significantly higher reply rates than email alone. The mechanism: the LinkedIn touchpoint makes you feel like a real person, not an automation.
 
-Context: You're reaching out because they're hiring SDRs and you want to connect about GTM automation.
+For higher-value targets, consider adding a cold call on Day 7 between Step 3 and Step 4. Phone + email + LinkedIn = three channels, high signal of genuine intent to reach someone.
 
-Rules:
-- Maximum 15 words
-- No pitch
-- Sound curious, not salesy
-- No emojis
-```
-
-One Bitscale grid, two outputs: email opener and LinkedIn note. Same data, zero extra work.
+---
 
 <Tip>
-  **Quick check:** What are the three jobs of the Signal-Value-Close sequence? What happens if all three touches try to do the same thing?
+  **Quick Check:** What's the purpose of the "breakup email" in Step 5? Why does it work even when the prospect was never going to respond? What's one thing every email in a sequence should do differently from the previous one?
 </Tip>
 
 ---
 
-## 🎯 Challenge · 125 XP
+## OA-2 Challenge: Build and Map a 6-Step Sequence (+125 XP)
 
-Build a 3-touch sequence using Bitscale-generated personalisation.
+Design a 6-step sequence for your ICP. Write a one-sentence description of each step's angle/purpose and map the timing (which day each step sends). Bonus: draft the actual subject line for Step 1.
 
-<Steps>
-  <Step title="Set up your Bitscale grid">
-    Take your F-3 grid (or build a new one with contact data). Add the SDR hiring signal enrichment column if you haven't already.
-  </Step>
-  <Step title="Add the AI Opener column">
-    Add an AI column. Paste in the opener prompt above, mapping it to your enrichment columns. Run it across all rows.
-  </Step>
-  <Step title="Write your 3-touch sequence templates">
-    Write your Touch 2 and Touch 3 templates. Touch 1 will use the AI-generated opener from Bitscale.
-  </Step>
-  <Step title="Map to your sequencing tool">
-    Export the opener column from Bitscale and map it to the first-line variable in your sequencing tool (Outreach, Smartlead, Apollo, Instantly, etc.).
-  </Step>
-  <Step title="Submit">
-    Submit a screenshot showing: your Bitscale grid with AI openers populated, and your sequence template showing where the Bitscale variable maps in.
-  </Step>
-</Steps>
-
-[Submit your OA-2 sequence →](https://bitscale.fillout.com/academy-challenge-oa2)
+<Card title="Submit OA-2 Challenge →" icon="upload" href="https://bitscale.fillout.com/academy-challenge-oa2">
+  Submit your sequence structure with step-by-step purpose mapping. **+125 XP on approval.**
+</Card>
 
 ---
 
-<Card title="Up next: OA-3 · Copy That Converts" icon="arrow-right" href="/academy/outbound/copy-that-converts">
-  You have a structure. Now let's talk about the actual words — what makes a line of outbound copy convert versus what gets you marked as spam.
+<Card title="Next: OA-3 Copy That Converts →" icon="arrow-right" href="/academy/outbound/copy-that-converts">
+  Sequence is built. Now learn to write cold email copy that actually gets replies.
 </Card>
