@@ -116,6 +116,7 @@
             "group": "Start Here",
             "pages": [
               "academy/overview",
+              "academy/xp-tracker",
               "academy/skill-tree",
               "academy/role-quiz"
             ]
