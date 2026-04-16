@@ -1,0 +1,166 @@
+---
+title: 'CRM Cleanup - Contact Level'
+---
+
+Last Updated At: Apr 2026
+
+<div style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
+ <iframe
+   src="https://www.youtube.com/embed/cLSfyjEaQJg?si=00HzC43MY_gpdvb6"
+   title="YouTube video player"
+   style={{
+     position: "absolute",
+     inset: 0,
+     width: "100%",
+     height: "100%",
+     border: 0,
+   }}
+   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+   referrerPolicy="strict-origin-when-cross-origin"
+   allowFullScreen
+ />
+</div>
+
+<Card title="Keep HubSpot contacts fresh with an automated re-enrichment playbook" color="#5a0c0c" href="https://app.bitscale.ai" >
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## Why this playbook exists
+
+CRM data decays over time.
+
+People change jobs, companies change names, and profiles get updated. Even if your CRM was perfect when the deal was created, it will drift over months.
+
+The fix is consistent re-enrichment.
+
+This playbook is designed to refresh HubSpot contacts end-to-end, without wasting credits on data that is already valid.
+
+## What this playbook assumes
+
+This workflow assumes that for each HubSpot contact:
+- the contact record exists in HubSpot
+- the contact has an email
+
+If a contact does not have an email at all, this exact playbook may not work as-is, because email is used as a key input to recover LinkedIn and enrich the profile.
+
+## How to run the playbook
+
+If you have the playbook set up in a grid already:
+
+1. Import contacts into the grid
+2. Select all rows
+3. Click **Run**
+
+That is it. The rest is handled by the workflow.
+
+## Step 1: Pull contacts from HubSpot
+
+1. Go to **New grid**
+2. Select **Import records from HubSpot lists**
+3. Select your HubSpot account
+4. Select the list
+5. Import into:
+   - a new grid, or
+   - the current grid if you are using the playbook template
+
+This import gives you HubSpot record IDs, which become the base input for everything else.
+
+## Step 2: Look up key HubSpot contact fields
+
+Once HubSpot IDs are available, the workflow runs a lookup to pull common contact fields like:
+- name
+- company name
+- company website
+- LinkedIn URL (if present)
+- email
+
+These are the core fields most teams care about at contact level.
+
+## Step 3: Validate the existing email
+
+Before spending credits to find a new email, the workflow validates the email already in HubSpot.
+
+Why this matters:
+- if the current email is valid, there is no need to re-find it
+- you can still enrich missing fields like name, company name, LinkedIn URL
+- but you avoid paying to “re-enrich” something that is already correct
+
+Only contacts with invalid or low-quality emails flow into the “find new email” step later.
+
+## Step 4: Find LinkedIn profile URL
+
+LinkedIn profile URL is treated as a high-value key because it unlocks richer, fresher data.
+
+The workflow tries two methods together:
+
+1. **Reverse lookup waterfall**
+   - pass the email into multiple providers
+   - attempt to return the LinkedIn URL
+
+2. **Bit Agent fallback**
+   - if the waterfall fails, Bit Agent searches to find the LinkedIn profile URL
+   - this increases coverage without guessing
+
+## Step 5: Enrich the person from LinkedIn (only when needed)
+
+The workflow enriches the person to pull fresh, live data from LinkedIn.
+
+But it does this conditionally.
+
+If key fields like company website, company name are already present, you may not need to enrich the person for those parts.
+
+If those fields are missing or empty, the workflow enriches the person to fill them.
+
+## Step 6: Re-find email only for invalid contacts
+
+For contacts where the email validation step marked the email as bad or invalid:
+- the workflow finds a new email
+- keeps everything grouped and clean for update
+
+Valid emails do not go through this step.
+
+## Step 7: Update the HubSpot record
+
+Finally, the workflow pushes updates back to HubSpot:
+
+- action: **Update record**
+- unique identifier: **HubSpot record ID**
+- map whichever fields you want to update
+  - example: LinkedIn URL, name, company name, company website, updated email (only when needed)
+
+## Automate it with scheduled fetch + auto run
+
+Once the playbook works for your dataset, you can make it fully automatic.
+
+### Option A: Use a HubSpot list as the feeder
+This is best when your team manages eligibility through list filters.
+
+1. Set **Auto-fetch records** on the HubSpot list source
+2. Pick a cadence (example: bi-weekly, monthly)
+
+### Option B: Pull contacts using HubSpot querying
+If you want bulk re-enrichment (example: every 6 months), you can skip lists and pull contacts using HubSpot contact querying directly.
+
+The workflow still works because it only depends on:
+- HubSpot record ID
+
+### Enable auto run + auto dedup
+To make the pipeline hands-off:
+- enable **Auto run** so every new record runs through the workflow
+- configure **Auto dedup** to avoid processing the same contact repeatedly
+
+Whether you want dedup or reprocessing depends on your cadence:
+- frequent cadence: dedup helps avoid repeated enrichment
+- long cadence (6–12 months): reprocessing may be desirable
+
+<Card title="Keep your CRM up to date automatically" color="#5a0c0c" href="https://app.bitscale.ai" >
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## Need help?
+
+If you want a copy of this playbook, or help adapting it to your HubSpot setup and cadence, reach out on the support channel. The team will help you get it running end-to-end.

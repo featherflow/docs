@@ -364,8 +364,9 @@
           {
             "group": "Hubspot",
             "pages": [
-              "ingredients/hubspot-integration",
-              "ingredients/import-hubspot-lists"
+              "crm/hubspot/hubspot-integration",
+              "crm/hubspot/import-hubspot-lists",
+              "crm/hubspot/crm-cleanup"
             ]
           }
         ]
