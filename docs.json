@@ -11,12 +11,15 @@
     "tabs": [
       {
         "tab": "Documentation",
+        "icon": "book-open",
         "groups": [
           {
             "group": "Documentation",
+            "icon": "book-open",
             "pages": [
               {
                 "group": "GTM Playbooks",
+                "icon": "rocket",
                 "expanded": false,
                 "pages": [
                   "playbook/sdr-playbook",
@@ -31,6 +34,7 @@
               },
               {
                 "group": "List Building",
+                "icon": "list-checks",
                 "expanded": false,
                 "pages": [
                   "list/find-companies",
@@ -47,6 +51,7 @@
               },
               {
                 "group": "CRM",
+                "icon": "users",
                 "expanded": false,
                 "pages": [
                   "crm/hubspot/hubspot-integration",
@@ -63,6 +68,7 @@
               },
               {
                 "group": "Waterfalls",
+                "icon": "filter",
                 "expanded": false,
                 "pages": [
                   "ingredients/tools-waterfall",
@@ -72,6 +78,7 @@
               },
               {
                 "group": "Intent Signals",
+                "icon": "zap",
                 "expanded": false,
                 "pages": [
                   "ingredients/intent-signals",
@@ -81,6 +88,7 @@
               },
               {
                 "group": "Account Research",
+                "icon": "building-2",
                 "expanded": false,
                 "pages": [
                   "ingredients/account-profiling-with-just-name",
@@ -95,6 +103,7 @@
               },
               {
                 "group": "Contact Research",
+                "icon": "address-card",
                 "expanded": false,
                 "pages": [
                   "ingredients/find-people",
@@ -107,6 +116,7 @@
               },
               {
                 "group": "Feature Walkthroughs",
+                "icon": "compass",
                 "expanded": false,
                 "pages": [
                   "quickstart",
@@ -150,6 +160,7 @@
       },
       {
         "tab": "GTM Academy",
+        "icon": "graduation-cap",
         "groups": [
           {
             "group": "Start Here",
@@ -252,6 +263,7 @@
       },
       {
         "tab": "API Reference",
+        "icon": "square-terminal",
         "groups": [
           {
             "group": "V1",
