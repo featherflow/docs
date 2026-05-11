@@ -11,14 +11,6 @@
     "tabs": [
       {
         "tab": "Documentation",
-        "dropdowns":[
-          {
-            "dropdown": "Get Started test",
-            "pages": [
-              "quickstart",
-              "glossary"
-            ]
-          }],
         "groups": [
           {
             "group": "Get Started",
