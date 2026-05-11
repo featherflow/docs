@@ -13,124 +13,137 @@
         "tab": "Documentation",
         "groups": [
           {
-            "group": "GTM Playbooks",
+            "group": "Documentation",
             "pages": [
-              "playbook/sdr-playbook",
-              "playbook/automated-outbound",
-              "playbook/inbound-outbound",
-              "playbook/instantly-magic",
-              "playbook/call-grid-via-api",
-              "playbook/google-sheet-to-bitscale",
-              "playbook/apify-find-jobs",
-              "playbook/provider-integrations-directory"
-            ]
-          },
-          {
-            "group": "List Building",
-            "pages": [
-              "list/find-companies",
-              "list/import-sales-nav-leads",
-              "basics/company-lookalikes",
-              "playbook/list-building",
-              "playbook/list-building-custom-filters",
-              "ingredients/list-building-1",
-              "ingredients/source-google-search",
-              "ingredients/source-google-maps",
-              "ingredients/source-post-interactors",
-              "ingredients/source-linkedin-jobs"
-            ]
-          },
-          {
-            "group": "CRM",
-            "pages": [
-              "crm/hubspot/hubspot-integration",
-              "crm/hubspot/import-hubspot-lists",
-              "crm/hubspot/crm-cleanup",
-              "playbook/salesforce-2-way",
-              "ingredients/integrations-attio",
-              "ingredients/integrations-outplay",
-              "ingredients/integrations-lemlist",
-              "ingredients/integrations-heyreach",
-              "ingredients/integrations-slack",
-              "ingredients/integrations-webhook-export"
-            ]
-          },
-          {
-            "group": "Waterfalls",
-            "pages": [
-              "ingredients/tools-waterfall",
-              "ingredients/handling-multiple-data-sources",
-              "ingredients/tutorial-required-optional"
-            ]
-          },
-          {
-            "group": "Intent Signals",
-            "pages": [
-              "ingredients/intent-signals",
-              "playbook/hiring-signals",
-              "playbook/influencer-competitor-tracking"
-            ]
-          },
-          {
-            "group": "Account Research",
-            "pages": [
-              "ingredients/account-profiling-with-just-name",
-              "playbook/company-firmography",
-              "ingredients/tools-googleweb",
-              "ingredients/tools-perplexity",
-              "ingredients/tools-linkscrape",
-              "ingredients/tools-buildwith",
-              "enrich/linkedin-activity-analysis",
-              "playbook/research-blog"
-            ]
-          },
-          {
-            "group": "Contact Research",
-            "pages": [
-              "ingredients/find-people",
-              "ingredients/find-people-from-company",
-              "playbook/decision-maker",
-              "playbook/enrich-contacts",
-              "ingredients/tutorial-contact-validation",
-              "ingredients/reverse-lookup"
-            ]
-          },
-          {
-            "group": "Feature Walkthroughs",
-            "pages": [
-              "quickstart",
-              "glossary",
-              "basics/navigating-bitscale",
-              "basics/run-grids-on-bitscale",
-              "basics/bitagent",
-              "basics/best-practices",
-              "feature-reference/introduction",
-              "feature-reference/lead-generation",
-              "feature-reference/lead-enrichment",
-              "feature-reference/content-generation",
-              "feature-reference/outbound",
-              "feature-reference/integrations/integration-a",
-              "feature-reference/tools/tool-a",
-              "ingredients/common-formulae",
-              "ingredients/prompts_101",
-              "ingredients/run_conditions",
-              "ingredients/output-formatting",
-              "ingredients/tutorial-first-grid",
-              "ingredients/tutorial-grid-nav",
-              "ingredients/tutorial-credit-types",
-              "ingredients/tutorial-column-templates",
-              "ingredients/tutorial-integrations",
-              "ingredients/workbooks",
-              "ingredients/source-scheduling",
-              "ingredients/rate_limits",
-              "ingredients/rollover-policy",
-              "ingredients/round-robin",
-              "ingredients/using-webhooks",
-              "ingredients/http-api",
-              "ingredients/bitscale-to-google-sheets",
-              "ingredients/vlookup",
-              "ingredients/tools-vlookup",
-              "ingredients/tools-textmodels"
+              {
+                "group": "GTM Playbooks",
+                "expanded": false,
+                "pages": [
+                  "playbook/sdr-playbook",
+                  "playbook/automated-outbound",
+                  "playbook/inbound-outbound",
+                  "playbook/instantly-magic",
+                  "playbook/call-grid-via-api",
+                  "playbook/google-sheet-to-bitscale",
+                  "playbook/apify-find-jobs",
+                  "playbook/provider-integrations-directory"
+                ]
+              },
+              {
+                "group": "List Building",
+                "expanded": false,
+                "pages": [
+                  "list/find-companies",
+                  "list/import-sales-nav-leads",
+                  "basics/company-lookalikes",
+                  "playbook/list-building",
+                  "playbook/list-building-custom-filters",
+                  "ingredients/list-building-1",
+                  "ingredients/source-google-search",
+                  "ingredients/source-google-maps",
+                  "ingredients/source-post-interactors",
+                  "ingredients/source-linkedin-jobs"
+                ]
+              },
+              {
+                "group": "CRM",
+                "expanded": false,
+                "pages": [
+                  "crm/hubspot/hubspot-integration",
+                  "crm/hubspot/import-hubspot-lists",
+                  "crm/hubspot/crm-cleanup",
+                  "playbook/salesforce-2-way",
+                  "ingredients/integrations-attio",
+                  "ingredients/integrations-outplay",
+                  "ingredients/integrations-lemlist",
+                  "ingredients/integrations-heyreach",
+                  "ingredients/integrations-slack",
+                  "ingredients/integrations-webhook-export"
+                ]
+              },
+              {
+                "group": "Waterfalls",
+                "expanded": false,
+                "pages": [
+                  "ingredients/tools-waterfall",
+                  "ingredients/handling-multiple-data-sources",
+                  "ingredients/tutorial-required-optional"
+                ]
+              },
+              {
+                "group": "Intent Signals",
+                "expanded": false,
+                "pages": [
+                  "ingredients/intent-signals",
+                  "playbook/hiring-signals",
+                  "playbook/influencer-competitor-tracking"
+                ]
+              },
+              {
+                "group": "Account Research",
+                "expanded": false,
+                "pages": [
+                  "ingredients/account-profiling-with-just-name",
+                  "playbook/company-firmography",
+                  "ingredients/tools-googleweb",
+                  "ingredients/tools-perplexity",
+                  "ingredients/tools-linkscrape",
+                  "ingredients/tools-buildwith",
+                  "enrich/linkedin-activity-analysis",
+                  "playbook/research-blog"
+                ]
+              },
+              {
+                "group": "Contact Research",
+                "expanded": false,
+                "pages": [
+                  "ingredients/find-people",
+                  "ingredients/find-people-from-company",
+                  "playbook/decision-maker",
+                  "playbook/enrich-contacts",
+                  "ingredients/tutorial-contact-validation",
+                  "ingredients/reverse-lookup"
+                ]
+              },
+              {
+                "group": "Feature Walkthroughs",
+                "expanded": false,
+                "pages": [
+                  "quickstart",
+                  "glossary",
+                  "basics/navigating-bitscale",
+                  "basics/run-grids-on-bitscale",
+                  "basics/bitagent",
+                  "basics/best-practices",
+                  "feature-reference/introduction",
+                  "feature-reference/lead-generation",
+                  "feature-reference/lead-enrichment",
+                  "feature-reference/content-generation",
+                  "feature-reference/outbound",
+                  "feature-reference/integrations/integration-a",
+                  "feature-reference/tools/tool-a",
+                  "ingredients/common-formulae",
+                  "ingredients/prompts_101",
+                  "ingredients/run_conditions",
+                  "ingredients/output-formatting",
+                  "ingredients/tutorial-first-grid",
+                  "ingredients/tutorial-grid-nav",
+                  "ingredients/tutorial-credit-types",
+                  "ingredients/tutorial-column-templates",
+                  "ingredients/tutorial-integrations",
+                  "ingredients/workbooks",
+                  "ingredients/source-scheduling",
+                  "ingredients/rate_limits",
+                  "ingredients/rollover-policy",
+                  "ingredients/round-robin",
+                  "ingredients/using-webhooks",
+                  "ingredients/http-api",
+                  "ingredients/bitscale-to-google-sheets",
+                  "ingredients/vlookup",
+                  "ingredients/tools-vlookup",
+                  "ingredients/tools-textmodels"
+                ]
+              }
             ]
           }
         ]
