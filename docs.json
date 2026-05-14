@@ -1,10 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "luma",
+  "theme": "almond",
   "name": "Bitscale",
   "colors": {
-    "primary": "#272B30",
-    "light": "#272B30"
+    "primary": "#8B5E3C",
+    "light": "#A0724E",
+    "dark": "#C49A6C"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -285,8 +286,7 @@
     "href": "https://bitscale.ai"
   },
   "appearance": {
-    "default": "dark",
-    "strict": true
+    "default": "light"
   },
   "navbar": {
     "links": [
@@ -318,5 +318,9 @@
   },
   "fonts": {
     "family": "Inter"
+  },
+  "background": {
+    "light": "#FBF6EF",
+    "dark": "#2E1F14"
   }
 }
