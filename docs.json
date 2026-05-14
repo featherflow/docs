@@ -321,6 +321,7 @@
     "family": "Inter"
   },
   "background": {
-    "light": "#FBF6EF"
+    "light": "#FBF6EF",
+    "image": "/images/background.jpg"
   }
 }
