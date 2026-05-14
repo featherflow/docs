@@ -286,7 +286,8 @@
     "href": "https://bitscale.ai"
   },
   "appearance": {
-    "default": "light"
+    "default": "light",
+    "strict": true
   },
   "navbar": {
     "links": [
@@ -320,7 +321,6 @@
     "family": "Inter"
   },
   "background": {
-    "light": "#FBF6EF",
-    "dark": "#2E1F14"
+    "light": "#FBF6EF"
   }
 }
