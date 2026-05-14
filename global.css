@@ -1,6 +1,0 @@
-/* Fix left navigation panel background */
-#sidebar-content,
-.sidebar-content {
-  background-color: #FBF6EF !important;
-  border-right: 1px solid rgba(139, 94, 60, 0.12) !important;
-}
