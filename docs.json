@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "quill",
   "name": "Bitscale",
   "colors": {
     "primary": "#272B30",
@@ -285,7 +285,7 @@
     "href": "https://bitscale.ai"
   },
   "appearance": {
-    "default": "light",
+    "default": "dark",
     "strict": true
   },
   "navbar": {
@@ -315,5 +315,8 @@
       "linkedin": "https://www.linkedin.com/company/bit-scale",
       "youtube": "https://www.youtube.com/@bitscale"
     }
+  },
+  "fonts": {
+    "family": "Inter"
   }
 }
