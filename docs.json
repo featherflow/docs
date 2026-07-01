@@ -30,7 +30,8 @@
                   "playbook/call-grid-via-api",
                   "playbook/google-sheet-to-bitscale",
                   "playbook/apify-find-jobs",
-                  "playbook/provider-integrations-directory"
+                  "playbook/provider-integrations-directory",
+                  "playbook/bitscale-mcp"
                 ]
               },
               {
