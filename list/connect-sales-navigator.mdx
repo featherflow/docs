@@ -1,0 +1,95 @@
+---
+title: "Connect LinkedIn Sales Navigator (Saved Searches & Account Filters)"
+description: "Connect your own LinkedIn Sales Navigator seat to Bitscale to pull in saved searches and account-specific filters like connection tier and exclusion lists, not just public filters."
+---
+
+<div style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
+ <iframe width="100%" style={{aspectRatio: "16/9"}}
+   src="https://www.youtube.com/embed/dtgtbVL2LEU"
+   title="YouTube video player"
+   style={{
+     position: "absolute",
+     inset: 0,
+     width: "100%",
+     height: "100%",
+     border: 0,
+   }}
+   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+   referrerPolicy="strict-origin-when-cross-origin"
+   allowFullScreen
+ />
+</div>
+
+<Card title="Turn your grid into a workflow you can run anytime" color="#5a0c0c" href="https://app.bitscale.ai" >
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## What's new
+
+Bitscale's LinkedIn Sales Navigator integration has been completely revamped.
+
+Previously (and still true for most competitors), you could only pull in **public filters** from a Sales Nav search URL, things like geography, industry, title, seniority, and company size.
+
+Now, by connecting your own Sales Navigator account, you can also pull in:
+
+- **Saved searches** — any saved search you've already built, with its full list of leads or accounts
+- **Account-specific filters** — filters tied to your personal seat, like **connection tier** and **exclusion lists**
+
+If you just need a quick, public-filter search, you can still use a Sales Nav URL directly without connecting an account. See [Import Sales Navigator Leads Using a Search URL](/list/import-sales-nav-leads) for that lighter-weight path.
+
+## Recommended setup: one connection per SDR
+
+We strongly recommend maintaining **one LinkedIn Sales Navigator connection per SDR or GTM engineer** on your team. Each person should connect their own Sales Navigator instance so they can scrape and maintain their own personal lists, rather than sharing a single shared login.
+
+## Step 1: Connect your Sales Navigator account
+
+1. In Bitscale, go to **Integrations**
+2. Click **Add Integration**
+3. Search for **LinkedIn Sales Navigator** (or find it in the integrations list)
+4. Click **Connect LinkedIn**
+5. Enter your LinkedIn credentials and log in
+
+Once connected, this account will show up as an available integration instance whenever you set up a new Sales Navigator source.
+
+## Step 2: Get a saved search URL from Sales Navigator
+
+1. In LinkedIn Sales Navigator, open **Saved Searches**
+2. Open the saved search you want to pull in
+3. Copy the URL from your browser's address bar
+
+This works for saved searches that include account-specific filters (connection tier, exclusions, and so on), not just public filters.
+
+## Step 3: Import into Bitscale
+
+1. From the Bitscale homepage, click **New Grid**
+2. Choose **Find People** (or **Find Companies**) using the **Sales Navigator URL** source
+3. Select the specific Sales Navigator account/integration you connected in Step 1
+4. Paste your saved search URL
+5. Click **Import into a new grid**
+
+The pull will show a **Processing** tag while it runs. Depending on the size of the batch, it can take anywhere from a few minutes up to 10-15 minutes to complete.
+
+## What to do next
+
+Once your leads or companies are in the grid, you can:
+
+- enrich emails and phone numbers
+- run research enrichments
+- qualify against your ICP
+- push to your CRM or outbound tools
+
+<Card
+  title="Pull saved searches straight from your own Sales Navigator seat"
+  color="#5a0c0c"
+  href="https://app.bitscale.ai"
+>
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## Need help?
+
+If you have questions about connecting your account, which filters are supported, or an import stuck on processing, reach out on the community channel. We're always happy to help.
