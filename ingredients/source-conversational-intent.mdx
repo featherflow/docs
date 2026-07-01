@@ -1,0 +1,70 @@
+---
+title: "Finding People Engaging with Keywords"
+description: "Use Conversational Intent in Bitscale to find people liking or commenting on LinkedIn posts that mention specific keywords. Turn everyday conversations in your space into a warm, high-intent outbound list."
+---
+
+### Overview
+
+<iframe width="100%" style={{aspectRatio: "16/9"}} src="https://www.youtube.com/embed/1yFazf4wtoU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Bitscale has been using **conversational intent** to power its own outbound for a while, and it works well enough that it's now available as a native source for everyone.
+
+Conversational intent finds people who are **reacting or commenting on LinkedIn posts that mention a specific keyword**. Unlike [Scraping Reactors and Commenters from a Post](/ingredients/source-post-interactors), which starts from one specific post, this source starts from a **keyword** and searches across LinkedIn for any post where that keyword comes up.
+
+---
+
+### **When to Use**
+
+- You want a list of people already **talking about topics relevant to your product or industry**, not just people who match firmographic filters.
+- You want outreach that references a **real, recent conversation** the prospect was part of, which creates instant rapport (for example: "saw that you're active in conversations around GTM engineering").
+- Your keywords are things like your category name, a methodology, or a role you sell into. In Bitscale's own case, keywords like **GTM engineering**, **email outbound**, and **ABM motion growth** work well.
+
+---
+
+### **Setting Up Conversational Intent**
+
+1. From the Bitscale homepage, click **New Grid**.
+2. Under **People**, select **Find People Engaging with Keywords**.
+3. Enter your keyword (for example, `GTM engineering`).
+4. Set a **time frame** (for example, the past week).
+5. (Optional) Add filters to only look at posts mentioning **specific people** or **specific companies**. This is optional. If you want the broadest possible reach, you can skip it and leave your search unrestricted.
+6. Set your **max results**.
+7. (Optional) Click **Schedule** if you want this search to run automatically (for example, weekly) instead of as a one-off pull.
+8. Click **Import into a new grid**.
+
+Bitscale will start scraping and surfacing people who reacted to or commented on posts mentioning your keyword.
+
+---
+
+### **Data Captured**
+
+The first fetch surfaces four core data points for each person found:
+
+- Name
+- Headline/title
+- Company
+- LinkedIn profile
+
+Beyond these, a few extra data points are available that you can pull in as additional columns:
+
+- **Post URL** — the link to the post that contained your keyword. You can turn this into its own column and run further enrichments on it (for example, extracting what the post is actually about).
+- **Reaction type** — whether the person **liked** or **commented** on the post.
+- **Comment text** — if the interaction was a comment, the actual text of the comment is available as a column too.
+
+---
+
+### **Why This Works**
+
+Coupling this list with your own **scoring logic** (based on job title and company) turns a broad set of engaged LinkedIn users into a qualified outreach list. And because you know exactly which keyword and post each person engaged with, your outreach can reference that context directly instead of opening cold, for example:
+
+> "Saw that you're active in conversations around GTM engineering..."
+
+That small bit of context does a lot of the work a cold opener usually can't.
+
+---
+
+### **Summary**
+
+**Find People Engaging with Keywords** turns everyday conversation on LinkedIn into a sourced, scheduled outbound list. Pick keywords relevant to your space, set a time frame, and Bitscale surfaces the people already talking about them, along with the post, reaction type, and comment text you need to personalize outreach.
+
+If you have questions or want to talk through a workflow, reach out to the Bitscale team on the community channel.
