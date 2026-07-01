@@ -1,0 +1,94 @@
+---
+title: "LinkedIn Outbound with Heyreach"
+description: "Set up the Bitscale + Heyreach integration and use Bitscale's intent sources (conversational intent, competitor tracking) to build LinkedIn outbound campaigns that convert."
+---
+
+***
+
+## Overview
+
+<iframe width="100%" style={{aspectRatio: "16/9"}} src="https://www.youtube.com/embed/q0vATx8K-lU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
+***
+
+LinkedIn outbound consistently nets some of the best reply rates of any channel, both for Bitscale internally and for most teams running an ABM or outreach motion. This playbook covers two things:
+
+1. **Setting up the Bitscale + Heyreach integration**, so enriched and personalized data from your grids flows straight into Heyreach campaigns.
+2. **A few workflow ideas** you can use as a foundation (or inspiration) for what to actually push into those campaigns.
+
+For a deeper, step-by-step mechanical setup of the integration (creating campaigns in Heyreach, mapping personalization variables, sequence design), see [Integrations - HeyReach](/ingredients/integrations-heyreach). This page focuses on getting connected quickly and on the intent-driven workflows worth building on top of it.
+
+***
+
+## **Setting Up the Integration**
+
+1. In Bitscale, go to **Integrations → Add Integration**, and search for **Heyreach**.
+2. Open it. You'll be asked for your **API key**.
+3. To get your API key, go to Heyreach's own **Integrations** section, open **API**, and click **Get API Key**. Copy it from there.
+4. Back in Bitscale, paste the API key and click **Verify**.
+
+Once verified, the integration is live.
+
+***
+
+## **How the Integration Works**
+
+The Bitscale, Heyreach integration lets you push data from a grid straight into a Heyreach campaign, enrolling contacts automatically.
+
+In a grid with the Heyreach panel set up, you can:
+
+- Select which **campaign** to enroll contacts into.
+- Pass the three required fields: **name**, **LinkedIn URL**, and **personalization**.
+- Pass any additional data points as **custom fields**. These become variables you can reference in your Heyreach message templates.
+
+For example, you could create a custom field called `ABM personalization` and map it to a column like the text of a LinkedIn post someone engaged with. When you run the grid on a list, those contacts get auto-enrolled into your Heyreach campaign with that variable populated.
+
+***
+
+## **Workflow Ideas: What to Feed Into Heyreach**
+
+The integration itself is simple. The leverage comes from *what* you push into it. A couple of sources have worked especially well for Bitscale's own outbound:
+
+### 1) Conversational Intent
+
+Find people talking about a keyword or topic relevant to your product, and reach out referencing that exact conversation.
+
+For example: find people commenting on or reacting to posts about "email outbound," then open with something like *"saw that you're active in conversation surrounding email outbound..."* before introducing your offer.
+
+See [Finding People Engaging with Keywords](/ingredients/source-conversational-intent) to set this source up.
+
+### 2) Competitor Tracking
+
+Bitscale has a few different ways to find competitor-adjacent intent, and they stack well together:
+
+- **Competitor prospecting playbook** — find influencers and competitor leaders talking about your domain, then find and reach out to the people commenting on and interacting with their posts. See [Influencer and Competitor Tracking](/playbook/influencer-competitor-tracking).
+- **Competitor's Customers source** — find the companies already using a competitor (or an adjacent tool), then find people at those companies to reach out to. See [Finding Your Competitor's Customers](/ingredients/source-competitor-customers).
+- **Competitor's followers** — you can also pull a competitor's LinkedIn followers as another intent-based list.
+
+All of this can be sourced, enriched, and pushed to Heyreach without leaving Bitscale.
+
+***
+
+## **What Good Looks Like**
+
+Bitscale runs a lot of these campaigns on its own outbound, testing different angles rather than optimizing a single one. Across that testing, a consistently solid benchmark has been:
+
+- **~40% connection acceptance rate**
+- **~30% net reply rate**
+
+Not every campaign hits numbers this high, but this is a realistic bar to aim for once your sourcing (conversational intent, competitor tracking) and personalization are dialed in.
+
+***
+
+## **Best Practices**
+
+- Keep the required fields (name, LinkedIn URL, personalization) clean before enrolling contacts, missing data breaks campaigns.
+- Use custom fields for anything beyond the defaults. Name them clearly since that's the variable name you'll reference in Heyreach.
+- Combine intent sources (conversational intent + competitor tracking) rather than relying on one signal alone.
+- Test multiple campaign angles instead of committing all volume to a single script.
+
+***
+
+## Need help?
+
+If you have questions or want to talk through a workflow, reach out to the Bitscale team on the community channel. We're always happy to help.
