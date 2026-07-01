@@ -47,7 +47,8 @@
                   "ingredients/source-google-search",
                   "ingredients/source-google-maps",
                   "ingredients/source-post-interactors",
-                  "ingredients/source-linkedin-jobs"
+                  "ingredients/source-linkedin-jobs",
+                  "ingredients/source-competitor-customers"
                 ]
               },
               {
