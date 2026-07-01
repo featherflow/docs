@@ -27,6 +27,7 @@
                   "playbook/automated-outbound",
                   "playbook/inbound-outbound",
                   "playbook/instantly-magic",
+                  "playbook/heyreach-linkedin-outbound",
                   "playbook/call-grid-via-api",
                   "playbook/google-sheet-to-bitscale",
                   "playbook/apify-find-jobs",
