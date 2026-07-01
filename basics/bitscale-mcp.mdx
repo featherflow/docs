@@ -1,0 +1,97 @@
+---
+title: "Bitscale MCP - Run GTM Workflows from Claude"
+description: "Use the Bitscale MCP to find personas, build lists, and enrich contacts without leaving Claude. Currently available to beta users and enterprise customers."
+---
+
+<div style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
+  <iframe width="100%" style={{aspectRatio: "16/9"}}
+    src="https://www.youtube.com/embed/VAdQOPyuAXs"
+    title="YouTube video player"
+    style={{
+   position: "absolute",
+   inset: 0,
+   width: "100%",
+   height: "100%",
+   border: 0,
+ }}
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerPolicy="strict-origin-when-cross-origin"
+    allowFullScreen
+  />
+</div>
+
+<Card color="#5a0c0c" href="https://app.bitscale.ai" title="Ask for early access to the Bitscale MCP">
+  <Badge color="orange" size="lg" shape="pill" stroke="true">Try Bitscale Now!</Badge>
+</Card>
+
+## What the Bitscale MCP is
+
+The Bitscale MCP connects Claude directly to your Bitscale workspace, so you can find data, find contacts, find numbers, and run GTM workflows from inside a chat instead of building a grid by hand.
+
+It's currently available to a limited set of **beta users and enterprise customers**. The technical architecture behind the MCP (setup, auth, tool definitions) is covered separately — this page focuses on how you, as a user, actually work with it day to day.
+
+## When to use it
+
+Use the Bitscale MCP when you want to go from a rough idea straight to a working, enriched list, without first designing the grid yourself. For example:
+
+- Charting out an ICP for a product line you haven't targeted before
+- Pulling a batch of contacts against that ICP
+- Enriching those contacts (emails, phone numbers, and so on)
+- Getting a short, ready-to-use shortlist back in chat, without opening the Bitscale platform at all
+
+This is especially useful for SDRs who don't want to spend time iterating on grid setup and just need a qualified list fast.
+
+## Example: from prompt to enriched list
+
+Here's a simple example, using DoorDash's package delivery offering as the target.
+
+### 1) Describe what you want
+
+Write a plain-language prompt describing the persona, the list size, and what you want enriched. For example:
+
+> Find the ICP persona for DoorDash's package delivery offering. Find 200 people from that persona using Bitscale. Also find their emails.
+
+### 2) Answer Claude's clarifying questions
+
+Claude will ask follow-up questions to narrow down the persona before it runs anything, for example:
+
+- Which offering this is relevant for (so it has the right context)
+- What seniority/titles the 200 people should have (for example, Director and VP level)
+- What the target company profile should look like (for example, company size or industry — "enterprise retail")
+
+The more specific you are here, the better the resulting list will be. You can also leave some of these to Claude's judgement if you don't have a strong preference.
+
+### 3) Approve the tool calls
+
+Claude will ask for permission before it runs actions on your Bitscale workspace (for example, creating a grid or running an enrichment on all 200 rows). Review and allow each step.
+
+If you don't want to approve every step individually, you can configure auto-allow for trusted tools in your environment.
+
+### 4) Let Claude build and run the grid
+
+Once approved, Claude plans out the workflow, works out the correct personas, creates the grid on Bitscale, sources the 200 people, and runs the email waterfall across all of them.
+
+You can open the grid on the Bitscale platform at any point to confirm everything looks right — source, personas, and enriched emails.
+
+## Getting results back without opening the platform
+
+The real point of the MCP is that you don't have to go back to the platform to use your data. Once the grid is ready, you can just ask Claude directly, for example:
+
+> Could you share 10 emails from the list you just created that I can use for outreach?
+
+Claude will go back to the grid, pull out the requested contacts, and hand them to you right in the chat. From here, you have a shortlist of strong contacts ready for outreach, without ever leaving the conversation.
+
+## Best practices
+
+- Be specific about seniority and company profile up front. It saves a clarification round-trip.
+- Review each tool-call approval the first few times, so you understand exactly what Claude is doing to your workspace.
+- Treat the platform as your source of truth. Open the grid if you want to double-check sourcing or enrichment before using the list.
+- Use this for fast, one-off asks (a persona, a shortlist, a quick enrichment). For recurring or more complex workflows, build the grid directly on Bitscale.
+
+<Card color="#5a0c0c" href="https://app.bitscale.ai" title="Bring Claude and Bitscale together for your GTM">
+  <Badge color="orange" size="lg" shape="pill" stroke="true">Try Bitscale Now!</Badge>
+</Card>
+
+## Need help?
+
+The Bitscale MCP is in beta. If you'd like access, want a demo, or want to talk through a workflow, reach out to the Bitscale team on the community channel.
