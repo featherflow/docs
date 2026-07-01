@@ -30,7 +30,8 @@
                   "playbook/call-grid-via-api",
                   "playbook/google-sheet-to-bitscale",
                   "playbook/apify-find-jobs",
-                  "playbook/provider-integrations-directory"
+                  "playbook/provider-integrations-directory",
+                  "playbook/bitscale-mcp"
                 ]
               },
               {
@@ -126,7 +127,6 @@
                   "basics/navigating-bitscale",
                   "basics/run-grids-on-bitscale",
                   "basics/bitagent",
-                  "basics/bitscale-mcp",
                   "basics/best-practices",
                   "feature-reference/introduction",
                   "feature-reference/lead-generation",
