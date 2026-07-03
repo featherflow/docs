@@ -283,7 +283,7 @@
             "group": "MCP Plays",
             "icon": "plug",
             "pages": [
-              "mcp"
+              "mcp-reference/introduction"
             ]
           }
         ]
