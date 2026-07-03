@@ -31,8 +31,7 @@
                   "playbook/call-grid-via-api",
                   "playbook/google-sheet-to-bitscale",
                   "playbook/apify-find-jobs",
-                  "playbook/provider-integrations-directory",
-                  "playbook/bitscale-mcp"
+                  "playbook/provider-integrations-directory"
                 ]
               },
               {
@@ -273,6 +272,19 @@
           {
             "group": "Advanced",
             "pages": []
+          }
+        ]
+      },
+      {
+        "tab": "MCP Reference",
+        "icon": "plug",
+        "groups": [
+          {
+            "group": "MCP Plays",
+            "icon": "plug",
+            "pages": [
+              "mcp"
+            ]
           }
         ]
       }
