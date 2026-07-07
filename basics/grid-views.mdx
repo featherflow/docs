@@ -1,0 +1,78 @@
+---
+title: "Creating Views on a Grid"
+description: "Use Views in Bitscale to save reusable filters on a grid, so you can revisit the same qualified subset of rows (or a blurred view for recordings) without rebuilding your filters every time."
+---
+
+<div style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
+ <iframe width="100%" style={{aspectRatio: "16/9"}}
+   src="https://www.youtube.com/embed/st_Fp0_41P4"
+   title="YouTube video player"
+   style={{
+     position: "absolute",
+     inset: 0,
+     width: "100%",
+     height: "100%",
+     border: 0,
+   }}
+   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+   referrerPolicy="strict-origin-when-cross-origin"
+   allowFullScreen
+ />
+</div>
+
+<Card
+  title="Save your filters once, reuse them anytime"
+  color="#5a0c0c"
+  href="https://app.bitscale.ai"
+>
+ <Badge color="orange" size="lg" shape="pill" stroke="true">
+     Try Bitscale Now!  
+ </Badge>
+</Card>
+
+## What Views are
+
+**Views** are one of the more underexplored features on Bitscale. A view is a saved filter on top of a grid, so you can look at (or export) only the rows that qualify, without rebuilding that filter every time you come back.
+
+This matters once a grid grows large. For example, you might have a grid full of contacts, but only want to work with entries that have a **valid current employer domain**. Setting that filter up manually every time you revisit the grid is tedious. A view saves it once and makes it a single click going forward.
+
+## Default views
+
+Bitscale ships with a few default views out of the box:
+
+- **Error rows** — rows where a step failed, useful when you want to rerun just the failures
+- **Non-enriched rows** — rows that haven't been processed yet
+- **Fully enriched rows** — rows with clean, completely validated data
+- **Content creator view** — blurs sensitive values in the grid. Useful if you're recording a walkthrough or demo and don't want real data on screen
+
+## Creating a new view
+
+1. Open your grid and look for the **views** button.
+2. Click **Create new view**.
+3. Give it a title (for example, `Valid current employer domain`).
+4. Before saving, set up your **view filters**. For example, filter for **current employer domain** → **is not empty**.
+5. Apply the filters, then save the view.
+
+Once saved, the view is attached to that grid. Opening a fresh instance of the same grid and selecting the view will apply the same filters automatically, no need to rebuild them.
+
+## Editing an existing view
+
+1. Open the view you want to change.
+2. Adjust the filters as needed.
+3. Click **Update view**.
+
+The view updates in place, so anywhere it's used will now reflect the new filters.
+
+## Why this is useful
+
+If you have a single grid that different people (or different steps in your process) need to consume differently, views let you:
+
+- keep one grid as the single source of truth
+- create multiple views on top of it (validated data, error rows, blurred data for recordings, or any custom filter you need)
+- export or download based on whichever view is currently active
+
+This avoids duplicating grids just to get a different slice of the same data.
+
+## Need help?
+
+If you have questions about setting up views or filters, reach out to the Bitscale team on the community channel.
