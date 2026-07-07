@@ -1,0 +1,82 @@
+---
+title: "Finding LinkedIn Event Attendees"
+description: "Use your connected LinkedIn account to scrape the attendee list of a LinkedIn Event, then enrich those attendees for a warm, high-intent outbound list. Available on demand for enterprise customers."
+---
+
+### Overview
+
+<iframe width="100%" style={{aspectRatio: "16/9"}} src="https://www.youtube.com/embed/3S8oKv-RQpE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Virtual events have been picking up a lot of speed in GTM, and a large share of them now happen natively on LinkedIn. The people who attend one of these events are a strong list-building source: they're already aware of the space, aware of the domain, and there's usually a reason they showed up (they're looking for a solution). Combined with your own ICP scoring logic, event attendees can turn into a genuinely good list to reach out to.
+
+> **Note:** This feature is available **on demand, for enterprise customers only**. Reach out to the Bitscale team if you'd like it enabled for your workspace.
+
+---
+
+### **When to Use**
+
+- A relevant event in your space is happening (or has happened) natively on LinkedIn, and you want a list of people who attended.
+- You want a warm starting point for outbound, since attendees are self-selected as interested in the topic.
+- You plan to layer your own ICP scoring on top (title, industry, company) rather than treat every attendee as equally qualified.
+
+---
+
+### **Prerequisites**
+
+- A **LinkedIn account connected** to Bitscale. This does **not** need to be Sales Navigator, a regular LinkedIn login is enough, since Bitscale just needs an authenticated LinkedIn instance to scrape the event.
+- You (or the connected account) must **also be attending the event yourself**. Attendee scraping runs through your own LinkedIn instance, so you need to be part of the event to pull its attendee list.
+
+---
+
+### **Setting Up the LinkedIn Connection**
+
+1. In Bitscale, go to **Integrations → Add Integration**.
+2. Search for **LinkedIn** and integrate it.
+3. You'll be redirected to log in. Complete the login.
+
+Once connected, this LinkedIn instance is available to use for event attendee scraping.
+
+---
+
+### **Scraping Event Attendees**
+
+1. Find the LinkedIn Event you want (and make sure you're registered/attending it).
+2. Copy the event's URL.
+3. In Bitscale, go to **New Grid** and select **Find Attendees of an Event**.
+4. Select the LinkedIn account you connected earlier.
+5. Paste the event URL.
+6. Set the **number of attendees** to import (for example, 100).
+7. Click **Import**.
+
+The pull takes a couple of minutes to process. Once it's done, you'll have attendees in your grid with:
+
+- First name
+- Last name
+- Headline
+- LinkedIn URL
+
+Other data points generally aren't available directly from the event itself.
+
+---
+
+### **Enriching Attendees**
+
+Since the LinkedIn URL is one of the most important key parameters for most enrichments on Bitscale, use it to build out context on each attendee:
+
+1. Go to **Enrichments** and search for **Enrich Person**.
+2. Map it to the **LinkedIn URL** column and save.
+3. Run it on the first 10 rows to check the output, then run it for the entire column.
+
+This gives you a fully contextualized profile for each attendee, headline, industry, current employer, and more, which you can use to:
+
+- build a GPT-based scoring layer on top of the enriched fields
+- pull out specific values (headline, industry, current employer) as their own columns
+- enrich the attendee's **employer's LinkedIn page** to see how many people work there, for extra account context
+
+---
+
+### **Summary**
+
+**Find Attendees of an Event** turns a LinkedIn Event into a sourced list of self-selected, in-market people. Connect your LinkedIn account, make sure you're attending the event, pull the attendee list, and enrich from there using the LinkedIn URL as your anchor. This is an enterprise, on-demand feature, reach out to the team to get it turned on.
+
+If you have questions, reach out to the Bitscale team on the community channel.

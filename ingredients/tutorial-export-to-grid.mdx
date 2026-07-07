@@ -1,0 +1,58 @@
+---
+title: "Exporting Data Between Grids (Export Leads & Export to Grid)"
+description: "Learn how to push list-based enrichment results (Export Leads) or a single row's data (Export to Grid) from one grid into another, including how to build a master grid that stays deduplicated across all your workflows."
+---
+
+### Overview
+
+<iframe width="100%" style={{aspectRatio: "16/9"}} src="https://www.youtube.com/embed/xW-UNTVSLz4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+List building on Bitscale almost always ends up needing two levels: an **account-level grid** (companies, with account-level enrichments) and a **contact-level grid** (the people you pulled from those accounts, along with the account context carried over). Bitscale has two related tools for moving data between grids like this, depending on whether you're exporting a list or a single row. This is also covered briefly in [Workbooks on Bitscale](/ingredients/workbooks); this page goes deeper on the two export options themselves.
+
+---
+
+### **Export Leads: pushing a list-based result into a new grid**
+
+Some enrichments return a **list** in a single cell, for example, **Find People from Company** returns multiple contacts for one company. Any time Bitscale returns a list-based response like this, you'll find an **Export Leads** button next to that profile/list section, whether it's a list of people, a list of a person's past experiences, or any other list-shaped result.
+
+**When to use it:** whenever you have a list-based response and want each item in that list to become its own row in another grid.
+
+**How it works:**
+
+1. Open the enrichment that returned the list (for example, **Find People from Company**).
+2. Click **Export Leads** next to the list.
+3. Choose to either:
+   - push into an **existing grid**, or
+   - **create a new grid**
+4. Optionally, choose which of your **current grid's columns** (account-level data you've already enriched, like industry) should be carried over and maintained against every exported contact.
+5. Save. The exported grid is automatically added to your **workbook**, alongside the grid you exported from.
+6. The setup itself doesn't move any data yet. **Run the column** to actually push rows into the new grid. If you have automation set up, new entries will flow through automatically going forward.
+
+Once contacts land in the second grid, you'll typically find the email/phone waterfall columns already available there, ready to run (or set to auto-run) for each new contact.
+
+---
+
+### **Export to Grid: pushing a single row's data**
+
+Sometimes you don't have a list response at all, you just want to send the data from the **current row** into another grid, one row in, one row out. Since there's no list, there's no Export Leads button to use here.
+
+The most common use case for this is a **master grid**: a single, deduplicated grid that every other workflow grid checks against (and pushes into) before enriching a contact, so you don't spend credits re-enriching someone you've already processed elsewhere.
+
+**How it works:**
+
+1. Go to **Enrichments → Data to Grid** and select **Export to Grid**.
+2. This is effectively the same underlying enrichment as Export Leads, the difference is you leave the **list field empty**, since there's no list to reference.
+3. Select which **columns** from the current row you want to push (for example, name, email, location).
+4. Save, then run it (for example, on the first 10 rows) to push those single rows into the destination grid.
+
+Once rows land in the destination grid, you can add any of the pushed fields as columns there and continue working with them.
+
+---
+
+### **Summary**
+
+- Use **Export Leads** when an enrichment gives you a **list** and you want each item exploded into its own row in another grid (for example, account → contacts).
+- Use **Export to Grid** (via Data to Grid) when you want to send the **current row's** data into another grid, one row at a time, most commonly to keep a **master grid** of everything you've already enriched.
+- Both tools link the source and destination grids into the same **workbook**, so you can navigate between them easily.
+
+If you have questions about setting this up, reach out to the Bitscale team on the support channel.

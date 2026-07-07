@@ -51,6 +51,7 @@
                   "ingredients/source-post-interactors",
                   "ingredients/source-conversational-intent",
                   "ingredients/source-linkedin-jobs",
+                  "ingredients/source-linkedin-event-attendees",
                   "ingredients/source-competitor-customers"
                 ]
               },
@@ -141,6 +142,7 @@
                   "ingredients/tutorial-column-templates",
                   "ingredients/tutorial-integrations",
                   "ingredients/workbooks",
+                  "ingredients/tutorial-export-to-grid",
                   "ingredients/source-scheduling",
                   "ingredients/rate_limits",
                   "ingredients/rollover-policy",
