@@ -40,7 +40,7 @@ The most common use case for this is a **master grid**: a single, deduplicated g
 
 **How it works:**
 
-1. Go to **Enrichments → Data to Grid** and select **Export to Grid**.
+1. Go to **Enrichments → Data Toolkit** and select **Export to Grid**.
 2. This is effectively the same underlying enrichment as Export Leads, the difference is you leave the **list field empty**, since there's no list to reference.
 3. Select which **columns** from the current row you want to push (for example, name, email, location).
 4. Save, then run it (for example, on the first 10 rows) to push those single rows into the destination grid.
@@ -52,7 +52,7 @@ Once rows land in the destination grid, you can add any of the pushed fields as 
 ### **Summary**
 
 - Use **Export Leads** when an enrichment gives you a **list** and you want each item exploded into its own row in another grid (for example, account → contacts).
-- Use **Export to Grid** (via Data to Grid) when you want to send the **current row's** data into another grid, one row at a time, most commonly to keep a **master grid** of everything you've already enriched.
+- Use **Export to Grid** (via Data Toolkit) when you want to send the **current row's** data into another grid, one row at a time, most commonly to keep a **master grid** of everything you've already enriched.
 - Both tools link the source and destination grids into the same **workbook**, so you can navigate between them easily.
 
 If you have questions about setting this up, reach out to the Bitscale team on the support channel.
