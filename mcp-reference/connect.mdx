@@ -1,0 +1,57 @@
+---
+title: "Connecting the Bitscale MCP"
+description: "Connect the Bitscale MCP to Claude in a few clicks: add a custom connector pointing at the Bitscale MCP URL, approve your workspace, and you're ready to run Bitscale from chat."
+---
+
+### Overview
+
+<iframe width="100%" style={{aspectRatio: "16/9"}} src="https://www.youtube.com/embed/uhps0HzZz1s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Connecting the Bitscale MCP to Claude is a short, one-time setup. Once connected, you can drive Bitscale, grids, runs, enrichments, from a chat interface using natural language. See [Bitscale MCP - Run GTM Workflows from Claude](/mcp-reference) for what you can do with it once it's connected.
+
+---
+
+### **Connecting the MCP**
+
+1. In Claude, go to **Customize**.
+2. Click on **Connectors** (near the bottom).
+3. Click **Add connector** in the top right.
+4. Select **Add custom connector**.
+5. Give it a name. Something like `Bitscale MCP` works well and keeps it unambiguous.
+6. In the **Remote MCP URL** field, paste the Bitscale MCP URL: [https://api.bitscale.ai/mcp](https://api.bitscale.ai/mcp)
+
+   ```
+   https://api.bitscale.ai/mcp
+   ```
+
+7. Click **Add**.
+
+---
+
+### **Authorizing the Connection**
+
+1. Claude will prompt you to **connect** to the MCP. Click **Connect**.
+2. You'll be redirected to the Bitscale platform for approval.
+3. Make sure you select the correct **workspace**.
+4. Click **Approve**.
+
+That's it, your connection is set up.
+
+---
+
+### **What You Can Do Once Connected**
+
+Once connected, the MCP gives you natural-language access to almost anything you could do manually on Bitscale, including:
+
+- Getting run status
+- Getting grid information
+- Creating grids
+- Making changes to any workflow
+
+Every action the MCP takes is carried out through the same underlying **grid interface** Bitscale normally uses. So if you ever want to double check what the MCP actually did, you can open the relevant grid on the platform and see exactly how it was set up.
+
+---
+
+### Need help?
+
+If you have questions about connecting or authorizing the MCP, reach out to the Bitscale team on the community channel.
