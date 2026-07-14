@@ -286,6 +286,7 @@
             "group": "MCP Plays",
             "icon": "plug",
             "pages": [
+              "mcp-reference/connect",
               "mcp-reference"
             ]
           }
