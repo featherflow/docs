@@ -1,0 +1,74 @@
+---
+title: "Sync Your Top Contacts to LinkedIn Ads"
+description: "Take the accounts and contacts you already care about (from your CRM) and sync them into LinkedIn Ads for account-based ad targeting, using Bitscale to bridge work email to the personal email tied to their LinkedIn login."
+---
+
+***
+
+## Overview
+
+<iframe width="100%" style={{aspectRatio: "16/9"}} src="https://www.youtube.com/embed/MYX-xt7bsqQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
+***
+
+One of the more up-and-coming plays in GTM right now: take the accounts you're already in contact with (or already sitting in your CRM) and prioritize them in your ad spend, on LinkedIn Ads, Meta Ads, Google Ads, or wherever you run campaigns.
+
+**Scoring logic, who counts as a top account and why, will differ from company to company.** This playbook doesn't try to solve that part. What it does cover is the second half, which stays constant no matter how you scored your accounts: **getting those contacts synced into the ad platform of your choice.**
+
+---
+
+## The Problem This Solves
+
+Ad platforms match audiences using the **personal email** tied to someone's login (for example, the email your LinkedIn account is registered with), not their work email.
+
+Most of the contact data sitting in your CRM is work email. So before you can sync anyone to an ad platform, you need to bridge from **work email → LinkedIn profile → personal email**, and only then sync.
+
+---
+
+## Step 1: Bring In Your Target Contacts
+
+Start with the accounts and contacts you want to prioritize, pulled from your CRM (work emails and names are enough to start).
+
+Example: a company decides Bitscale is a top account for them, and pulls in the work emails of a few people at Bitscale they want to target with ads.
+
+---
+
+## Step 2: Find the LinkedIn URL for Each Contact
+
+Since ad platforms match on the email tied to someone's personal login, and that's rarely visible from a work email alone, the bridge is LinkedIn.
+
+Run an enrichment to find each contact's **LinkedIn URL** from their work email. See [Reverse Lookup](/ingredients/reverse-lookup) for the work-email-to-LinkedIn step in more detail.
+
+---
+
+## Step 3: Find the Personal Email from the LinkedIn URL
+
+Once you have the LinkedIn URL, run an email enrichment (waterfall) mapped to the **LinkedIn URL** to find the **personal email** associated with that profile. See [Waterfalls on Bitscale](/ingredients/tools-waterfall) for how to set this up.
+
+This personal email is what LinkedIn Ads (and most other ad platforms) actually match against.
+
+---
+
+## Step 4: Find the Ad Platform ID
+
+With the personal email in hand, run the enrichment that resolves it to the audience/match ID required by your ad platform (for LinkedIn Ads, in this example). This is a purpose-built formula available on Bitscale for exactly this step.
+
+---
+
+## Step 5: Push to Your Ad Platform
+
+Once you have the matched ID for each contact, push the list to your ad platform (LinkedIn Ads, Meta Ads, Google Ads, or wherever you're running the campaign). Your contacts are now synced and available to target in that platform's matched audience.
+
+---
+
+## Summary
+
+The mechanics here (work email → LinkedIn → personal email → ad platform ID → sync) stay the same regardless of who you're targeting. The only part that changes company to company is **which contacts you decide to prioritize in the first place**. Once you have that logic sorted, this workflow handles the rest.
+
+This workflow is also available as a ready-to-use **playbook template** on the Bitscale platform.
+
+---
+
+## Need help?
+
+If you have questions about setting this up, reach out to the Bitscale team on the community channel.

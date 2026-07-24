@@ -28,6 +28,7 @@
                   "playbook/inbound-outbound",
                   "playbook/instantly-magic",
                   "playbook/heyreach-linkedin-outbound",
+                  "playbook/sync-contacts-to-linkedin-ads",
                   "playbook/call-grid-via-api",
                   "playbook/google-sheet-to-bitscale",
                   "playbook/apify-find-jobs",
@@ -68,6 +69,7 @@
                   "ingredients/integrations-outplay",
                   "ingredients/integrations-lemlist",
                   "ingredients/integrations-heyreach",
+                  "ingredients/integrations-outreach",
                   "ingredients/integrations-slack",
                   "ingredients/integrations-webhook-export"
                 ]
