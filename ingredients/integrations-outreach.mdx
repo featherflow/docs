@@ -1,0 +1,71 @@
+---
+title: "Integrations - Outreach"
+description: "Outreach is one of the most common sales engagement sequencers on the market. With Bitscale's native Outreach integration, you can push enriched contacts into Outreach as prospects and enroll them into sequences, directly from your grid."
+---
+
+### Overview
+
+<iframe width="100%" style={{aspectRatio: "16/9"}} src="https://www.youtube.com/embed/ekdAsog-474" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Bitscale integrates natively with **Outreach**, a common sequencer in the outbound stack. Once connected, you can send enriched contacts from a grid straight into Outreach.
+
+---
+
+### **Connecting Outreach**
+
+1. In Bitscale, go to **Integrations → Add Integration**.
+2. Search for **Outreach** and select it.
+3. Click **Connect Outreach**.
+4. If you're already logged into Outreach in your current session, the connection picks that up automatically. Otherwise, you'll be redirected to log in via OAuth.
+5. Click **Create Integration**.
+
+That's the entire integration setup.
+
+---
+
+### **How Outreach Handles Prospects (Important)**
+
+Outreach works a little differently from sequencers like Instantly or Smartlead. In those tools, you can add a contact straight into a sequence. In Outreach, you can't do that directly, you first need to **create a prospect**, and only then add that prospect to a sequence.
+
+This means any new-lead workflow into Outreach is a **two-step process**:
+
+1. **Add or update the prospect**
+2. **Add the prospect to a sequence**
+
+There's also a **prospect lookup** option, useful if you're working with contacts that already exist in Outreach (for example, sending a follow-up to a list you've already worked) since you can look up their existing prospect ID directly instead of recreating them. That path isn't covered in the steps below, which focus on net-new leads.
+
+---
+
+### **Step 1: Add or Update the Prospect**
+
+You'll find this as an integration option in your grid's **Enrichments/Integrations** tab.
+
+1. Select your connected **Outreach account**.
+2. Set the **record type** to **Prospect**.
+3. Set the **action** to **Add Record**.
+4. Map **prospect email** as the identifier field, this is the value Outreach will reference.
+5. Save, then run it.
+
+Running this creates the prospect on Outreach's end and returns the **prospect ID**, which you'll need for the next step.
+
+---
+
+### **Step 2: Add the Prospect to a Sequence**
+
+Once the prospect ID is available:
+
+1. Select your **Outreach account** again.
+2. Choose the **sequence** you want to enroll them into (for example, a sequence you've already set up in Outreach).
+3. Map the **prospect ID** from Step 1.
+4. Map the **mailbox** the sequence should send from.
+5. Save, then run it.
+
+Once this runs, the person is added to Outreach and enrolled in the sequence. From there, the sequence runs on its own.
+
+---
+
+### **Summary**
+
+Pushing leads into Outreach from Bitscale takes one extra step compared to tools like Instantly or Smartlead: create the prospect first, then enroll them in a sequence. Both steps live right in your grid, so the whole workflow, enrichment through enrollment, stays in one place.
+
+If you run into any issues or have questions, reach out to the Bitscale team, we're always happy to help.
