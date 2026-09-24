@@ -1,15 +1,17 @@
 ---
-title: "MCP Capabilities"
+title: "Bitscale MCP Capabilities"
 description: "Every tool the Bitscale MCP exposes, what access it needs, and what you can build with it."
 ---
 
-## Overview
+### Overview
 
-This page is the reference for what's on the other side of the [MCP connection](/mcp-reference/connect): every tool it exposes, what each one needs to run, and what you can build once you're connected.
+This page is the reference for what's on the other side of the connection: every tool the Bitscale MCP exposes, what each one needs to run, and what you can build once it's connected. If you haven't set it up yet, start with [Connecting the Bitscale MCP](/mcp-reference/connect).
 
-## Endpoints
+---
 
-The Bitscale MCP exposes 49 tools. `R` marks a read-only call, `W` marks one that changes state.
+### **Endpoints**
+
+The Bitscale MCP exposes 49 tools. **R** marks a read-only call, **W** marks one that changes state.
 
 **Workspace**
 
@@ -75,11 +77,13 @@ The Bitscale MCP exposes 49 tools. `R` marks a read-only call, `W` marks one tha
 - `plan_bitscale_workflow_v1` (R) — the routing plan before a write chain starts
 - `get_system_guide_v1` (R) — the full reference playbook
 
-## Access
+---
+
+### **Access**
 
 Each connection is scoped to one Bitscale workspace. Every tool above runs against that workspace, its grids, its credits, and its connected integrations only.
 
-Your workspace role, owner, admin, editor, or viewer, gates admin actions like invites and plan changes. `get_workspace_v1` returns your role.
+Your workspace role, owner, admin, editor, viewer, gates admin actions like invites and plan changes. `get_workspace_v1` returns your role.
 
 Integrations, HubSpot, Salesforce, Attio, Zoho CRM, Slack, Apollo, OpenAI, Instantly, Smartlead, Outplay, are only reachable once your workspace connects them. A tool that needs one you haven't connected returns a connect link instead of proceeding.
 
@@ -87,7 +91,9 @@ Deletes preview first. `delete_grid_v1`, `delete_column_v1`, `delete_source_v1`,
 
 Runs estimate first. `run_column_v1` and `run_grid_v1` show a credit estimate before spending anything.
 
-## Capabilities
+---
+
+### **Capabilities**
 
 **List building** — Pull rows from Apollo, LinkedIn, Google Maps, company lookalikes, a connected CRM, a CSV, or a webhook. Filters like industry, technology, location, seniority, and school resolve to an exact ID before the search runs.
 
@@ -99,6 +105,8 @@ Runs estimate first. `run_column_v1` and `run_grid_v1` show a credit estimate be
 
 **Organization** — Folders and workbooks group related grids. Clone a grid instead of rebuilding it.
 
-## Support
+---
 
-Questions about a specific tool or how to chain a workflow together go to the Bitscale community channel.
+### Need help?
+
+If you have questions about what a specific tool does or how to chain a workflow together, reach out to the Bitscale team on the community channel.
