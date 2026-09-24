@@ -1,0 +1,104 @@
+---
+title: "MCP Capabilities"
+description: "Every tool the Bitscale MCP exposes, what access it needs, and what you can build with it."
+---
+
+## Overview
+
+This page is the reference for what's on the other side of the [MCP connection](/mcp-reference/connect): every tool it exposes, what each one needs to run, and what you can build once you're connected.
+
+## Endpoints
+
+The Bitscale MCP exposes 49 tools. `R` marks a read-only call, `W` marks one that changes state.
+
+**Workspace**
+
+- `get_workspace_v1` (R) — plan, credit balance, seat count, your role, folders, workbooks
+- `list_integrations_v1` (R) — connected integrations and their IDs
+- `describe_integration_schema_v1` (R) — an integration's field and object schema
+- `create_folder_v1` / `move_to_folder_v1` (W) — organize folders
+- `create_workbook_v1` / `move_grid_to_workbook_v1` (W) — group grids into a workbook
+- `delete_item_v1` (W) — delete a folder or workbook and everything in it
+
+**Grids**
+
+- `create_grid_v1` (W) — create an empty grid
+- `list_grids_v1` (R) — list or search grids
+- `get_grid_v1` (R) — a grid's columns, sources, settings, and schedules
+- `update_grid_v1` (W) — name, description, visibility, auto-dedupe, auto-run
+- `clone_grid_v1` (W) — duplicate a grid
+- `delete_grid_v1` (W) — delete a grid
+- `get_grid_status_v1` (R) — ingestion and run progress
+
+**Sources**
+
+- `list_source_types_v1` / `search_source_types_v1` (R) — available source types
+- `get_source_type_details_v1` (R) — a source type's metadata schema
+- `add_grid_source_v1` (W) — attach a source (Apollo, LinkedIn, Google Maps, CRM, CSV, webhook) and load rows
+- `update_source_v1` (W) — edit a source
+- `delete_source_v1` (W) — remove a source and its rows
+- `pull_latest_source_data_v1` (W) — pull fresh data from a source
+- `update_source_schedule_v1` (W) — set or clear a recurring pull
+- `resolve_filter_values_v1` (R) — resolve a filter phrase (industry, technology, location) to an exact ID
+
+**CSV import**
+
+- `init_csv_upload_v1` (W) — start a chunked upload
+- `analyze_csv_upload_v1` (R) — preview an uploaded CSV
+- `get_csv_import_mapping_v1` (R) — suggested column mapping onto a grid
+- `create_grid_from_csv_v1` (W) — create a grid from CSV, or append to one
+
+**Rows**
+
+- `get_rows_v1` (R) — read row data
+- `list_row_ids_v1` (R) — preview which rows a filter matches
+- `add_rows_v1` (W) — append rows (max 1,000 per call)
+- `update_rows_v1` (W) — patch cell values (max 500 rows per call)
+- `delete_rows_v1` (W) — delete rows by ID
+- `dedupe_rows_v1` (W) — collapse duplicate rows by a matching column
+
+**Columns & enrichment**
+
+- `list_tool_index_v1` / `list_all_tools_v1` (R) — the enrichment tool catalog
+- `get_tool_details_v1` / `get_tool_schema_v1` (R) — a tool's record and column schema
+- `add_column_v1` (W) — add a text, formula, or enrichment column
+- `update_column_v1` (W) — edit a column
+- `delete_column_v1` (W) — delete a column
+- `run_column_v1` (W) — run one column on selected rows
+- `run_grid_v1` (W) — run every runnable column on selected rows
+- `get_run_status_v1` (R) — poll an external run by request ID
+- `create_column_schedule_v1` / `update_column_schedule_v1` / `delete_column_schedule_v1` (W) — recurring column re-runs
+
+**Agent workflow**
+
+- `ask_human_v1` (R) — when the agent should pause and ask you
+- `plan_bitscale_workflow_v1` (R) — the routing plan before a write chain starts
+- `get_system_guide_v1` (R) — the full reference playbook
+
+## Access
+
+Each connection is scoped to one Bitscale workspace. Every tool above runs against that workspace, its grids, its credits, and its connected integrations only.
+
+Your workspace role, owner, admin, editor, or viewer, gates admin actions like invites and plan changes. `get_workspace_v1` returns your role.
+
+Integrations, HubSpot, Salesforce, Attio, Zoho CRM, Slack, Apollo, OpenAI, Instantly, Smartlead, Outplay, are only reachable once your workspace connects them. A tool that needs one you haven't connected returns a connect link instead of proceeding.
+
+Deletes preview first. `delete_grid_v1`, `delete_column_v1`, `delete_source_v1`, `delete_rows_v1`, `delete_item_v1`, and `dedupe_rows_v1` show what would be affected before anything is removed.
+
+Runs estimate first. `run_column_v1` and `run_grid_v1` show a credit estimate before spending anything.
+
+## Capabilities
+
+**List building** — Pull rows from Apollo, LinkedIn, Google Maps, company lookalikes, a connected CRM, a CSV, or a webhook. Filters like industry, technology, location, seniority, and school resolve to an exact ID before the search runs.
+
+**Enrichment** — Email and phone finding and verification, LLM research, raw HTTP calls, and web or link scraping, wired onto a grid as columns with a schema-checked shape.
+
+**CRM sync** — Read and write to HubSpot, Salesforce, Attio, and Zoho CRM, including your own custom fields. Slack messaging and outbound sequencer sync, Instantly, Smartlead, Outplay, work the same way.
+
+**Automation** — Cron schedules re-run a column or re-pull a source on a cadence. Grids can auto-dedupe and auto-run new rows as they arrive.
+
+**Organization** — Folders and workbooks group related grids. Clone a grid instead of rebuilding it.
+
+## Support
+
+Questions about a specific tool or how to chain a workflow together go to the Bitscale community channel.
