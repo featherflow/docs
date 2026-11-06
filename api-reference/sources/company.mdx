@@ -1,0 +1,83 @@
+---
+title: "Find Companies"
+description: "Search our database for companies matching industry, headcount, location, tech stack, funding, revenue, and keyword filters."
+---
+
+**Source type:** `company`
+
+Search our database for companies matching industry, headcount, location, tech stack, funding, revenue, and keyword filters. Mirrors the 'Find Companies' dialog in the Bitscale UI.
+
+<Note>
+Up to `limit` (max 100) rows per page. Page with `page` while `has_more` is `true`. Count is free. Uses your plan's search allowance for rows returned.
+</Note>
+
+## Filters
+
+Send these in `filters`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `q_organization_keyword_tags` | string[] | No |  | Company keywords to match — free text, e.g. ['developer tools', 'open source', 'SaaS']. |
+| `q_not_organization_keyword_tags` | string[] | No |  | Company keywords to exclude. |
+| `market_segments` | string[] | No |  | Business sector / GTM model. One of: `B2B`, `B2C`, `E-commerce`, `Fintech`, `SaaS`, `Consulting`, `Retail`, `Non-Profit`, `Services`, `B2B2C`, `D2C`. Resolve names with `/sources/filter-values?filter_type=market_segments`. |
+| `organization_num_employees_ranges` | string[] | No |  | Headcount ranges. Pass several to OR them. One of: `1,10`, `11,50`, `51,200`, `201,500`, `501,1000`, `1001,5000`, `5001,10000`, `10000`. Resolve names with `/sources/filter-values?filter_type=employee_count`. |
+| `organization_locations` | string[] | No |  | Company HQ locations. Resolve names with `/sources/filter-values?filter_type=location`. |
+| `organization_not_locations` | string[] | No |  | Company HQ locations to exclude. Resolve names with `/sources/filter-values?filter_type=location`. |
+| `organization_latest_funding_stage_cd` | string[] | No |  | Latest funding stage. One of: `Seed`, `Angel`, `Series A`, `Series B`, `Series C`, `Series D`, `Series E`, `Series F`, `Series G`, `Series H`, `Venture`, `Private Equity`, …. Resolve names with `/sources/filter-values?filter_type=funding_stage`. |
+| `latest_funding_date_range` | object | No |  | Funding date range. Shape: \{min: 'YYYY-MM-DD', max: 'YYYY-MM-DD'\}. |
+| `organization_department_or_subdepartment_counts` | object | No |  | Headcount per department. Shape: \{&lt;department>: \{min, max\}\}, keyed by the values listed. Resolve names with `/sources/filter-values?filter_type=departments`. |
+| `revenue_range` | object | No |  | Annual revenue in USD. Shape: \{min, max\}; each bound is one of the values listed (or null). Snap min down and max up so the target range is contained. One of: `0`, `100000`, `500000`, `1000000`, `5000000`, `10000000`, `25000000`, `50000000`, `100000000`, `500000000`, `1000000000`, `5000000000`, …. Resolve names with `/sources/filter-values?filter_type=revenue`. |
+| `currently_using_any_of_technology_uids` | string[] | No |  | Technologies the company is detected using (OR). Resolve names with `/sources/filter-values?filter_type=technology`. |
+| `organization_industry_tag_ids` | string[] | No |  | Industries to match (OR). Resolve names with `/sources/filter-values?filter_type=industry`. |
+| `organization_not_industry_tag_ids` | string[] | No |  | Industries to exclude. Resolve names with `/sources/filter-values?filter_type=industry`. |
+| `organization_sic_codes` | string[] | No |  | SIC industry codes to match (OR). Resolve names with `/sources/filter-values?filter_type=sic_codes`. |
+| `not_organization_sic_codes` | string[] | No |  | SIC codes to exclude. Note the irregular exclusion form: prefixed 'not_', not the usual '_not' suffix. Resolve names with `/sources/filter-values?filter_type=sic_codes`. |
+| `organization_naics_codes` | string[] | No |  | NAICS industry codes to match (OR). Resolve names with `/sources/filter-values?filter_type=naics_codes`. |
+| `not_organization_naics_codes` | string[] | No |  | NAICS codes to exclude. Note the irregular exclusion form: prefixed 'not_', not the usual '_not' suffix. Resolve names with `/sources/filter-values?filter_type=naics_codes`. |
+| `organization_founded_year_range` | object | No |  | Founding-year bounds. Shape: \{min: number\|null, max: number\|null\}. |
+| `organization_retail_location_count_range` | object | No |  | Number of retail/physical locations the company operates. Shape: \{min: number\|null, max: number\|null\}. |
+| `organization_headcount_growth_range` | object | No |  | Headcount growth rate over the window set by organization_headcount_growth_past_n_months. Shape: \{min: number\|null, max: number\|null\}. |
+| `organization_headcount_growth_past_n_months` | string | No |  | Lookback window (in months) for the headcount-growth filter. Used together with organization_headcount_growth_range and organization_department. |
+| `organization_department` | string[] | No |  | Department to scope the headcount-growth filter to. Distinct from organization_department_or_subdepartment_counts. Resolve names with `/sources/filter-values?filter_type=departments`. |
+| `latest_funding_amount_range` | object | No |  | Amount of the most recent funding round, in USD. Shape: \{min: number\|null, max: number\|null\}. |
+| `total_funding_range` | object | No |  | Total funding raised across all rounds, in USD. Shape: \{min: number\|null, max: number\|null\}. |
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/sources/company/search" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"filters": {"q_organization_keyword_tags": ["developer tools", "B2B SaaS"]}, "limit": 25}'
+```
+
+## Row
+
+Each row in `result.rows` looks like this. Use `fields` to keep only what you need.
+
+```json
+{
+  "city": "San Francisco",
+  "country": "United States",
+  "crunchbase_url": "https://www.crunchbase.com/organization/acme",
+  "estimated_num_employees": 1200,
+  "facebook_url": "https://www.facebook.com/acme",
+  "founded_year": 2010,
+  "industry": "software development",
+  "languages": [
+    "english"
+  ],
+  "linkedin_uid": "76b8453e-6a29-538f-90b1-ec2d99ae630a",
+  "linkedin_url": "https://www.linkedin.com/company/acme",
+  "name": "Acme",
+  "organization_revenue_printed": "$100M",
+  "postal_code": "94105",
+  "primary_domain": "acme.com",
+  "record_id": "76b8453e-6a29-538f-90b1-ec2d99ae630a",
+  "state": "California",
+  "twitter_url": "https://x.com/acme",
+  "website_url": "https://acme.com"
+}
+```
+
+See [Sources API](/api-reference/sources/overview) for paging, polling and credits.

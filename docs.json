@@ -275,6 +275,42 @@
             ]
           },
           {
+            "group": "Tools",
+            "pages": [
+              "api-reference/tools/overview",
+              "api-reference/tools/bitAgent",
+              "api-reference/tools/builtWithTech",
+              "api-reference/tools/clearOutVerifyPhone",
+              "api-reference/tools/customDomainWaterfall",
+              "api-reference/tools/customEmailWaterfall",
+              "api-reference/tools/customPhoneWaterfall",
+              "api-reference/tools/linkedinComments",
+              "api-reference/tools/linkedinCompany",
+              "api-reference/tools/linkedinCompanyPosts",
+              "api-reference/tools/linkedinPerson",
+              "api-reference/tools/linkedinPosts",
+              "api-reference/tools/millionVerifier",
+              "api-reference/tools/personalEmailToLinkedinWaterfall",
+              "api-reference/tools/personalEmailWaterfall",
+              "api-reference/tools/theirStackTech",
+              "api-reference/tools/workEmailToLinkedinWaterfall",
+              "api-reference/tools/zeroBounceVerify",
+              "api-reference/tools/ai-models"
+            ]
+          },
+          {
+            "group": "Sources",
+            "pages": [
+              "api-reference/sources/overview",
+              "api-reference/sources/company",
+              "api-reference/sources/people",
+              "api-reference/sources/linkedinPost",
+              "api-reference/sources/googleMaps",
+              "api-reference/sources/linkedinJobs",
+              "api-reference/sources/linkedinPeopleFromKeywords"
+            ]
+          },
+          {
             "group": "Advanced",
             "pages": []
           }

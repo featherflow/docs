@@ -1,0 +1,78 @@
+---
+title: "Company Enrichment Waterfall (Domain)"
+description: "Enrich company data from a domain by cascading through ~10 company-enrichment providers and returning the first quality hit."
+---
+
+**Tool ID:** `customDomainWaterfall` · **Credits:** 1 per run
+
+Enrich company data from a domain by cascading through ~10 company-enrichment providers and returning the first quality hit. Optional company LinkedIn URL boosts coverage.
+
+**Best for:** When you only have a company domain (optionally with LinkedIn URL) and need full company details with maximum coverage.
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `domain` | Yes | The company domain. |
+| `linkedinUrl` | No | The company's LinkedIn URL. Optional — boosts coverage. |
+
+## Options
+
+Optional configuration. Send these in `options`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `companyDomainEnrichProviders` | array&lt;string> | No |  | Ordered list of provider tool IDs to try (e.g. ["enrichCompanyFromDomain","datagmaCompanyEnrich","leadMagicCompanyEnrich"]). Omit to use Bitscale's tuned default chain. |
+
+## Output
+
+Returns merged company profile (raw shape passes through from the winning provider until normalization ships) plus the provider key that won.
+
+`result.data` looks like:
+
+```json
+{
+  "address": "1 Market St, San Francisco, California, United States",
+  "city": "San Francisco",
+  "country": "United States",
+  "crunchbase": "https://www.crunchbase.com/organization/acme",
+  "description": "Acme builds payments software for online businesses.",
+  "domain": "acme.com",
+  "founded_year": 2010,
+  "funding_rounds": 6,
+  "industries": "b2b, payments, software development",
+  "industry": "software development",
+  "last_funding_amount": 80000000,
+  "last_funding_round": "SERIES_D",
+  "legal_name": "Acme, Inc.",
+  "linkedin": "https://www.linkedin.com/company/acme",
+  "locations": "1 Market St, San Francisco, United States",
+  "logo": "https://example.com/acme-logo.png",
+  "name": "Acme",
+  "overview": "Acme is a financial technology company.",
+  "postal_code": "94105",
+  "provider": "Bitscale",
+  "revenue": "100000000-500000000",
+  "staff": 1200,
+  "staff_range": "1001-5000",
+  "state": "California",
+  "street": "1 Market St",
+  "total_funding": 250000000,
+  "twitter": "https://x.com/acme",
+  "type": "PRIVATELY_HELD",
+  "website": "https://acme.com"
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/customDomainWaterfall/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"domain": "acme.com", "linkedinUrl": "https://www.linkedin.com/company/acme/"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

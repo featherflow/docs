@@ -1,0 +1,67 @@
+---
+title: "LinkedIn Company Posts"
+description: "Give a company's LinkedIn URL, and get a list of recent posts from the company's LinkedIn profile."
+---
+
+**Tool ID:** `linkedinCompanyPosts` · **Credits:** 1 per run
+
+Give a company's LinkedIn URL, and get a list of recent posts from the company's LinkedIn profile.
+
+**Best for:** When you want to get recent posts from a company's LinkedIn profile.
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `companyLinkedinUrl` | Yes | The company LinkedIn URL. Returns recent company posts. |
+
+## Options
+
+Optional configuration. Send these in `options`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `limit` | number | No | `20` | Max posts. |
+
+## Output
+
+Returns recent posts from a company's LinkedIn page including post text, reactions, and engagement metrics.
+
+`result.data` looks like:
+
+```json
+{
+  "posts": [
+    {
+      "is_repost": false,
+      "postLink": "https://www.linkedin.com/posts/acme_launch-activity-7520000000000000000",
+      "postText": "Acme is now live in Europe.",
+      "postedAgo": "2 days ago",
+      "postedAt": "Oct 31, 2026 at 9:00am (UTC)",
+      "posted_by": {
+        "actorDescription": "Payments for the internet",
+        "actorLink": "https://www.linkedin.com/company/acme",
+        "actorName": "Acme"
+      },
+      "socialCount": {
+        "numComments": 22,
+        "numLikes": 540,
+        "numShares": 15
+      }
+    }
+  ]
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/linkedinCompanyPosts/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"companyLinkedinUrl": "https://www.linkedin.com/company/stripe/"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

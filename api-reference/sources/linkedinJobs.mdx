@@ -1,0 +1,102 @@
+---
+title: "LinkedIn Job Posts"
+description: "Search LinkedIn job postings by title / description keyword / location / experience / type / workplace and return each job as a row (title, company, location, description, posted date, URL)."
+---
+
+**Source type:** `linkedinJobs`
+
+Search LinkedIn job postings by title / description keyword / location / experience / type / workplace and return each job as a row (title, company, location, description, posted date, URL). Mirrors the 'LinkedIn Job Search' dialog in the Bitscale UI.
+
+<Note>
+Up to `limit` (max 100) rows per page. Page with `page` while `has_more` is `true`. Count is not available. 1 credit per row returned.
+</Note>
+
+## Filters
+
+Send these in `filters`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `title` | string[] | No |  | Job titles / title keywords to match (OR). Example: ['Sales Engineer', 'Solutions Engineer']. Multi-word entries are ANDed; pass separate entries to OR. |
+| `description` | string[] | No |  | Free-text keywords that must appear in the job description (OR). Useful for skill/tool targeting, e.g. ['Salesforce', 'HubSpot']. |
+| `searchLocationIds` | string[] | No |  | Location filter. Pass canonical location labels (PDL names) — e.g. ['United States', 'California, United States', 'London, England, United Kingdom']. Not actual IDs despite the field name; the backend wraps each value in quotes and ORs them. |
+| `searchLocationName` | string | No |  | Alternative to searchLocationIds for a single location string. Use searchLocationIds when passing multiple locations. |
+| `experienceLevel` | string[] | No |  | Seniority filter. Use the exact labels below. One of: `Internship`, `Entry Level`, `Associate`, `Mid-Senior Level`, `Director`, `Executive`. |
+| `jobType` | string[] | No |  | Employment type filter. One of: `Full-time`, `Part-time`, `Contract`, `Temporary`, `Volunteer`, `Internship`, `Other`. |
+| `workplaceType` | string[] | No |  | Work setting filter. Note: if you pass ONLY 'Remote' the backend restricts to remote-only; if you pass only on-site/hybrid it restricts to non-remote; mixed selections return both. Prefer the `remote` boolean below when you just want 'remote-only yes/no'. One of: `On-site`, `Remote`, `Hybrid`. |
+| `remote` | boolean | No |  | Remote-only toggle (matches the 'Remote only' switch in the UI). true = remote jobs only, omit/null = all workplace types. Takes precedence over workplaceType when both are set. |
+| `onlyCountries` | boolean | No |  | Location routing mode. true = country-only (matches how the UI's 'Only countries' switch works and enables the RapidAPI fallback path). false = allow granular city/region locations. Defaults to true when omitted; the backend also auto-infers this from the resolved location's feature_name, so only set it explicitly to override that inference. |
+| `timePeriod` | string | No |  | Recency window for job posting date. Defaults to 'last_7d'. Use 'last_n_days' together with daysBack (1–180) for a custom window. One of: `last_24h`, `last_7d`, `last_n_days`. |
+| `daysBack` | number | No |  | Custom recency window in days, 1–180. Only applies when timePeriod = 'last_n_days'. |
+| `sortBy` | string | No |  | Result ordering. 'desc' (date descending, most recent first) is the default. One of: `desc`, `asc`. |
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/sources/linkedinJobs/search" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"filters": {"description": ["Salesforce"], "experienceLevel": ["Mid-Senior Level", "Director"], "jobType": ["Full-time"], "searchLocationIds": ["United States"], "sortBy": "desc", "timePeriod": "last_7d", "title": ["Sales Engineer", "Solutions Engineer"], "workplaceType": ["Remote", "Hybrid"]}, "limit": 25}'
+```
+
+## Row
+
+Each row in `result.rows` looks like this. Use `fields` to keep only what you need.
+
+```json
+{
+  "avg_annual_salary_usd": 155000,
+  "company": "Acme",
+  "company_annual_revenue": "120M",
+  "company_city": "San Francisco",
+  "company_country": "United States",
+  "company_description": "Acme builds payments software.",
+  "company_domain": "acme.com",
+  "company_employee_count": 1200,
+  "company_employee_range": "1001-5000",
+  "company_founded_year": 2010,
+  "company_funding_stage": "series_c",
+  "company_industry": "Software Development",
+  "company_keywords": "payments, apis",
+  "company_linkedin_url": "https://www.linkedin.com/company/acme",
+  "company_num_jobs": 34,
+  "company_technologies": "salesforce, react",
+  "company_website": "https://acme.com",
+  "country": "United States",
+  "country_code": "US",
+  "country_codes": "US",
+  "date_posted": "2026-11-02",
+  "description": "Own technical discovery and demos for mid-market prospects.",
+  "description_text": "Own technical discovery and demos for mid-market prospects.",
+  "discovered_at": "2026-11-02T12:03:56.432000Z",
+  "easy_apply": true,
+  "employment_status": "full_time",
+  "final_url": "https://www.linkedin.com/jobs/view/917073337",
+  "hybrid": true,
+  "id": 917073337,
+  "keywords": "sales-engineering, saas",
+  "linkedin_org_url": "acme.com",
+  "location": "San Francisco, California",
+  "locations_derived": [
+    "San Francisco, California"
+  ],
+  "locations_list": "California, United States",
+  "long_location": "San Francisco, California, United States",
+  "max_annual_salary_usd": 170000,
+  "min_annual_salary_usd": 140000,
+  "organization": "Acme",
+  "organization_url": "https://www.linkedin.com/company/acme",
+  "postal_code": "94105",
+  "received_at": "2026-11-02 15:14:21",
+  "salary_currency": "USD",
+  "salary_string": "$140,000 - $170,000 a year",
+  "seniority": "mid_senior",
+  "short_location": "San Francisco, California",
+  "source_url": "https://www.linkedin.com/jobs/view/917073337",
+  "state_code": "CA",
+  "title": "Sales Engineer",
+  "url": "https://www.linkedin.com/jobs/view/917073337"
+}
+```
+
+See [Sources API](/api-reference/sources/overview) for paging, polling and credits.

@@ -1,0 +1,100 @@
+---
+title: "LinkedIn Person Profile"
+description: "Give a person's LinkedIn URL, and get a details of the person including education, experience, skills, etc."
+---
+
+**Tool ID:** `linkedinPerson` · **Credits:** 1 per run
+
+Give a person's LinkedIn URL, and get a details of the person including education, experience, skills, etc.
+
+**Best for:** When you want to get person's details from LinkedIn.
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `linkedinUrl` | Yes | The person's LinkedIn profile URL. |
+
+## Options
+
+Optional configuration. Send these in `options`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `includeSocialMetrics` | boolean | No | `false` | OPT-IN extra scrape ("Scrape extra details" in the Tweak section). Defaults to false. When true the column makes one additional call per row and also returns followersCount and connectionsCount, which the base profile scrape does not carry. |
+
+## Output
+
+Flat profile fields plus `raw`, the provider's untouched response.
+
+`result.data` looks like:
+
+```json
+{
+  "backgroundImage": "https://example.com/janedoe-bg.jpg",
+  "certifications": null,
+  "currentEmployer": "Acme",
+  "currentEmployerDomain": "acme.com",
+  "currentEmployerLinkedinUrl": "https://www.linkedin.com/company/acme",
+  "currentEmployerUrl": "acme.com",
+  "currentTitle": "VP Sales",
+  "educations": [
+    {
+      "degreeName": "MBA",
+      "description": "",
+      "endDate": "2014-01-01",
+      "fieldOfStudy": "",
+      "schoolName": "Stanford University",
+      "startDate": "2012-01-01",
+      "timePeriod": "2012-01-01 - 2014-01-01"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "Acme",
+      "companyLinkedinUrl": "https://www.linkedin.com/company/acme",
+      "description": "",
+      "employmentType": "",
+      "endDate": "",
+      "location": "San Francisco Bay Area",
+      "startDate": "2021-03-01",
+      "timePeriod": "2021-03-01 - Present",
+      "title": "VP Sales"
+    }
+  ],
+  "firstName": "Jane",
+  "fullName": "Jane Doe",
+  "headline": "VP Sales at Acme",
+  "industry": "Computer Software",
+  "languages": null,
+  "lastName": "Doe",
+  "linkedinUrl": "https://www.linkedin.com/in/janedoe",
+  "location": {
+    "city": "San Francisco",
+    "country": "United States",
+    "full": "San Francisco, California, United States",
+    "state": "California"
+  },
+  "openToWork": false,
+  "premium": true,
+  "profilePicture": "https://example.com/janedoe.jpg",
+  "projects": null,
+  "publicIdentifier": "janedoe",
+  "skills": "Sales, SaaS",
+  "summary": "Building revenue teams.",
+  "volunteer": null
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/linkedinPerson/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"linkedinUrl": "https://www.linkedin.com/in/john-doe/"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

@@ -1,0 +1,60 @@
+---
+title: "LinkedIn Recent Posts"
+description: "Give a person's LinkedIn URL, and get a list of recent posts from the person's LinkedIn profile."
+---
+
+**Tool ID:** `linkedinPosts` · **Credits:** 1 per run
+
+Give a person's LinkedIn URL, and get a list of recent posts from the person's LinkedIn profile.
+
+**Best for:** When you want to get recent posts from a person's LinkedIn profile.
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `linkedinUrl` | Yes | The person's LinkedIn URL. Returns their recent posts. |
+
+## Output
+
+Returns a list of the person's recent LinkedIn posts including post text, reactions count, comments count, and date posted.
+
+`result.data` looks like:
+
+```json
+{
+  "posts": [
+    {
+      "actor": {
+        "actorDescription": "VP Sales at Acme",
+        "actorLink": "https://www.linkedin.com/in/janedoe",
+        "actorName": "Jane Doe"
+      },
+      "header": "",
+      "is_repost": false,
+      "postLink": "https://www.linkedin.com/feed/update/urn:li:activity:7520000000000000000",
+      "postText": "We just shipped our new onboarding flow.",
+      "postedAgo": "3 days ago",
+      "socialCount": {
+        "numComments": 14,
+        "numLikes": 120,
+        "numShares": 3
+      },
+      "urn": "urn:li:activity:7520000000000000000"
+    }
+  ]
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/linkedinPosts/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"linkedinUrl": "https://www.linkedin.com/in/john-doe/"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

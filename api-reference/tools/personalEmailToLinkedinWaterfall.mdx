@@ -1,0 +1,51 @@
+---
+title: "Personal Email → LinkedIn URL"
+description: "Find linkedin profile url for a person/contact using personal email."
+---
+
+**Tool ID:** `personalEmailToLinkedinWaterfall` · **Credits:** 5 per run
+
+Find linkedin profile url for a person/contact using personal email.
+
+**Best for:** Finding linkedin profile url from personal email.
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `email` | Yes | The person's personal email to resolve to a LinkedIn profile. |
+
+## Options
+
+Optional configuration. Send these in `options`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `personalEmailToLinkedinProviders` | array&lt;string> | No |  | Ordered list of provider tool IDs to try for personal-email → LinkedIn resolution. Omit to use Bitscale's tuned default chain. |
+
+## Output
+
+Returns LinkedIn profile URL from a personal email address.
+
+`result.data` looks like:
+
+```json
+{
+  "linkedin_url": "https://www.linkedin.com/in/janedoe",
+  "other_info": {},
+  "provider": "Forager"
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/personalEmailToLinkedinWaterfall/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"email": "john.doe@acme.com"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

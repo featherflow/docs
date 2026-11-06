@@ -1,0 +1,65 @@
+---
+title: "Email Waterfall (Multi-Provider)"
+description: "Find work emails for a person/contact, can also verify emails and find only verified emails, possible to find safe only emails by ignoring catch all emails."
+---
+
+**Tool ID:** `customEmailWaterfall` · **Credits:** 2 per run
+
+Find work emails for a person/contact, can also verify emails and find only verified emails, possible to find safe only emails by ignoring catch all emails.
+
+**Best for:** Finding emails when maximum coverage and quality is required.
+
+**Not for:** personal email
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `fullName` | Yes | The person's full name. |
+| `domain` | No | The company domain. |
+| `companyName` | No | The company name. |
+| `linkedinUrl` | No | The LinkedIn URL. Optional but boosts coverage. |
+
+Send at least one of: `domain`, `companyName`.
+
+## Options
+
+Optional configuration. Send these in `options`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `saveCredits` | boolean | No | `true` | When true AND a validationProvider is set, stop the waterfall early once the same email has been returned and verified invalid by ~2-3 providers (dedup-and-bail to save credits). The UI auto-enables this whenever validation is turned on. |
+| `emailProviders` | array&lt;string> | No |  | Ordered list of provider tool IDs to try (e.g. ["hunterEmail","findymailEmail","prospeoEmail"]). Omit to use Bitscale's tuned default chain. |
+| `waterfallGeo` | string | No |  | Optimize the provider order for a target region instead of naming emailProviders yourself. Overwrites emailProviders with Bitscale's tuned order for that region. Omit for the general-purpose default chain. One of: `enterprises`, `north_america`, `europe`. |
+| `validationProvider` | string | No |  | Optional provider tool_id used to verify each returned email BEFORE accepting it (e.g. "zeroBounceVerify", "findymailVerify", "leadMagicVerify", "millionVerifier"). Omit for no verification. Default verifier in standalone use is zeroBounceVerify. |
+| `safeToSend` | boolean | No | `false` | When true AND validationProvider is set, only emails the verifier marks 'safe to send' (non-catchall, low-bounce-risk) are returned. Use for outbound flows that can't afford bounces. |
+
+## Output
+
+Returns work email address. Tries multiple providers (Hunter, Findymail, etc.) for maximum coverage. Can optionally verify results.
+
+`result.data` looks like:
+
+```json
+{
+  "email": "jane.doe@acme.com",
+  "invalidEmail": "",
+  "other_info": {},
+  "provider": "LeadMagic",
+  "quality": "good",
+  "status": "valid"
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/customEmailWaterfall/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"companyName": "Acme", "domain": "acme.com", "fullName": "John Doe", "linkedinUrl": "https://www.linkedin.com/in/john-doe/"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

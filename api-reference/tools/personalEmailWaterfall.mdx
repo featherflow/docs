@@ -1,0 +1,60 @@
+---
+title: "Personal Email Waterfall"
+description: "Find personal email for a person/contact using linkedin url."
+---
+
+**Tool ID:** `personalEmailWaterfall` · **Credits:** 7 per run
+
+Find personal email for a person/contact using linkedin url.
+
+**Best for:** Finding personal email when maximum coverage and quality is required.
+
+**Not for:** work email, company email
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `linkedinUrl` | Yes | The person's LinkedIn profile URL. Required — personal email discovery is keyed off LinkedIn identity. |
+
+## Options
+
+Optional configuration. Send these in `options`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `saveCredits` | boolean | No | `true` | When true AND a validationProvider is set, stop the waterfall early once the same email is returned and verified invalid by ~2-3 providers, to save credits. The UI auto-enables this when validation is on. |
+| `personalEmailProviders` | array&lt;string> | No |  | Ordered list of personal-email provider tool IDs to try (e.g. ["contactOutPersonalEmail","rocketReachPersonalEmail"]). Omit to use Bitscale's tuned default chain. |
+| `validationProvider` | string | No |  | Optional provider tool_id used to verify each returned email BEFORE accepting it. Omit for no verification. |
+| `safeToSend` | boolean | No | `false` | When true AND validationProvider is set, only emails the verifier marks 'safe to send' are returned. |
+
+## Output
+
+Returns personal email address using LinkedIn URL.
+
+`result.data` looks like:
+
+```json
+{
+  "additionalEmails": [
+    "jdoe@yahoo.com"
+  ],
+  "email": "jane.doe@gmail.com",
+  "provider": "ContactOut",
+  "quality": "good",
+  "status": "valid"
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/personalEmailWaterfall/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"linkedinUrl": "https://www.linkedin.com/in/john-doe/"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

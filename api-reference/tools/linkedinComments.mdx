@@ -1,0 +1,60 @@
+---
+title: "LinkedIn Recent Comments"
+description: "Give a person's LinkedIn URL, and get a list of recent comments from the person's LinkedIn profile."
+---
+
+**Tool ID:** `linkedinComments` · **Credits:** 1 per run
+
+Give a person's LinkedIn URL, and get a list of recent comments from the person's LinkedIn profile.
+
+**Best for:** When you want to get recent comments from a person's LinkedIn profile.
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `linkedinUrl` | Yes | The person's LinkedIn URL. Returns their recent comments on others' posts. |
+
+## Options
+
+Optional configuration. Send these in `options`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `limit` | number | No | `20` | Max comments to return. |
+
+## Output
+
+Returns a list of the person's recent comments on LinkedIn posts including comment text and the original post context.
+
+`result.data` looks like:
+
+```json
+{
+  "comments": [
+    {
+      "commentText": "Great write-up, thanks for sharing!",
+      "postLink": "https://www.linkedin.com/feed/update/urn:li:activity:7520000000000000000",
+      "postText": "Five lessons from scaling our sales team.",
+      "postedAt": "1 week ago",
+      "posted_by": {
+        "actorLink": "https://www.linkedin.com/in/johnsmith",
+        "actorName": "John Smith"
+      }
+    }
+  ]
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/linkedinComments/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"linkedinUrl": "https://www.linkedin.com/in/john-doe/"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

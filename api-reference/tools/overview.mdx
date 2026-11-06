@@ -1,0 +1,165 @@
+---
+title: "Tools API"
+description: "Run a single Bitscale enrichment tool on one record, with no grid."
+---
+
+**Version:** v1 · **Plan Required:** Enterprise
+
+|                    |                                  |
+| ------------------ | -------------------------------- |
+| **Base URL**       | `https://api.bitscale.ai/api/v1` |
+| **Authentication** | `X-API-KEY: <your-api-key>`      |
+| **Content-Type**   | `application/json`               |
+
+Authentication, rate limits (5 req/s per workspace) and the error format are the same as the [Grid API](/ingredients/bitscale-api-reference). Each tool's page lists the inputs, options and output it uses.
+
+## Endpoints
+
+| Method | Path                     | Description                                       |
+| ------ | ------------------------ | ------------------------------------------------- |
+| `GET`  | `/tools`                 | List the tools you can run                        |
+| `GET`  | `/tools/:toolId/schema`  | Inputs, options and prompt rules for one tool     |
+| `POST` | `/tools/:toolId/run`     | Run a tool on one record                          |
+| `GET`  | `/tools/runs/:runId`     | Get the result of a run that is still going       |
+
+---
+
+## List tools
+
+`GET /tools`
+
+```bash
+curl "https://api.bitscale.ai/api/v1/tools" -H "X-API-KEY: $BITSCALE_API_KEY"
+```
+
+```json
+{ "tools": [ { "tool_id": "customEmailWaterfall", "display_name": "Email Waterfall (Multi-Provider)", "credit": 2, "...": "..." } ], "total": 36 }
+```
+
+## Get a tool's schema
+
+`GET /tools/:toolId/schema`
+
+Returns everything needed to build a run request:
+
+| Field              | Meaning                                                                 |
+| ------------------ | ----------------------------------------------------------------------- |
+| `column_inputs`    | The per-record data. Send these in `inputs`.                            |
+| `at_least_one_of`  | When present, at least one of these inputs must be sent.                |
+| `metadata_fields`  | Configuration. Send these in `options`.                                 |
+| `requires_prompt`  | `true` means the tool needs a `prompt`.                                 |
+| `sample_input`     | A working example of `inputs`.                                          |
+| `sample_output`    | What a result looks like.                                               |
+| `credit`           | Credits charged per run.                                                |
+
+## Run a tool
+
+`POST /tools/:toolId/run`
+
+| Field         | Type   | Required | Description                                                                  |
+| ------------- | ------ | -------- | ---------------------------------------------------------------------------- |
+| `inputs`      | object | Yes      | The record to process, keyed by input name.                                  |
+| `options`     | object | No       | Tool configuration, keyed by option name. Omit to use the defaults.          |
+| `prompt`      | string | Depends  | Required when the tool's `requires_prompt` is `true` (AI tools).             |
+| `grid_id`     | string | No       | Also save the result as a new row in this grid.                              |
+| `column_map`  | object | With `grid_id` | Maps a field to the grid column key it lands in. See [Save to a grid](#save-to-a-grid). |
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/customEmailWaterfall/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "inputs": { "fullName": "Jane Doe", "domain": "acme.com" } }'
+```
+
+### Finished within 25 seconds: `200 OK`
+
+```json
+{
+  "run_id": "2f1c...",
+  "tool_id": "customEmailWaterfall",
+  "status": "completed",
+  "result": {
+    "tool_id": "customEmailWaterfall",
+    "credit": 2,
+    "data": { "email": "jane.doe@acme.com", "status": "valid", "provider": "LeadMagic" }
+  },
+  "created_at": "2026-11-05T10:00:00Z",
+  "updated_at": "2026-11-05T10:00:04Z"
+}
+```
+
+`status` is `completed` or `failed`. A run that fails (for example, a LinkedIn URL that can't be scraped) still returns `200`, with `status: "failed"` and an `error` message instead of `result`; always check `status`. A lookup that finds nothing usually completes with empty fields.
+
+AI models return their answer as text in `result.raw` instead of `result.data`.
+
+<Note>
+The 25-second window starts after the request is validated, so a `202` can take around 30–45 seconds to arrive. Set your client timeout to at least 60 seconds.
+</Note>
+
+### Still running: `202 Accepted`
+
+```json
+{
+  "run_id": "2f1c...",
+  "tool_id": "bitAgent",
+  "status": "running",
+  "poll_url": "/api/v1/tools/runs/2f1c..."
+}
+```
+
+The run keeps going. Poll `poll_url` for the result.
+
+## Get a run
+
+`GET /tools/runs/:runId`
+
+Returns `202` with `status: "running"` until the run ends, then `200` with the same body as a finished run. Poll every 2–5 seconds. Results are kept for **24 hours**.
+
+```bash
+curl "https://api.bitscale.ai/api/v1/tools/runs/2f1c..." -H "X-API-KEY: $BITSCALE_API_KEY"
+```
+
+## Save to a grid
+
+Send `grid_id` and `column_map` to also add the result to a grid as one new row. `column_map` maps a field to a grid column key:
+
+| Field you can map            | Example                         |
+| ---------------------------- | ------------------------------- |
+| Any input you sent           | `"fullName"`                    |
+| Any key of `result.data`     | `"email"`                       |
+| A nested key, with dots      | `"metadata.flow.0.provider"`    |
+| The AI model answer          | `"raw"`                         |
+| The prompt you sent          | `"prompt"`                      |
+
+```json
+{
+  "inputs": { "fullName": "Jane Doe", "domain": "acme.com" },
+  "grid_id": "GRID_ID",
+  "column_map": { "fullName": "COLUMN_KEY_1", "email": "COLUMN_KEY_2" }
+}
+```
+
+The grid and column keys are checked before the tool runs, so a bad `grid_id` or column key fails with `400`/`404` and costs nothing. A successful save adds `grid_id` and `row_id` to `result`. If the save itself fails after the run, the result is still returned with a `persist_error`.
+
+## Errors
+
+| HTTP  | Code                         | When                                                                 |
+| ----- | ---------------------------- | -------------------------------------------------------------------- |
+| `400` | `INVALID_BODY`               | The body is not valid JSON.                                          |
+| `400` | `INVALID_INPUT`              | Missing or unknown input or option, missing prompt, bad `column_map`. |
+| `401` | `INVALID_API_KEY`            | Missing or invalid `X-API-KEY`.                                      |
+| `402` | `TOOL_INSUFFICIENT_CREDITS`  | Not enough credits.                                                  |
+| `404` | `TOOL_NOT_FOUND`             | The tool does not exist or cannot be run through the API.            |
+| `404` | `NOT_FOUND`                  | `grid_id` not found, or a run id that does not exist or has expired. |
+| `429` | `RATE_LIMIT_EXCEEDED`        | More than 5 requests per second.                                     |
+| `500` | `TOOL_INTERNAL`              | Something failed on our side. Retry.                                 |
+| `502` | `TOOL_EXPERIENCING_ISSUES`   | A data provider behind the tool is failing. Retry later.             |
+| `503` | `SERVICE_UNAVAILABLE`        | The API key could not be checked right now. Retry.                   |
+| `503` | `TOOL_RATE_LIMIT_EXCEEDED`   | A data provider behind the tool is rate limiting. Retry later.       |
+| `504` | `TOOL_TIMEOUT`               | A data provider did not answer in time. Retry.                       |
+
+These codes apply when the run fails within the first 25 seconds. A run that fails later is reported on its poll as `status: "failed"` with the same message in `error`.
+
+## MCP
+
+The same tools are available to MCP clients through `run_tool_v1`, with `get_tool_run_v1` for long runs. See the [MCP Reference](/mcp-reference/capabilities).

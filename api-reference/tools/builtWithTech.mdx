@@ -1,0 +1,51 @@
+---
+title: "BuiltWith Technology Stack"
+description: "Get information about a company's technology stack."
+---
+
+**Tool ID:** `builtWithTech` · **Credits:** 2 per run
+
+Get information about a company's technology stack.
+
+**Best for:** When you want to get information about a company's technology stack.
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `domain` | Yes | The domain to fetch technographics for. |
+
+## Options
+
+Optional configuration. Send these in `options`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `keywordFilter` | array&lt;string> | No |  | Return only technologies matching these keywords. |
+| `exactMatch` | boolean | No | `false` | Require exact keyword match. |
+
+## Output
+
+Returns the technology stack used by a website/company.
+
+`result.data` looks like:
+
+```json
+{
+  "count": 801,
+  "technologies": "GoDaddy SSL, jQuery, CentOS, jQuery CDN, Apache, Google Analytics, PHP, AJAX Libraries API, Webair, DNS Link, Apache 2.2, jQuery 1.7.1, Facebook Like, Amazon, Amazon Oregon Region, OptinMonster, ..."
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/builtWithTech/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"domain": "stripe.com"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.
