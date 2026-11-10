@@ -1,0 +1,74 @@
+---
+title: "Find People from LinkedIn Post"
+description: "Extract the people who liked, commented on, or reshared a specific LinkedIn post."
+---
+
+**Source type:** `linkedinPost`
+
+Extract the people who liked, commented on, or reshared a specific LinkedIn post. Different from linkedinPeopleFromKeywords (which scans all recent posts matching topic keywords).
+
+<Note>
+Returns every match up to `limit` (max 100) in one call. There is no page 2, so `has_more` is always `false`. `limit` (max 100) caps comments and reactions combined; `commentsLimit` and `reactionsLimit` split it. `scrapeComments` and `scrapeReactions` default to `true`. Count is not available. 1 credit per 10 engagers of each type (comments, reactions), rounded up, for each provider tried.
+</Note>
+
+## Filters
+
+Send these in `filters`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `postUrl` | string | Yes |  | Full LinkedIn post URL (supports linkedin.com/posts/... and linkedin.com/feed/update/... formats). |
+| `scrapeComments` | boolean | No |  | Whether to scrape the post's commenters. Mirrors the 'Scrape Comments' toggle in the UI (default true). At least one of scrapeComments / scrapeReactions must be true. |
+| `scrapeReactions` | boolean | No |  | Whether to scrape the post's reactors. Mirrors the 'Scrape Reactions' toggle in the UI (default true). At least one of scrapeComments / scrapeReactions must be true. |
+| `commentsLimit` | number | No |  | Max commenters to return. Comments and reactions together never exceed the request's limit (max 100); when both are on and neither limit is set, limit is split evenly. |
+| `reactionsLimit` | number | No |  | Max reactors to return, out of what is left of the request's limit (max 100) after comments. |
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/sources/linkedinPost/search" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"filters": {"postUrl": "https://www.linkedin.com/posts/example-user_announcing-activity-1234567890-abcd", "scrapeComments": true, "scrapeReactions": true}, "limit": 25}'
+```
+
+## Row
+
+Each row in `result.rows` looks like this. Use `fields` to keep only what you need.
+
+```json
+{
+  "commenter": {
+    "entityUrn": "ACoAAExample000JaneDoe",
+    "firstName": "Jane",
+    "headline": "VP Sales at Acme",
+    "lastName": "Doe",
+    "objectUrn": 123456789,
+    "profileBackground": "https://example.com/janedoe-bg.jpg",
+    "profileId": "janedoe",
+    "profilePicture": "https://example.com/janedoe.jpg",
+    "profileType": "PERSON"
+  },
+  "entityUrn": "ACoAAExample000JaneDoe",
+  "id": "urn:li:comment:(activity:7520000000000000000,7520000000000000001)",
+  "name": "Jane Doe",
+  "permalink": "https://www.linkedin.com/feed/update/urn:li:activity:7520000000000000000",
+  "postUrl": "https://www.linkedin.com/feed/update/urn:li:activity:7520000000000000000",
+  "profile": "https://www.linkedin.com/in/janedoe",
+  "profilePicture": "https://example.com/janedoe.jpg",
+  "profileType": "PERSON",
+  "reactionType": {
+    "empathy": 1,
+    "interest": 2,
+    "like": 26,
+    "praise": 3
+  },
+  "text": "Great point on pipeline coverage.",
+  "title": "VP Sales at Acme",
+  "totalComments": 11,
+  "totalReactions": 32,
+  "type": "comment"
+}
+```
+
+See [Sources API](/api-reference/sources/overview) for paging, polling and credits.

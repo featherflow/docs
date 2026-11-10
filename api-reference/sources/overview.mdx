@@ -1,0 +1,160 @@
+---
+title: "Sources API"
+description: "Search Bitscale's people, company and LinkedIn sources and get rows back, with no grid."
+---
+
+**Version:** v1 · **Plan Required:** Enterprise
+
+|                    |                                  |
+| ------------------ | -------------------------------- |
+| **Base URL**       | `https://api.bitscale.ai/api/v1` |
+| **Authentication** | `X-API-KEY: <your-api-key>`      |
+| **Content-Type**   | `application/json`               |
+
+Authentication, rate limits (5 req/s per workspace) and the error format are the same as the [Grid API](/ingredients/bitscale-api-reference). Each source's page lists the filters it takes and the rows it returns.
+
+## Endpoints
+
+| Method | Path                        | Description                                           |
+| ------ | --------------------------- | ----------------------------------------------------- |
+| `GET`  | `/sources`                  | List the sources you can search                       |
+| `GET`  | `/sources/:type/schema`     | Filters for one source                                |
+| `POST` | `/sources/:type/search`     | Search and get one page of rows                       |
+| `GET`  | `/sources/runs/:runId`      | Get the result of a search that is still going        |
+| `POST` | `/sources/:type/count`      | How many rows the filters match (free)                |
+| `GET`  | `/sources/filter-values`    | Look up the id a filter expects for a name (free)     |
+
+---
+
+## List sources
+
+`GET /sources`
+
+```json
+{ "sources": [ { "type": "people", "display_name": "Find People", "description": "..." } ], "total": 6 }
+```
+
+## Get a source's schema
+
+`GET /sources/:type/schema`
+
+| Field              | Meaning                                         |
+| ------------------ | ----------------------------------------------- |
+| `metadata_fields`  | The filters. Send these in `filters`.           |
+| `example_metadata` | A working example of `filters`.                 |
+| `sample_output`    | What one row looks like.                        |
+
+## Search
+
+`POST /sources/:type/search`
+
+| Field     | Type     | Required | Description                                                                              |
+| --------- | -------- | -------- | ---------------------------------------------------------------------------------------- |
+| `filters` | object   | Yes      | The source's filters. Unknown filters or values of the wrong type return `400`.          |
+| `page`    | number   | No       | 1-based page. Default `1`.                                                               |
+| `limit`   | number   | No       | Rows per page, up to `100` (the default). A value above `100` or below `1` is treated as `100`. |
+| `fields`  | string[] | No       | Keep only these keys in each row. Dotted paths reach nested keys, e.g. `"company.name"`. |
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/sources/people/search" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "filters": { "person_titles": ["VP Sales"], "organization_locations": ["United States"] },
+    "limit": 25,
+    "fields": ["name", "title", "linkedin_url", "organization.name"]
+  }'
+```
+
+### Finished within 25 seconds: `200 OK`
+
+```json
+{
+  "run_id": "9ab3...",
+  "type": "people",
+  "status": "completed",
+  "result": {
+    "type": "people",
+    "page": 1,
+    "limit": 25,
+    "returned": 25,
+    "has_more": true,
+    "rows": [
+      { "name": "Jane Doe", "title": "VP Sales", "linkedin_url": "https://www.linkedin.com/in/jane-doe", "organization.name": "Acme" }
+    ]
+  }
+}
+```
+
+With `fields`, a nested value comes back under its dotted path as a flat key (`"organization.name"`). Use `has_more` to decide whether to ask for the next `page`. Nothing is stored between pages, so asking for the same page twice runs (and bills) it twice.
+
+### Still running: `202 Accepted`
+
+```json
+{ "run_id": "9ab3...", "type": "linkedinPeopleFromKeywords", "status": "running", "poll_url": "/api/v1/sources/runs/9ab3..." }
+```
+
+## Get a search run
+
+`GET /sources/runs/:runId`
+
+Returns `202` while running, then `200` with the finished body above. Poll every 2–5 seconds. Results are kept for **24 hours**. A search that runs longer than 10 minutes ends with `status: "failed"` and a timeout error, and is not charged.
+
+<Note>
+The 25-second window starts after the request is validated, so a `202` can take around 30–45 seconds to arrive. Set your client timeout to at least 60 seconds.
+</Note>
+
+## Count
+
+`POST /sources/:type/count`, with the same `filters` as search. Free.
+
+```json
+{ "type": "people", "total_available": 12840 }
+```
+
+Count is available for `people` and `company`. Other sources return `400`; search them instead.
+
+## Filter values
+
+`GET /sources/filter-values?filter_type=<type>&query=<text>&limit=<n>`
+
+Looks up the exact value a filter expects (for example an industry, location or seniority). Each filter's description on its source page names the `filter_type` to use. `query` is required, and `limit` defaults to 25 (max 50). Free.
+
+```json
+{
+  "filter_type": "industry",
+  "target_field": "organization_industry_tag_ids / organization_not_industry_tag_ids",
+  "query": "software",
+  "matches": [ { "label": "Computer Software", "value": "Computer Software" } ]
+}
+```
+
+Put `value` in the filter named by `target_field`; when it names two, the second is the exclude version of the first. For many filter types `value` is the same as `label`. No matches returns an empty `matches` list with a `note`.
+
+## Credits
+
+- **`people` and `company`** use your plan's Find People / Find Companies allowance for the rows returned.
+- **Every other source** charges credits for the rows returned. Each source's page lists its price.
+
+## Errors
+
+| HTTP  | Code                         | When                                                                 |
+| ----- | ---------------------------- | -------------------------------------------------------------------- |
+| `400` | `INVALID_BODY`               | The body is not valid JSON.                                          |
+| `400` | `INVALID_INPUT`              | Unknown filter, wrong value type, a value outside the filter's allowed values, a missing required filter, no filter with a value, or `page` > 1 on a one-page source. |
+| `401` | `INVALID_API_KEY`            | Missing or invalid `X-API-KEY`.                                      |
+| `402` | `INSUFFICIENT_CREDITS`, `TOOL_INSUFFICIENT_CREDITS` | Out of search allowance (`people`, `company`) or credits (other sources). |
+| `404` | `SOURCE_TYPE_NOT_SEARCHABLE` | The source cannot be searched through the API.                       |
+| `404` | `NOT_FOUND`                  | A run id that does not exist or has expired.                         |
+| `429` | `RATE_LIMIT_EXCEEDED`        | More than 5 requests per second.                                     |
+| `500` | `TOOL_INTERNAL`, `INTERNAL_ERROR` | Something failed on our side, including a filter-values lookup. Retry. |
+| `502` | `TOOL_EXPERIENCING_ISSUES`   | The data provider is failing. Retry later.                           |
+| `503` | `SERVICE_UNAVAILABLE`        | The API key could not be checked right now. Retry.                   |
+| `503` | `TOOL_RATE_LIMIT_EXCEEDED`   | The data provider is rate limiting. Retry later.                     |
+| `504` | `TOOL_TIMEOUT`               | The data provider did not answer in time. Retry.                     |
+
+These codes apply when the search fails within the first 25 seconds. A search that fails later is reported on its poll as `status: "failed"` with the same message in `error`.
+
+## MCP
+
+The same sources are available to MCP clients through `search_source_v1`, with `get_tool_run_v1` for long searches. See the [MCP Reference](/mcp-reference/capabilities).

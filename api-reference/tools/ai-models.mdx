@@ -1,0 +1,67 @@
+---
+title: "AI Models"
+description: "Run a prompt through GPT, Claude or Gemini models."
+---
+
+Run a prompt through any of these models. Every model takes the same request; pick one by its tool ID.
+
+| Model | Tool ID | Credits per run |
+| --- | --- | --- |
+| Claude Haiku 4.5 (Anthropic) | `claude-haiku-4-5` | 1 |
+| Claude Opus 4.6 (Anthropic) | `claude-opus-4-6` | 4 |
+| Claude Sonnet 4.6 (Anthropic) | `claude-sonnet-4-6` | 2.5 |
+| Gemini 2.5 Flash (Google) | `gemini-2.5-flash` | 1 |
+| Gemini 2.5 Flash Lite (Google) | `gemini-2.5-flash-lite` | 0.5 |
+| Gemini 3 Flash Preview (Google) | `gemini-3-flash-preview` | 1 |
+| Gemini 3 Pro Preview (Google) | `gemini-3-pro-preview` | 2 |
+| Gemini 3.5 Flash Lite (Google) | `gemini-3.5-flash-lite` | 1 |
+| Gemini 3.8 Flash (Google) | `gemini-3.8-flash` | 1.5 |
+| GPT-4.1 (OpenAI) | `gpt-4.1` | 1 |
+| GPT-4o (OpenAI) | `gpt-4o` | 1 |
+| GPT-4o Mini (OpenAI) | `gpt-4o-mini` | 0.1 |
+| GPT-5 (OpenAI) | `gpt-5` | 2 |
+| GPT-5 Mini (OpenAI) | `gpt-5-mini` | 0.5 |
+| GPT-5 Nano (OpenAI) | `gpt-5-nano` | 0.1 |
+| GPT-5.2 (OpenAI) | `gpt-5.2` | 3 |
+| GPT-5.6 Luna (OpenAI) | `gpt-5.6-luna` | 0.25 |
+| GPT-5.6 Sol (OpenAI) | `gpt-5.6-sol` | 4 |
+| GPT-5.6 Terra (OpenAI) | `gpt-5.6-terra` | 2.5 |
+
+
+## Options
+
+Optional configuration. Send these in `options`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `extendedThinking` | boolean | No | `false` | Enable extended/long thinking — the model reasons longer before answering (higher latency/cost). Not every model offers it; check the model's schema. Defaults to false. |
+| `webSearch` | boolean | No | `false` | OPT-IN web search. Enabling web search adds latency and cost. |
+
+## Prompt
+
+This tool needs a `prompt`: the full instruction, with the data to work on written into it.
+
+`extendedThinking` is not available on `gpt-4o-mini`, `gpt-5`; sending it returns `400`.
+
+## Output
+
+The answer comes back as text in `result.raw`. Asking for JSON in the prompt still returns a string, often inside a Markdown code fence, so parse it yourself.
+
+```json
+{
+  "tool_id": "claude-haiku-4-5",
+  "credit": 1,
+  "raw": "Stripe sells payment APIs and financial infrastructure for internet businesses."
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/claude-haiku-4-5/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "In one sentence, what does stripe.com sell?"}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

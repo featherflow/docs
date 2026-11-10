@@ -1,0 +1,108 @@
+---
+title: "Find People"
+description: "Search our database for people matching a rich set of filters (title, seniority, department, location, education, company attributes)."
+---
+
+**Source type:** `people`
+
+Search our database for people matching a rich set of filters (title, seniority, department, location, education, company attributes). Mirrors the 'Find People' dialog in the Bitscale UI.
+
+<Note>
+Up to `limit` (max 100) rows per page. Page with `page` while `has_more` is `true`. Count is free. Uses your plan's search allowance for rows returned.
+</Note>
+
+## Filters
+
+Send these in `filters`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `q_keywords` | string | No |  | Free-text keyword search across the person's profile (skills, bio, headline). Best for terms that don't fit a structured filter. |
+| `person_titles` | string[] | No |  | Job titles to match (OR). Free text — e.g. ['VP of Engineering', 'CTO', 'Head of Platform']. |
+| `person_not_titles` | string[] | No |  | Job titles to exclude. |
+| `person_seniorities` | string[] | No |  | Seniority levels to match. One of: `c_suite`, `partner`, `owner`, `founder`, `vp`, `head`, `director`, `manager`, `senior`, `entry`, `intern`, `mid_level`. Resolve names with `/sources/filter-values?filter_type=seniority`. |
+| `person_not_seniorities` | string[] | No |  | Seniority levels to exclude. One of: `c_suite`, `partner`, `owner`, `founder`, `vp`, `head`, `director`, `manager`, `senior`, `entry`, `intern`, `mid_level`. Resolve names with `/sources/filter-values?filter_type=seniority`. |
+| `person_department_or_subdepartments` | string[] | No |  | Department / function to match. Resolve names with `/sources/filter-values?filter_type=person_departments`. |
+| `person_not_department_or_subdepartments` | string[] | No |  | Departments to exclude. Resolve names with `/sources/filter-values?filter_type=person_departments`. |
+| `person_locations` | string[] | No |  | Where the person is based. Resolve names with `/sources/filter-values?filter_type=location`. |
+| `person_not_locations` | string[] | No |  | Person locations to exclude. Resolve names with `/sources/filter-values?filter_type=location`. |
+| `person_education_degrees` | string[] | No |  | Degree types to match. One of: `Bachelor's Degree`, `Master's Degree`, `PhD`, `MBA`. Resolve names with `/sources/filter-values?filter_type=degrees`. |
+| `person_education_majors` | string[] | No |  | Study majors. Resolve names with `/sources/filter-values?filter_type=educational_majors`. |
+| `person_education_graduation_years_range` | object | No |  | Graduation year range. Shape: \{min: number\|null, max: number\|null\}. Leave off to skip. |
+| `q_organization_domains` | string[] | No |  | Company domains the person currently works at. Cleaned domains without protocol — e.g. ['stripe.com', 'figma.com']. The backend joins them with newlines. |
+| `organization_locations` | string[] | No |  | Locations of the person's employer. Resolve names with `/sources/filter-values?filter_type=location`. |
+| `organization_not_locations` | string[] | No |  | Locations of the person's employer to exclude. Resolve names with `/sources/filter-values?filter_type=location`. |
+| `organization_num_employees_ranges` | string[] | No |  | Headcount ranges of the person's employer. Pass several to OR them. One of: `1,10`, `11,50`, `51,200`, `201,500`, `501,1000`, `1001,5000`, `5001,10000`, `10000`. Resolve names with `/sources/filter-values?filter_type=employee_count`. |
+| `market_segments` | string[] | No |  | Business sector / GTM model of the person's employer. One of: `B2B`, `B2C`, `E-commerce`, `Fintech`, `SaaS`, `Consulting`, `Retail`, `Non-Profit`, `Services`, `B2B2C`, `D2C`. Resolve names with `/sources/filter-values?filter_type=market_segments`. |
+| `q_organization_keyword_tags` | string[] | No |  | Company keywords to match (OR). Free text — e.g. ['developer tools', 'open source', 'infrastructure']. |
+| `q_not_organization_keyword_tags` | string[] | No |  | Company keywords to exclude. |
+| `organization_latest_funding_stage_cd` | string[] | No |  | Latest funding stage of the person's employer. One of: `Seed`, `Angel`, `Series A`, `Series B`, `Series C`, `Series D`, `Series E`, `Series F`, `Series G`, `Series H`, `Venture`, `Private Equity`, …. Resolve names with `/sources/filter-values?filter_type=funding_stage`. |
+| `latest_funding_date_range` | object | No |  | Funding date bounds. Shape: \{min: 'YYYY-MM-DD', max: 'YYYY-MM-DD'\}. Omit for no bound. |
+| `organization_department_or_subdepartment_counts` | object | No |  | Headcount per department of the person's employer. Shape: \{&lt;department>: \{min, max\}\}, keyed by the values listed. Resolve names with `/sources/filter-values?filter_type=departments`. |
+| `revenue_range` | object | No |  | Annual revenue of the person's employer in USD. Shape: \{min, max\}; each bound is one of the values listed (or null). Snap min down and max up so the target range is contained. One of: `0`, `100000`, `500000`, `1000000`, `5000000`, `10000000`, `25000000`, `50000000`, `100000000`, `500000000`, `1000000000`, `5000000000`, …. Resolve names with `/sources/filter-values?filter_type=revenue`. |
+| `currently_using_any_of_technology_uids` | string[] | No |  | Technologies the employer is detected using (OR). Resolve names with `/sources/filter-values?filter_type=technology`. |
+| `organization_industry_tag_ids` | string[] | No |  | Industries to match (OR). Resolve names with `/sources/filter-values?filter_type=industry`. |
+| `organization_not_industry_tag_ids` | string[] | No |  | Industries to exclude. Resolve names with `/sources/filter-values?filter_type=industry`. |
+| `organization_sic_codes` | string[] | No |  | SIC industry codes to match (OR). Resolve names with `/sources/filter-values?filter_type=sic_codes`. |
+| `not_organization_sic_codes` | string[] | No |  | SIC codes to exclude. Note the irregular exclusion form: prefixed 'not_', not the usual '_not' suffix. Resolve names with `/sources/filter-values?filter_type=sic_codes`. |
+| `organization_naics_codes` | string[] | No |  | NAICS industry codes to match (OR). Resolve names with `/sources/filter-values?filter_type=naics_codes`. |
+| `not_organization_naics_codes` | string[] | No |  | NAICS codes to exclude. Note the irregular exclusion form: prefixed 'not_', not the usual '_not' suffix. Resolve names with `/sources/filter-values?filter_type=naics_codes`. |
+| `organization_founded_year_range` | object | No |  | Employer founding-year bounds. Shape: \{min: number\|null, max: number\|null\}. |
+| `organization_retail_location_count_range` | object | No |  | Number of retail/physical locations the employer operates. Shape: \{min: number\|null, max: number\|null\}. |
+| `organization_headcount_growth_range` | object | No |  | Employer headcount growth rate over the window set by organization_headcount_growth_past_n_months. Shape: \{min: number\|null, max: number\|null\}. |
+| `organization_headcount_growth_past_n_months` | string | No |  | Lookback window (in months) for the headcount-growth filter. Used together with organization_headcount_growth_range and organization_department. |
+| `organization_department` | string[] | No |  | Department to scope the headcount-growth filter to. Distinct from organization_department_or_subdepartment_counts. Resolve names with `/sources/filter-values?filter_type=departments`. |
+| `latest_funding_amount_range` | object | No |  | Amount of the employer's most recent funding round, in USD. Shape: \{min: number\|null, max: number\|null\}. |
+| `total_funding_range` | object | No |  | Employer total funding raised across all rounds, in USD. Shape: \{min: number\|null, max: number\|null\}. |
+| `person_education_school_ids` | string[] | No |  | Schools the person attended. People-only. Resolve names with `/sources/filter-values?filter_type=educational_schools`. |
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/sources/people/search" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"filters": {"person_titles": ["VP of Engineering", "CTO"], "q_organization_domains": ["stripe.com", "figma.com"]}, "limit": 25}'
+```
+
+## Row
+
+Each row in `result.rows` looks like this. Use `fields` to keep only what you need.
+
+```json
+{
+  "city": "San Francisco",
+  "country": "United States",
+  "employment_history": [
+    {
+      "current": true,
+      "end_date": "",
+      "organization_name": "Acme",
+      "start_date": "2023-03-01",
+      "title": "CTO"
+    }
+  ],
+  "first_name": "Jane",
+  "headline": "Engineering at Acme",
+  "last_name": "Doe",
+  "linkedin_uid": "janedoe",
+  "linkedin_url": "https://www.linkedin.com/in/janedoe",
+  "name": "Jane Doe",
+  "organization": {
+    "crunchbase_url": "https://www.crunchbase.com/organization/acme",
+    "facebook_url": "https://www.facebook.com/acme",
+    "founded_year": 2010,
+    "linkedin_uid": "16a004c1-cd04-c078-f786-20cb0b2f83c1",
+    "linkedin_url": "https://www.linkedin.com/company/acme",
+    "name": "Acme",
+    "primary_domain": "acme.com",
+    "twitter_url": "https://x.com/acme",
+    "website_url": "https://acme.com"
+  },
+  "record_id": "5d95033f-8104-70bc-9503-670cc39e07f5",
+  "state": "California",
+  "title": "CTO"
+}
+```
+
+See [Sources API](/api-reference/sources/overview) for paging, polling and credits.

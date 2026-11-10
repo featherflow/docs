@@ -1,0 +1,66 @@
+---
+title: "LinkedIn People from Post Keywords"
+description: "Find LinkedIn people who authored or engaged with (liked, commented on, reshared) posts containing specific keywords within a recent time window."
+---
+
+**Source type:** `linkedinPeopleFromKeywords`
+
+Find LinkedIn people who authored or engaged with (liked, commented on, reshared) posts containing specific keywords within a recent time window. Returns the profile of each engager as a row — a strong buying-intent signal because the person actively interacted with content matching your topic.
+
+<Note>
+Returns every match up to `limit` (max 100) in one call. There is no page 2, so `has_more` is always `false`. Count is not available. 1 credit per row returned.
+</Note>
+
+## Filters
+
+Send these in `filters`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `postKeywords` | string[] | Yes |  | Keywords to match against post content (OR semantics). HARD MAX 5 — the backend truncates extras. Use short, specific phrases: ['cold email', 'sales engagement'] rather than long sentences. |
+| `timeFrame` | string | Yes |  | Recency window for posts. One of: `24h`, `7d`, `30d`. |
+| `fromPeople` | string[] | No |  | Restrict to posts authored by these LinkedIn profile URLs. Must be fully-qualified URLs matching linkedin.com/in/&lt;handle>. The backend resolves each to a URN before calling the LinkedIn API. |
+| `mentioningPeople` | string[] | No |  | Restrict to posts that @mention these LinkedIn profile URLs. Same URL format as fromPeople. |
+| `fromCompany` | string[] | No |  | Restrict to posts authored by people at these companies. Pass company website domains (e.g. ['stripe.com', 'figma.com']) or LinkedIn company URLs; the backend resolves each to a company ID. |
+| `mentioningCompany` | string[] | No |  | Restrict to posts that mention these companies. Same format as fromCompany. |
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/sources/linkedinPeopleFromKeywords/search" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"filters": {"fromCompany": ["apollo.io", "outreach.io"], "postKeywords": ["cold email", "sales engagement"], "timeFrame": "7d"}, "limit": 25}'
+```
+
+## Row
+
+Each row in `result.rows` looks like this. Use `fields` to keep only what you need.
+
+```json
+{
+  "entityUrn": "ACoAAExample000JaneDoe",
+  "keyword": "cold email",
+  "name": "Jane Doe",
+  "postUrl": "https://www.linkedin.com/posts/johnsmith_cold-email-activity-7520000000000000000",
+  "profile": "https://www.linkedin.com/in/janedoe",
+  "profilePicture": "https://example.com/janedoe.jpg",
+  "profileType": "PERSON",
+  "reactionType": "like",
+  "reactor": {
+    "entityUrn": "ACoAAExample000JaneDoe",
+    "firstName": "Jane",
+    "headline": "VP Sales at Acme",
+    "lastName": "Doe",
+    "objectUrn": 123456789,
+    "profileBackground": "https://example.com/janedoe-bg.jpg",
+    "profileId": "janedoe",
+    "profilePicture": "https://example.com/janedoe.jpg",
+    "profileType": "PERSON"
+  },
+  "title": "VP Sales at Acme",
+  "type": "reaction"
+}
+```
+
+See [Sources API](/api-reference/sources/overview) for paging, polling and credits.

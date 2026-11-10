@@ -1,0 +1,62 @@
+---
+title: "Phone Waterfall (Multi-Provider)"
+description: "Find phone numbers for a person/contact, can also verify phone numbers and find only verified phone numbers, possible to find only mobile numbers by ignoring landline numbers."
+---
+
+**Tool ID:** `customPhoneWaterfall` · **Credits:** 7 per run
+
+Find phone numbers for a person/contact, can also verify phone numbers and find only verified phone numbers, possible to find only mobile numbers by ignoring landline numbers.
+
+**Best for:** Finding phone numbers when maximum coverage and quality is required.
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `linkedinUrl` | Yes | The person's LinkedIn profile URL. Required — phone discovery is keyed off LinkedIn identity. |
+
+## Options
+
+Optional configuration. Send these in `options`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `saveCredits` | boolean | No | `true` | When true AND a validationProvider is set, stop the waterfall early once the same phone is returned and verified invalid by ~2-3 providers, to save credits. The UI auto-enables this when validation is on. |
+| `phoneProviders` | array&lt;string> | No |  | Ordered list of phone-provider tool IDs to try (e.g. ["dropleadsPhone","contactOutPhone","prospeoPhone"]). Omit to use Bitscale's tuned default chain. |
+| `waterfallGeo` | string | No |  | Optimize the provider order for a target region instead of naming phoneProviders yourself. Overwrites phoneProviders with Bitscale's tuned order for that region. Omit for the general-purpose default chain. One of: `us_canada`, `europe`, `latam`, `apac`, `middle_east_africa`. |
+| `markOnlyMobilePhoneNumberVerified` | boolean | No | `false` | When true, only mobile numbers are returned/marked verified; landlines are filtered out. Use for SDR workflows that need direct dial to the person (not switchboard / main line). |
+| `validationProvider` | string | No |  | Optional provider tool_id used to verify the returned phone before accepting it. |
+
+## Output
+
+Returns phone/mobile number. Tries multiple providers for maximum coverage.
+
+`result.data` looks like:
+
+```json
+{
+  "line_type": "mobile",
+  "phone_number": "+14155550123",
+  "provider": "Apollo",
+  "quality": "good",
+  "secondary_numbers": [
+    {
+      "phone": "+14155550199"
+    }
+  ],
+  "status": "valid"
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/customPhoneWaterfall/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"linkedinUrl": "https://www.linkedin.com/in/john-doe/"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

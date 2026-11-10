@@ -1,0 +1,86 @@
+---
+title: "LinkedIn Company Profile"
+description: "Give a company's LinkedIn URL, get details of the company including description, employees, locations, etc."
+---
+
+**Tool ID:** `linkedinCompany` · **Credits:** 1 per run
+
+Give a company's LinkedIn URL, get details of the company including description, employees, locations, etc.
+
+**Best for:** When you want to get details of a company from LinkedIn.
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `companyLinkedinUrl` | Yes | The company's LinkedIn URL. |
+
+## Output
+
+Flat company fields plus `raw`, the provider's untouched response.
+
+`result.data` looks like:
+
+```json
+{
+  "acquisitionsCount": 0,
+  "banner": "",
+  "companyName": "Acme",
+  "companyType": "Privately Held",
+  "competitors": null,
+  "description": "Acme builds payments software for online businesses.",
+  "domain": "acme.com",
+  "emails": null,
+  "employeeCount": 1200,
+  "employeeRange": "1001-5000",
+  "employeeRangeMax": 5000,
+  "employeeRangeMin": 1001,
+  "followerCount": 150000,
+  "foundedYear": "2010",
+  "funding": null,
+  "hashtags": "acme",
+  "headquarters": {
+    "address": "1 Market St, San Francisco, California 94105, US",
+    "description": "",
+    "isHeadquarter": true,
+    "latitude": null,
+    "longitude": null
+  },
+  "industries": "Software Development",
+  "industry": "Software Development",
+  "legalName": "",
+  "linkedinUrl": "https://www.linkedin.com/company/acme",
+  "locations": [
+    {
+      "address": "1 Market St, San Francisco, California 94105, US",
+      "description": "",
+      "isHeadquarter": true,
+      "latitude": null,
+      "longitude": null
+    }
+  ],
+  "logo": "https://example.com/acme-logo.png",
+  "ownershipStatus": "",
+  "phoneNumbers": null,
+  "revenue": "",
+  "similarOrganizations": null,
+  "social": {},
+  "specialties": "Payments, APIs",
+  "tagline": "Payments for the internet",
+  "universalName": "acme",
+  "website": "https://acme.com"
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/linkedinCompany/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"companyLinkedinUrl": "https://www.linkedin.com/company/stripe/"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

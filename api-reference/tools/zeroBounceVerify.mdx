@@ -1,0 +1,46 @@
+---
+title: "Email Verification (ZeroBounce)"
+description: "Check whether an email address is deliverable."
+---
+
+**Tool ID:** `zeroBounceVerify` · **Credits:** 1 per run
+
+Check whether an email address is deliverable. Returns status (valid, invalid, catch_all, unknown) and a quality rating.
+
+**Best for:** When you need to verify an email address using ZeroBounce.
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `email` | Yes | The email address to verify. |
+
+## Output
+
+Returns email verification status plus sub_status (e.g. valid/invalid, mailbox_not_found, role_based, etc.).
+
+`result.data` looks like:
+
+```json
+{
+  "email": "jane.doe@acme.com",
+  "isSelfKey": false,
+  "mxProvider": "google",
+  "mxRecord": "aspmx.l.google.com",
+  "quality": "good",
+  "status": "valid"
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/zeroBounceVerify/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"email": "john.doe@acme.com"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

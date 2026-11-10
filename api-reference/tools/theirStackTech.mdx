@@ -1,0 +1,57 @@
+---
+title: "Theirstack Tech Stack"
+description: "Given a company's domain or LinkedIn URL, returns a technographic signal: the technologies the company has recently mentioned in their job postings, optionally filtered by technology category or name."
+---
+
+**Tool ID:** `theirStackTech` · **Credits:** 3 per run
+
+Given a company's domain or LinkedIn URL, returns a technographic signal: the technologies the company has recently mentioned in their job postings, optionally filtered by technology category or name.
+
+**Best for:** When you want to know what tech stack a company uses right now (pulled from live job descriptions), or filter companies that mention specific technologies.
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `companyDomain` | No | The company domain. |
+| `companyLinkedinUrl` | No | The company LinkedIn URL. |
+
+Send at least one of: `companyDomain`, `companyLinkedinUrl`.
+
+## Options
+
+Optional configuration. Send these in `options`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `keywordSlugs` | array&lt;string> | No |  | Exact technology slugs to match (e.g. ['python','react']). |
+| `keywordCategorySlugs` | array&lt;string> | No |  | Technology category slugs (e.g. ['languages','infrastructure']). |
+| `keywordParentCategorySlugs` | array&lt;string> | No |  | Top-level category slugs. |
+| `lastDateFoundGTE` | string | No |  | Only include technologies last seen on or after this date (YYYY-MM-DD). |
+| `orderBy` | array&lt;object> | No |  | Sort specification (array of \{field, direction\}). |
+
+## Output
+
+Returns the technologies a company has recently mentioned in job postings, with the category and last-seen date for each. Supports keyword / category filters.
+
+`result.data` looks like:
+
+```json
+{
+  "count": 3,
+  "technologies": "Salesforce, Kubernetes, React"
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/theirStackTech/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"companyDomain": "stripe.com"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

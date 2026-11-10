@@ -1,0 +1,59 @@
+---
+title: "BitAgent (Autonomous Research)"
+description: "Powerful tool for llm powered smart research and data extraction."
+---
+
+**Tool ID:** `bitAgent` · **Credits:** 3 per run
+
+Powerful tool for llm powered smart research and data extraction. Scrape data, research web, and more.
+
+**Best for:** When you want to do holistic reaserach on a topic, scrape websites, search the web, and more. Best for complex research tasks.
+
+**Not for:** linkedin posts, linkedin comments, email, phone
+
+
+## Options
+
+Optional configuration. Send these in `options`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `outputType` | string | No | `"text"` | Output shape. 'text' (default): freeform research summary. 'fields': flat JSON object with the fields declared in outputResponse. 'list': JSON object with a 'data' array whose items have the fields declared in outputResponse — use when the research target has multiple items (e.g. 'list all funding rounds'). One of: `text`, `fields`, `list`. |
+| `outputResponse` | object[] | No |  | Required when outputType is 'fields' or 'list'. Declares the fields the agent must extract. Each entry: \{ field: &lt;snake_case_name>, type: string\|number\|boolean, sample: &lt;example value> \}. Field names are used VERBATIM in the output JSON — if you declare 'headcount' the output key is 'headcount'. |
+| `bitagentProvider` | string | No |  | Underlying LLM provider for the research agent. Defaults to 'openai'. One of: `openai`, `anthropic`. |
+| `bitagentModel` | string | No |  | Specific model within the chosen provider. Sensible defaults are picked when omitted. |
+| `webSearch` | boolean | No | `false` | OPT-IN open web search. |
+
+## Prompt
+
+This tool needs a `prompt`: the full instruction, with the data to work on written into it.
+
+## Output
+
+With outputType 'text' (default): found (bool), response (the answer) and steps (reasoning and sites_visited). With 'fields' or 'list' the response follows the outputResponse you declare.
+
+`result.data` looks like:
+
+```json
+{
+  "found": true,
+  "response": "Acme is headquartered in San Francisco, California.",
+  "steps": {
+    "reasoning": "acme.com/about and two business directories agree on San Francisco.",
+    "sites_visited": [
+      "https://acme.com/about"
+    ]
+  }
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/bitAgent/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "Find the headquarters city and the CEO of stripe.com."}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

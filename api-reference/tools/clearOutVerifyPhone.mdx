@@ -1,0 +1,43 @@
+---
+title: "Phone Verification (ClearOut)"
+description: "Check whether a phone number is valid and reachable."
+---
+
+**Tool ID:** `clearOutVerifyPhone` · **Credits:** 1 per run
+
+Check whether a phone number is valid and reachable. Returns status, quality, line type and country code.
+
+**Best for:** When you want to verify a phone number.
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `phone` | Yes | The phone number to verify. |
+
+## Output
+
+`result.data` looks like:
+
+```json
+{
+  "country_code": "US",
+  "line_type": "mobile",
+  "phone": "+1234567890",
+  "quality": "good",
+  "status": "valid"
+}
+```
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/clearOutVerifyPhone/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"phone": "+14155550100"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.

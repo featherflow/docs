@@ -1,0 +1,69 @@
+---
+title: "Google Maps Search"
+description: "Scrape Google Maps listings for businesses matching a query inside a specific location."
+---
+
+**Source type:** `googleMaps`
+
+Scrape Google Maps listings for businesses matching a query inside a specific location. Each result becomes a row with name, address, phone, website, rating, review count, category, hours, and lat/lng.
+
+<Note>
+Returns 20 rows per page; `limit` is ignored. Page with `page`. Count is not available. About 0.1 credits per row (2 credits for a 20-row page).
+</Note>
+
+## Filters
+
+Send these in `filters`.
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `query` | string | Yes |  | Search query — the kind of business to find. Short phrases work best, e.g. 'coffee shops', 'plumbing services', 'dentists', 'yoga studios'. Do NOT embed the location in the query (pass it separately via `location`). |
+| `location` | string | Yes |  | Canonical location name as Google Maps knows it. Typically the label returned by Bitscale's location autocomplete (e.g. 'Austin, Texas, United States', 'Berlin, Germany', 'California, United States'). City/state/country strings work; country alone also works but returns broader results. |
+| `countryCode` | string | Yes |  | Two-letter ISO 3166-1 alpha-2 country code for the location (e.g. 'US', 'DE', 'GB', 'IN'). Used by Google to bias the locale/language of results. Must match the country implied by `location`. |
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/sources/googleMaps/search" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"filters": {"countryCode": "US", "location": "Austin, Texas, United States", "query": "coffee shops"}, "limit": 25}'
+```
+
+## Row
+
+Each row in `result.rows` looks like this. Use `fields` to keep only what you need.
+
+```json
+{
+  "address": "1008 E 6th St, Austin, TX 78702",
+  "bookingLinks": [
+    "https://www.google.com/maps/reserve/example"
+  ],
+  "cid": "1234567890123456789",
+  "description": "Specialty coffee and pastries in a relaxed space.",
+  "fid": "0x8644b5a0b0b0b0b0:0x1122334455667788",
+  "isUnclaimedListing": false,
+  "latitude": 30.2651,
+  "longitude": -97.7312,
+  "openingHours": {
+    "Monday": "7 AM-6 PM",
+    "Tuesday": "7 AM-6 PM"
+  },
+  "phoneNumber": "(512) 555-0142",
+  "placeId": "ChIJExampleAcmeCoffee",
+  "position": 1,
+  "rating": 4.6,
+  "ratingCount": 812,
+  "thumbnailUrl": "https://example.com/acme-coffee.jpg",
+  "title": "Acme Coffee",
+  "type": "Coffee shop",
+  "types": [
+    "Coffee shop",
+    "Cafe"
+  ],
+  "website": "https://acmecoffee.example.com"
+}
+```
+
+See [Sources API](/api-reference/sources/overview) for paging, polling and credits.
