@@ -3,7 +3,7 @@ title: "Sources API"
 description: "Search Bitscale's people, company and LinkedIn sources and get rows back, with no grid."
 ---
 
-**Version:** v1 · **Plan Required:** Enterprise
+**Version:** v1 · **Plan Required:** Any paid plan
 
 |                    |                                  |
 | ------------------ | -------------------------------- |
@@ -143,13 +143,14 @@ Put `value` in the filter named by `target_field`; when it names two, the second
 | `400` | `INVALID_BODY`               | The body is not valid JSON.                                          |
 | `400` | `INVALID_INPUT`              | Unknown filter, wrong value type, a value outside the filter's allowed values, a missing required filter, no filter with a value, or `page` > 1 on a one-page source. |
 | `401` | `INVALID_API_KEY`            | Missing or invalid `X-API-KEY`.                                      |
+| `403` | `FEATURE_DISABLED`           | The workspace is on the Free plan.                                   |
 | `402` | `INSUFFICIENT_CREDITS`, `TOOL_INSUFFICIENT_CREDITS` | Out of search allowance (`people`, `company`) or credits (other sources). |
 | `404` | `SOURCE_TYPE_NOT_SEARCHABLE` | The source cannot be searched through the API.                       |
 | `404` | `NOT_FOUND`                  | A run id that does not exist or has expired.                         |
 | `429` | `RATE_LIMIT_EXCEEDED`        | More than 5 requests per second.                                     |
 | `500` | `TOOL_INTERNAL`, `INTERNAL_ERROR` | Something failed on our side, including a filter-values lookup. Retry. |
 | `502` | `TOOL_EXPERIENCING_ISSUES`   | The data provider is failing. Retry later.                           |
-| `503` | `SERVICE_UNAVAILABLE`        | The API key could not be checked right now. Retry.                   |
+| `503` | `SERVICE_UNAVAILABLE`        | The API key or plan could not be checked right now. Retry.           |
 | `503` | `TOOL_RATE_LIMIT_EXCEEDED`   | The data provider is rate limiting. Retry later.                     |
 | `504` | `TOOL_TIMEOUT`               | The data provider did not answer in time. Retry.                     |
 

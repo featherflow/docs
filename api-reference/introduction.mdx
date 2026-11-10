@@ -12,7 +12,7 @@ The Bitscale API lets you use Bitscale from your own code:
 | [Grid APIs](/ingredients/bitscale-api-reference) | Read your grids, run them with new inputs and get the outputs.     |
 
 <Note>
-The API is an **Enterprise** feature. On other plans every endpoint returns an error.
+The API is available on every **paid plan**. On the Free plan every endpoint returns `403 FEATURE_DISABLED`.
 </Note>
 
 |                    |                                  |
@@ -41,7 +41,8 @@ curl "https://api.bitscale.ai/api/v1/tools" \
 | HTTP  | Code                  | When                                                  |
 | ----- | --------------------- | ----------------------------------------------------- |
 | `401` | `INVALID_API_KEY`     | The header is missing, or the key is invalid or rotated. |
-| `503` | `SERVICE_UNAVAILABLE` | The key could not be checked right now. Retry.        |
+| `403` | `FEATURE_DISABLED`    | The workspace is on the Free plan.                    |
+| `503` | `SERVICE_UNAVAILABLE` | The key or plan could not be checked right now. Retry. |
 
 ## Rate limits
 

@@ -3,7 +3,7 @@ title: "Tools API"
 description: "Run a single Bitscale enrichment tool on one record, with no grid."
 ---
 
-**Version:** v1 · **Plan Required:** Enterprise
+**Version:** v1 · **Plan Required:** Any paid plan
 
 |                    |                                  |
 | ------------------ | -------------------------------- |
@@ -148,13 +148,14 @@ The grid and column keys are checked before the tool runs, so a bad `grid_id` or
 | `400` | `INVALID_BODY`               | The body is not valid JSON.                                          |
 | `400` | `INVALID_INPUT`              | Missing or unknown input or option, missing prompt, bad `column_map`. |
 | `401` | `INVALID_API_KEY`            | Missing or invalid `X-API-KEY`.                                      |
+| `403` | `FEATURE_DISABLED`           | The workspace is on the Free plan.                                   |
 | `402` | `TOOL_INSUFFICIENT_CREDITS`  | Not enough credits.                                                  |
 | `404` | `TOOL_NOT_FOUND`             | The tool does not exist or cannot be run through the API.            |
 | `404` | `NOT_FOUND`                  | `grid_id` not found, or a run id that does not exist or has expired. |
 | `429` | `RATE_LIMIT_EXCEEDED`        | More than 5 requests per second.                                     |
 | `500` | `TOOL_INTERNAL`              | Something failed on our side. Retry.                                 |
 | `502` | `TOOL_EXPERIENCING_ISSUES`   | A data provider behind the tool is failing. Retry later.             |
-| `503` | `SERVICE_UNAVAILABLE`        | The API key could not be checked right now. Retry.                   |
+| `503` | `SERVICE_UNAVAILABLE`        | The API key or plan could not be checked right now. Retry.           |
 | `503` | `TOOL_RATE_LIMIT_EXCEEDED`   | A data provider behind the tool is rate limiting. Retry later.       |
 | `504` | `TOOL_TIMEOUT`               | A data provider did not answer in time. Retry.                       |
 
