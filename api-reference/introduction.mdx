@@ -1,33 +1,79 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Introduction"
+description: "Get an API key and make your first call to the Bitscale API."
 ---
 
+The Bitscale API lets you use Bitscale from your own code:
+
+| Part                                           | What it does                                                        |
+| ---------------------------------------------- | ------------------------------------------------------------------- |
+| [Tools](/api-reference/tools/overview)         | Run one enrichment tool on one record (find an email, scrape a profile, ask an AI model). No grid needed. |
+| [Sources](/api-reference/sources/overview)     | Search people, companies and LinkedIn data and get rows back. No grid needed. |
+| [Grid APIs](/ingredients/bitscale-api-reference) | Read your grids, run them with new inputs and get the outputs.     |
+
 <Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
+The API is an **Enterprise** feature. On other plans every endpoint returns an error.
 </Note>
 
-## Welcome
+|                    |                                  |
+| ------------------ | -------------------------------- |
+| **Base URL**       | `https://api.bitscale.ai/api/v1` |
+| **Authentication** | `X-API-KEY: <your-api-key>`      |
+| **Content-Type**   | `application/json`               |
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+## Get your API key
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+1. Log in to Bitscale.
+2. Go to **Settings → Account → API Key**.
+3. Copy the key.
+
+The key belongs to the workspace, not to you: every call runs in that workspace and uses its credits. Keep it secret and never put it in client-side code or a public repository. If it leaks, rotate it from the same settings page or with [`POST /api-key/rotate`](/ingredients/bitscale-api-reference#57-rotate-api-key); the old key stops working at once.
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Send the key in the `X-API-KEY` header on every request. No other header identifies the workspace.
+
+```bash
+curl "https://api.bitscale.ai/api/v1/tools" \
+  -H "X-API-KEY: $BITSCALE_API_KEY"
+```
+
+| HTTP  | Code                  | When                                                  |
+| ----- | --------------------- | ----------------------------------------------------- |
+| `401` | `INVALID_API_KEY`     | The header is missing, or the key is invalid or rotated. |
+| `503` | `SERVICE_UNAVAILABLE` | The key could not be checked right now. Retry.        |
+
+## Rate limits
+
+Each workspace can make **5 requests per second**, across all endpoints, polling included. Going over returns `429 RATE_LIMIT_EXCEEDED`. To change the limit, contact [team@bitscale.ai](mailto:team@bitscale.ai).
+
+Every response carries these headers:
+
+| Header                  | Meaning                                                   |
+| ----------------------- | --------------------------------------------------------- |
+| `X-RateLimit-Limit`     | Requests allowed per second.                              |
+| `X-RateLimit-Remaining` | Requests left in the current second.                      |
+| `Retry-After`           | Seconds to wait. Only on `429` responses.                 |
+
+## Errors
+
+Every error has the same shape: a machine-readable `code` and a readable `message`.
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
+{
+  "error": {
+    "code": "INVALID_API_KEY",
+    "message": "Missing or invalid X-API-KEY header"
   }
-]
+}
 ```
+
+Each section lists its own codes: [Tools](/api-reference/tools/overview#errors), [Sources](/api-reference/sources/overview#errors), [Grid APIs](/ingredients/bitscale-api-reference#7-error-code-reference).
+
+## Long-running requests
+
+Tool runs and source searches wait up to 25 seconds for a result. If the work takes longer you get `202 Accepted` with a `poll_url`; call it every 2–5 seconds until the status is no longer `running`. Set your client timeout to at least 60 seconds.
+
+## Credits
+
+Calls are billed to the workspace's credits the same way as in the app. Listing tools and sources, reading schemas, counting and filter-value lookups are free. When the workspace runs out, calls return `402`.
