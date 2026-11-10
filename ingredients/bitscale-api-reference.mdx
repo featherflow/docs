@@ -2,7 +2,7 @@
 title: "Grid APIs"
 ---
 
-**Version:** v1 · **Plan Required:** Enterprise
+**Version:** v1 · **Plan Required:** Any paid plan
 
 |                    |                                  |
 | ------------------ | -------------------------------- |
@@ -10,7 +10,7 @@ title: "Grid APIs"
 | **Authentication** | `X-API-KEY: <your-api-key>`      |
 | **Content-Type**   | `application/json`               |
 
-> **Enterprise Only** — BitScale APIs is an Enterprise feature. Your workspace plan must be upgraded before any of these endpoints will respond successfully.
+> **Paid plans only** — The Bitscale API is available on every paid plan. On the Free plan every endpoint returns `403 FEATURE_DISABLED`.
 
 ---
 
@@ -632,7 +632,7 @@ Each key in `outputs` is a column UUID. The value is an object with:
 | `400` | `INVALID_SOURCE`         | The `source_id` provided does not exist for this grid.         |
 | `400` | `INVALID_REQUEST`        | `mode` is not `"sync"` or `"async"`.                           |
 | `401` | `INVALID_API_KEY`        | `X-API-KEY` header is missing or invalid.                      |
-| `403` | `FEATURE_DISABLED`       | BitScale APIs not enabled on your plan. Upgrade to Enterprise. |
+| `403` | `FEATURE_DISABLED`       | The workspace is on the Free plan. Upgrade to a paid plan. |
 | `403` | `GRID_NOT_FOUND`         | Grid exists but does not belong to your workspace.             |
 | `404` | `GRID_NOT_FOUND`         | No grid found for the provided `gridId`.                       |
 | `429` | `RATE_LIMIT_EXCEEDED`    | Too many requests. Default limit is 5 req/sec per workspace.   |
@@ -836,7 +836,7 @@ Client                              BitScale API
 | `GRID_NOT_FOUND`         | `404` | No grid exists for the given `gridId`, or it belongs to a different workspace.             |
 | `WORKSPACE_NOT_FOUND`    | `404` | No workspace found for the provided API key.                                               |
 | `REQUEST_NOT_FOUND`      | `404` | No run request found for the given `requestId`, or it belongs to a different workspace.    |
-| `FEATURE_DISABLED`       | `403` | BitScale APIs is an Enterprise-only feature. Upgrade your workspace plan.                  |
+| `FEATURE_DISABLED`       | `403` | The workspace is on the Free plan. Upgrade to a paid plan.                  |
 | `RATE_LIMIT_EXCEEDED`    | `429` | Too many requests. Default is 5 req/sec per workspace. Contact [team@bitscale.ai](mailto:team@bitscale.ai) or your account manager to adjust. |
 | `RUN_FAILED`             | `500` | The row run failed during execution. Check the error message for details.                  |
 | `ROTATE_FAILED`          | `500` | API key rotation failed unexpectedly. Retry or contact BitScale support.                   |
