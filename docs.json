@@ -269,9 +269,9 @@
         "icon": "square-terminal",
         "groups": [
           {
-            "group": "V1",
+            "group": "Introduction",
             "pages": [
-              "ingredients/bitscale-api-reference"
+              "api-reference/introduction"
             ]
           },
           {
@@ -311,8 +311,10 @@
             ]
           },
           {
-            "group": "Advanced",
-            "pages": []
+            "group": "Grid APIs",
+            "pages": [
+              "ingredients/bitscale-api-reference"
+            ]
           }
         ]
       },
