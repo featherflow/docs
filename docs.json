@@ -133,6 +133,7 @@
                   "basics/run-grids-on-bitscale",
                   "basics/grid-views",
                   "basics/bitagent",
+                  "basics/bitpilot",
                   "basics/best-practices",
                   "ingredients/common-formulae",
                   "ingredients/prompts_101",
