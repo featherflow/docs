@@ -133,7 +133,7 @@ Put `value` in the filter named by `target_field`; when it names two, the second
 
 ## Credits
 
-- **`people` and `company`** use your plan's Find People / Find Companies allowance for the rows returned.
+- **`people` and `company`** charge **1 credit per 20 rows** returned (0.05 per row). They do not use your Find People / Find Companies search allowance.
 - **Every other source** charges credits for the rows returned. Each source's page lists its price.
 
 ## Errors
@@ -144,7 +144,7 @@ Put `value` in the filter named by `target_field`; when it names two, the second
 | `400` | `INVALID_INPUT`              | Unknown filter, wrong value type, a value outside the filter's allowed values, a missing required filter, no filter with a value, or `page` > 1 on a one-page source. |
 | `401` | `INVALID_API_KEY`            | Missing or invalid `X-API-KEY`.                                      |
 | `403` | `FEATURE_DISABLED`           | The workspace is on the Free plan.                                   |
-| `402` | `INSUFFICIENT_CREDITS`, `TOOL_INSUFFICIENT_CREDITS` | Out of search allowance (`people`, `company`) or credits (other sources). |
+| `402` | `INSUFFICIENT_CREDITS`, `TOOL_INSUFFICIENT_CREDITS` | Not enough credits. For `people` and `company`, the check is against a full page (`limit` × 0.05). |
 | `404` | `SOURCE_TYPE_NOT_SEARCHABLE` | The source cannot be searched through the API.                       |
 | `404` | `NOT_FOUND`                  | A run id that does not exist or has expired.                         |
 | `429` | `RATE_LIMIT_EXCEEDED`        | More than 5 requests per second.                                     |
