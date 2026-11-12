@@ -1,0 +1,92 @@
+---
+title: "Bitpilot - Build GTM Workflows in Plain English"
+description: "Bitpilot is the copilot inside your Bitscale workspace. Describe what you want to build in plain language, and it plans, creates, and runs the grids for you."
+---
+
+<div style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
+  <iframe width="100%" style={{aspectRatio: "16/9"}}
+    src="https://www.youtube.com/embed/97vGrHQbMdA"
+    title="YouTube video player"
+    style={{
+   position: "absolute",
+   inset: 0,
+   width: "100%",
+   height: "100%",
+   border: 0,
+ }}
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerPolicy="strict-origin-when-cross-origin"
+    allowFullScreen
+  />
+</div>
+
+<Card color="#5a0c0c" href="https://app.bitscale.ai" title="Build your first workflow with Bitpilot">
+  <Badge color="orange" size="lg" shape="pill" stroke="true">Try Bitscale Now!</Badge>
+</Card>
+
+## What Bitpilot is
+
+Bitscale is an orchestration tool: GTM teams use it to orchestrate their GTM workflows. That flexibility comes with a learning curve, especially when you're setting up your first workflow or exploring the platform for the first time.
+
+**Bitpilot** removes that learning curve. It's a chat interface built into your workspace where you explain, in natural language, what you're trying to build. Bitpilot:
+
+- Has access to your **grids** and the context inside them
+- **Creates new grids** for you from a short description
+- Sets up the account-level grid, people grid, enrichments, and waterfalls the workflow needs
+- Runs a few rows for you, so you can see how everything works before scaling up
+
+If you'd rather run Bitscale workflows from inside Claude, see the [Bitscale MCP](/mcp-reference).
+
+## When to use it
+
+- You've just signed up and want to get value from Bitscale without learning every column type first
+- You know the outcome you want (target accounts, contacts, enrichments) but not the exact grid setup
+- You want to prototype a list-building workflow quickly and refine it on the grid afterwards
+
+## Example: from prompt to a ready grid
+
+Here's an example that finds HR contacts at semiconductor companies in Southeast Asia.
+
+### 1) Open Bitpilot
+
+Click the **Bitpilot** option in your workspace. It opens a new chat.
+
+### 2) Describe what you want
+
+Write a plain-language prompt describing the accounts you want, how to qualify them, and what you need on the people. For example:
+
+> Create a workflow where we find companies operating in Southeast Asia in either the semiconductor or semiconductor manufacturing domains. Verify that these companies only operate in Southeast Asia and not globally: they should not operate in the Middle East, Europe, or the USA. Any country within Southeast Asia is fine. For the companies that qualify, find the HR professionals. For those HR professionals, find their phone numbers and emails, and scrape their LinkedIn profiles to see if they list any languages.
+
+### 3) Answer Bitpilot's clarifying questions
+
+Bitpilot first goes into **planning mode**. It uses what it already knows about your workspace to work out the best way to build the workflow, then asks follow-up questions, for example:
+
+- How many companies to start with (for example, 100)
+- How many HR professionals to find per company. This determines how many rows the people grid will have (for example, 5 per company)
+- Which contact details you need (email, phone number, or both)
+- Which region to search in (for example, APAC for Southeast Asia)
+
+Once you've answered, Bitpilot finalizes the plan and starts building.
+
+### 4) Open and review the grid
+
+When the grid is ready, Bitpilot gives you an option to open it so you can see how it's set up. In this example, it builds the account-level grid with the verification column, the HR finder, the email waterfall, and the phone waterfall.
+
+### 5) Run a few rows, then scale
+
+Bitpilot then asks what you want to do next: run a few rows to understand how everything works, or start working on the grid yourself. For example, ask it to run the verification and HR finder columns, and it handles the rest on its own.
+
+## Best practices
+
+- Spell out your qualification logic. Say exactly what qualifies or disqualifies an account (for example, "not operating in the Middle East, Europe, or the USA") rather than leaving it implied.
+- Describe what you need at both levels: what you want to know about the company, and what you want to know about the people.
+- Start small. Begin with a modest number of companies and a few contacts per company, check the output, then scale up.
+- Run a few rows before running the whole grid, so you can confirm each column is doing what you expect.
+
+<Card color="#5a0c0c" href="https://app.bitscale.ai" title="Let Bitpilot set up your next GTM workflow">
+  <Badge color="orange" size="lg" shape="pill" stroke="true">Try Bitscale Now!</Badge>
+</Card>
+
+## Need help?
+
+If you have questions about Bitpilot or want to talk through a workflow, reach out to the Bitscale team on the community channel.
