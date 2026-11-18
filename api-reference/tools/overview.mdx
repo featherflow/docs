@@ -50,7 +50,7 @@ Returns everything needed to build a run request:
 | `requires_prompt`  | `true` means the tool needs a `prompt`.                                 |
 | `sample_input`     | A working example of `inputs`.                                          |
 | `sample_output`    | What a result looks like.                                               |
-| `credit`           | Credits charged per run.                                                |
+| `credit`           | The listed price per run. For some tools the actual charge is lower; see the tool's page. |
 
 ## Run a tool
 
@@ -91,6 +91,8 @@ curl -X POST "https://api.bitscale.ai/api/v1/tools/customEmailWaterfall/run" \
 `status` is `completed` or `failed`. A run that fails (for example, a LinkedIn URL that can't be scraped) still returns `200`, with `status: "failed"` and an `error` message instead of `result`; always check `status`. A lookup that finds nothing usually completes with empty fields.
 
 AI models return their answer as text in `result.raw` instead of `result.data`.
+
+`result.credit` is the tool's listed price, not the amount charged for this run. For waterfalls the charge depends on which providers found something, so it can be lower.
 
 <Note>
 The 25-second window starts after the request is validated, so a `202` can take around 30–45 seconds to arrive. Set your client timeout to at least 60 seconds.
