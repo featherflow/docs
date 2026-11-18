@@ -8,7 +8,7 @@ description: "Extract the people who liked, commented on, or reshared a specific
 Extract the people who liked, commented on, or reshared a specific LinkedIn post. Different from linkedinPeopleFromKeywords (which scans all recent posts matching topic keywords).
 
 <Note>
-Returns every match up to `limit` (max 100) in one call. There is no page 2, so `has_more` is always `false`. `limit` (max 100) caps comments and reactions combined; `commentsLimit` and `reactionsLimit` split it. `scrapeComments` and `scrapeReactions` default to `true`. Count is not available. 1 credit per 10 engagers of each type (comments, reactions), rounded up, for each provider tried.
+Returns every match up to `limit` (max 100) in one call. There is no page 2, so `has_more` is always `false`. `limit` (max 100) caps comments and reactions combined; `commentsLimit` and `reactionsLimit` split it. `scrapeComments` and `scrapeReactions` default to `true`. Count is not available. About 1 credit per 10 engagers <Tooltip tip="Comments and reactions are counted separately and each rounded up to the next 10. If a provider returns some engagers and the next provider is tried, each one charges for what it returned.">ⓘ</Tooltip>
 </Note>
 
 ## Filters
