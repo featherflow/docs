@@ -286,6 +286,7 @@
               "api-reference/tools/customEmailWaterfall",
               "api-reference/tools/customPhoneWaterfall",
               "api-reference/tools/linkedinComments",
+              "api-reference/tools/linkedinReactions",
               "api-reference/tools/linkedinCompany",
               "api-reference/tools/linkedinCompanyPosts",
               "api-reference/tools/linkedinPerson",

@@ -1,0 +1,65 @@
+---
+title: "LinkedIn Recent Reactions"
+description: "Give a person's LinkedIn URL, and get a list of posts the person recently reacted to."
+---
+
+**Tool ID:** `linkedinReactions` · **Credits:** 1 per run
+
+Give a person's LinkedIn URL, and get a list of posts the person recently reacted to (liked, celebrated, found insightful, and so on).
+
+**Best for:** When you want to know what content a person engages with on LinkedIn, such as the topics they like or whose posts they react to, for intent signals or outreach personalization. People react far more often than they post or comment, so this is often the richest signal for quiet profiles.
+
+## Inputs
+
+Send these in `inputs`.
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `linkedinUrl` | Yes | The person's LinkedIn URL. Returns the posts they recently reacted to. |
+
+## Output
+
+Returns a list of posts the person recently reacted to on LinkedIn, including the reaction type, post text, post author and engagement counts.
+
+`result.data` looks like:
+
+```json
+{
+  "reactions": [
+    {
+      "reactionType": "Like",
+      "reactionText": "Jane Doe likes this",
+      "reactedAt": "Nov 17, 2026 at 5:08am (UTC)",
+      "postLink": "https://www.linkedin.com/posts/johnsmith_five-lessons-activity-7520000000000000000",
+      "postText": "Five lessons from scaling our sales team.",
+      "postedAt": "Nov 16, 2026 at 8:41pm (UTC)",
+      "postedAgo": "1d",
+      "posted_by": {
+        "actorName": "John Smith",
+        "actorLink": "https://www.linkedin.com/in/johnsmith",
+        "actorDescription": "VP Sales at Acme"
+      },
+      "socialCount": {
+        "numComments": 25,
+        "numLikes": 405,
+        "numShares": 25
+      }
+    }
+  ]
+}
+```
+
+`reactionType` is one of `Like`, `Celebrate`, `Love`, `Insightful`, `Support` or `Funny`. `reactedAt` is not always present.
+
+Only the person's most recent reactions (roughly one page) are returned. If the person rarely reacts or their activity is hidden, `reactions` is empty.
+
+## Example
+
+```bash
+curl -X POST "https://api.bitscale.ai/api/v1/tools/linkedinReactions/run" \
+  -H "X-API-KEY: $BITSCALE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": {"linkedinUrl": "https://www.linkedin.com/in/john-doe/"}}'
+```
+
+See [Tools API](/api-reference/tools/overview) for the response format and polling.
